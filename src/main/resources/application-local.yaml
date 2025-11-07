@@ -1,0 +1,45 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mariadb://velysound.synology.me:3307/velysound
+    username: velysound
+    password: Mariadatabase1!
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 300000 # 5분
+      connection-timeout: 30000
+      pool-name: HikariJindamLocal
+
+  # 개발 편의
+  devtools:
+    restart:
+      enabled: true
+
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    # SQL 출력 (log4jdbc)
+    jdbc:
+      sqlonly: DEBUG
+      resultsettable: DEBUG
+      audit: INFO
+    # MyBatis 매퍼 바인딩 확인
+    org.mybatis: DEBUG
+    # 스프링 웹 요청 추적이 필요하면 아래 주석 해제
+    # org.springframework.web: DEBUG

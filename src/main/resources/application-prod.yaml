@@ -1,0 +1,44 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mariadb://velysound.synology.me:3307/velysound
+    username: velysound
+    password: Mariadatabase1!
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 30000
+      leak-detection-threshold: 0
+      pool-name: HikariJindamProd
+
+springdoc:
+  swagger-ui:
+    enabled: false # 운영 UI 비활성(원하면 true)
+  api-docs:
+    enabled: false # 스펙 엔드포인트도 기본 비활성
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  server:
+    port: 8081 # 운영 모니터링 포트 분리하고 싶을 때 (원치 않으면 제거)
+
+server:
+  port: 8080
+  # servlet:
+  #   context-path: /api
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.mybatis: INFO
+    # SQL은 APM/쿼리샘플러로 보통 대체. 꼭 필요하면 아래 수준 조절
+    # org.hibernate.SQL: WARN

@@ -1,0 +1,70 @@
+plugins {
+	id 'java'
+	id 'war'
+	id 'org.springframework.boot' version '3.4.11'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com'
+version = '0.0.1-SNAPSHOT'
+description = 'Jindamhair'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    // --- Web / REST ---
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation' // @Valid, Bean Validation
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310' // Java time (LocalDateTime 등)
+
+    // --- Persistence (PostgreSQL + MyBatis) ---
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc' // DataSource, JDBC
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.5'
+    runtimeOnly 'org.postgresql:postgresql'
+		runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+    // --- API 문서 (Swagger/OpenAPI) ---
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    // /swagger-ui.html 또는 /swagger-ui/index.html 로 접근
+
+    // --- SQL 로깅 (log4jdbc) ---
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+    // --- 품질/운영 ---
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'  // 헬스체크 등
+
+    // --- Lombok ---
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // --- Spring Config metadata ---
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // --- 외부 톰캣 (WAR 배포시) ---
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    // --- Test ---
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.5'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
