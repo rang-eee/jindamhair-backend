@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ourhome.tqms.apps.example.mapper.tqms.ExampleMapper">
+
+    <!-- 검색 조건에 따른 목록 조회 -->
+    <select id="selectByCriteriaPaging" parameterType="ExampleListRequestDto" resultType="ExampleListResponseDto">
+        SELECT
+            *
+        FROM a_test_table_q
+        <where>
+            use_yn = 'Y'
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <choose>
+                    <when test="searchType == 'userName'">
+                        AND user_name LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </when>
+                    <when test="searchType == 'age'">
+                        AND age = CAST(#{searchKeyword} AS INTEGER)
+                    </when>
+                </choose>
+            </if>
+        </where>
+
+        <!-- 정렬 조건 -->
+        <trim prefix="ORDER BY" prefixOverrides=",">
+            <foreach collection="sorts" item="sort" separator=",">
+                <choose>
+                    <when test="sort.name == 'createAt'">create_at <if test="sort.dir == 'desc'">DESC NULLS LAST</if></when>
+                    <when test="sort.name == 'updateAt'">update_at <if test="sort.dir == 'desc'">DESC NULLS LAST</if></when>
+                    <when test="sort.name == 'userName'">user_name <if test="sort.dir == 'desc'">DESC NULLS LAST</if></when>
+                    <when test="sort.name == 'userId'">user_id <if test="sort.dir == 'desc'">DESC NULLS LAST</if></when>
+                    <when test="sort.name == 'age'">age <if test="sort.dir == 'desc'">DESC NULLS LAST</if></when>
+                </choose>
+            </foreach>
+        </trim>
+        
+        <!-- 페이징 처리 -->
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    
+    <!-- 검색 조건에 따른 목록 조회 -->
+    <select id="selectByCriteriaPagingCount" parameterType="ExampleListRequestDto" resultType="int">
+        SELECT
+            count(*)
+        FROM a_test_table_q
+        <where>
+            use_yn = 'Y'
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <choose>
+                    <when test="searchType == 'userName'">
+                        AND user_name LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </when>
+                    <when test="searchType == 'age'">
+                        AND age = CAST(#{searchKeyword} AS INTEGER)
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
+    
+    <!-- 검색 조건에 따른 목록 조회 -->
+    <select id="selectByCriteria" parameterType="ExampleListRequestDto" resultType="ExampleListResponseDto">
+        SELECT
+            user_id AS userId,
+            user_name AS userName,
+            create_at AS createAt,
+            update_at AS updateAt
+        FROM a_test_table_q
+        <where>
+            use_yn = 'Y'
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <choose>
+                    <when test="searchType == 'userName'">
+                        AND user_name LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </when>
+                    <when test="searchType == 'age'">
+                        AND age = CAST(#{searchKeyword} AS INTEGER)
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+    <!-- 단일 항목 세부 조회 -->
+    <select id="selectById" parameterType="string" resultType="ExampleDetailResponseDto">
+        /* ExampleMapper.selectById : 단일 항목 세부 조회  */
+        SELECT
+            user_id AS userId,
+            user_name AS userName,
+            age,
+            use_yn AS useYn,
+            create_at AS createAt,
+            create_id AS createdId,
+            update_at AS updateAt,
+            update_id AS updateId
+        FROM a_test_table_q
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 사용자 ID 중복 확인 -->
+    <select id="existsUserId" parameterType="String" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM a_test_table_q
+            WHERE user_id = #{userId}
+        )
+    </select>
+
+    <!-- 새로운 예제 항목 생성 -->
+    <insert id="createExample" parameterType="ExampleRegisterRequestDto">
+        /* ExampleMapper.createExample : 새로운 예제 항목 생성  */
+        INSERT INTO a_test_table_q (
+            user_id,
+            user_name,
+            age,
+            use_yn,
+            create_at,
+            create_id
+        )
+        VALUES (
+            #{userId},
+            #{userName},
+            #{age},
+            'Y',
+            NOW(),
+            #{createId}
+        )
+    </insert>
+
+    <!-- 기존 예제 항목 수정 -->
+    <update id="modifyExample" parameterType="ExampleModifyRequestDto">
+        /* ExampleMapper.modifyExample : 기존 예제 항목 수정  */
+        UPDATE a_test_table_q
+        SET
+            user_name = #{userName},
+            age = #{age},
+            update_at = NOW(),
+            update_id = #{updateId}
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- 기존 예제 항목 삭제 -->
+    <update id="removeExample" parameterType="string">
+        /* ExampleMapper.removeExample : 기존 예제 항목 삭제  */
+        UPDATE a_test_table_q
+        SET
+            use_yn = 'N'
+        WHERE user_id = #{userId}
+    </update>
+
+</mapper>
