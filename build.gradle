@@ -57,6 +57,10 @@ dependencies {
 
     // --- 외부 톰캣 (WAR 배포시) ---
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    
+    // --- httpcomponents ---
+    implementation 'org.apache.httpcomponents.client5:httpclient5'
+
 
     // --- Test ---
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

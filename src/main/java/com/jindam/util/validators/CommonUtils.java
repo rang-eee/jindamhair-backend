@@ -160,8 +160,7 @@ public class CommonUtils {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
-        Enumeration<String> requestHeader = request.getHeaderNames();
-
+        // Enumeration<String> requestHeader = request.getHeaderNames();
         // while (requestHeader.hasMoreElements()) {
         // String hearder = requestHeader.nextElement();
         // Logger.error("request.getHeaderNames = " + hearder);

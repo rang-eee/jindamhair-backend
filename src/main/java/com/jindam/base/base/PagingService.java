@@ -11,9 +11,9 @@ import org.apache.ibatis.binding.BindingException;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.jdbc.BadSqlGrammarException;
 
-import com.ourhome.tqms.common.dto.PagingRequestBaseDto;
-import com.ourhome.tqms.common.dto.PagingResponseDto;
-import com.ourhome.tqms.libs.Utils;
+import com.jindam.base.dto.PagingRequestBaseDto;
+import com.jindam.base.dto.PagingResponseDto;
+import com.jindam.util.Utils;
 
 import lombok.extern.slf4j.Slf4j;
 

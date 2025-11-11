@@ -29,9 +29,10 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import com.jindam.app.common.exception.CommonException;
-import com.ourhome.tqms.apps.common.dto.HistoryLogRequestDto;
-import com.ourhome.tqms.apps.mybatis_common.service.Mybatis_HistoryLogService;
-import com.ourhome.tqms.common.dto.ApiResultDto;
+import com.jindam.app.common.model.HistoryLogRequestDto;
+import com.jindam.app.common.service.HistoryLogService;
+import com.jindam.base.dto.ApiResultDto;
+import com.jindam.util.StringUtils;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class HandleExceptionController {
 
-    private final Mybatis_HistoryLogService historyLogService;
+    private final HistoryLogService historyLogService;
 
     private final HistoryTransactionManager historyTransactionManager;
 

@@ -1,13 +1,5 @@
 package com.jindam.base.base;
 
-import com.ourhome.tqms.utils.BeanUtils;
-import com.ourhome.tqms.utils.DtoUtils;
-import com.ourhome.tqms.utils.StringUtils;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,6 +8,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.sql.DataSource;
+
+import org.springframework.stereotype.Service;
+
+import com.jindam.util.BeanUtils;
+import com.jindam.util.StringUtils;
+import com.jindam.util.validators.DtoUtils;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 테이블 변경 이력을 저장하는 서비스 클래스.

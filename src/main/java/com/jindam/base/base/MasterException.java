@@ -1,6 +1,6 @@
 package com.jindam.base.base;
 
-import com.ourhome.tqms.utils.StringUtils;
+import com.jindam.util.StringUtils;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,11 +1,10 @@
-package com.ourhome.tqms.utils;
-
-import org.apache.commons.text.StringEscapeUtils;
-import org.jsoup.Jsoup;
-import org.springframework.lang.Nullable;
+package com.jindam.util;
 
 import java.util.List;
 import java.util.StringJoiner;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.springframework.lang.Nullable;
 
 public class StringUtils {
 
@@ -443,14 +442,14 @@ public class StringUtils {
      * @param html 입력 HTML 문자열 (null 허용)
      * @return 파싱된 순수 텍스트, 입력이 null이면 null 반환
      */
-    public static String stripHtmlWithJsoup(String html) {
-        if (html == null) {
-            return null;
-        }
-        // Jsoup.parse(html).text() 로 HTML 내 텍스트 노드만 취합
-        return Jsoup.parse(html)
-            .text();
-    }
+    // public static String stripHtmlWithJsoup(String html) {
+    // if (html == null) {
+    // return null;
+    // }
+    // // Jsoup.parse(html).text() 로 HTML 내 텍스트 노드만 취합
+    // return Jsoup.parse(html)
+    // .text();
+    // }
 
     /**
      * 주어진 문자열의 앞뒤 공백을 제거하고, 끝에 “.0”이 붙어 있으면 제거합니다.

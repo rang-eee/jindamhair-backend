@@ -5,8 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.datatype.hibernate5.jakarta.Hibernate5JakartaModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jindam.base.message.Message;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,17 +34,17 @@ public class ApiResultDto<T> {
     private static ObjectMapper objectMapper; // JSON 데이터 변환을 위한 ObjectMapper 인스턴스
 
     // 정적 초기화 블록: ObjectMapper 설정
-    static {
-        if (objectMapper == null) {
-            objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
+    // static {
+    // if (objectMapper == null) {
+    // objectMapper = new ObjectMapper();
+    // objectMapper.registerModule(new JavaTimeModule());
 
-            // Hibernate와의 통합 설정
-            Hibernate5JakartaModule hibernate5Module = new Hibernate5JakartaModule();
-            hibernate5Module.configure(Hibernate5JakartaModule.Feature.FORCE_LAZY_LOADING, false);
-            objectMapper.registerModule(hibernate5Module);
-        }
-    }
+    // // Hibernate와의 통합 설정
+    // Hibernate5JakartaModule hibernate5Module = new Hibernate5JakartaModule();
+    // hibernate5Module.configure(Hibernate5JakartaModule.Feature.FORCE_LAZY_LOADING, false);
+    // objectMapper.registerModule(hibernate5Module);
+    // }
+    // }
 
     /**
      * 기본 생성자. 기본 결과 코드를 200으로 설정합니다.
