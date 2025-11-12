@@ -2,9 +2,9 @@
 <!-- 15초마다 설정 파일의 변경을 확인 하여 변경시 갱신 -->
 <configuration scan="true" scanPeriod="15 seconds">
     
-    <!-- properties file -->
+    <!-- 프로퍼티 파일 -->
     <property resource="logger/logback.properties"/>
-    <property resource="logger/logback-dev.properties"/>
+    <property resource="logger/logback-prod.properties"/>
     
     
     <!-- 로그 파일 경로 : 프로퍼티 참조 -->
@@ -28,7 +28,7 @@
     <!-- SQL문만 로깅할지 여부 -->
     <logger name="jdbc.sqlonly" level="OFF" appender-ref="FILE"/>
     <!-- 쿼리문 수행에 걸린 시간 로깅 -->
-    <logger name="jdbc.sqltiming" level="INFO" appender-ref="FILE"/>
+    <logger name="jdbc.sqltiming" level="OFF" appender-ref="FILE"/>
     <!-- ResultSet외 모든 JDBC 호출 정보를 로깅할지 여부 -->
     <logger name="jdbc.audit" level="OFF" appender-ref="FILE"/>
     <!-- ResultSet 포함 모든 JDBC 호출 정보를 로깅 -->
@@ -38,7 +38,7 @@
     
     
     <!-- Log File -->
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender" level="WARN">
         <!-- 파일경로 설정 -->
         <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -59,7 +59,7 @@
     
     
     <!-- Error Log File -->
-    <appender name="ERR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="ERR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender" level="ERROR">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <!-- 에러로그를 설정하고 로그의 레벨이 맞으면 onMatch, 아니라면 onMismatch  -->
             <level>error</level>
@@ -80,12 +80,12 @@
             <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory> -->
             <fileNamePattern>${LOG_PATH}/${ERR_LOG_FILE_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
-        </rollingPolicy> 
+        </rollingPolicy>
     </appender>
-
+    
     
     <!-- Root -->
-    <root level="INFO">
+    <root level="WARN">
         <appender-ref ref="FILE"/>
         <appender-ref ref="ERR_FILE"/>
     </root>

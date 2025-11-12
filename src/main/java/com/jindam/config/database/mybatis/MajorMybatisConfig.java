@@ -19,44 +19,44 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import com.jindam.config.spring.BeanNameGenerator;
 
 /**
- * MyBatis 설정 클래스 (TQMS DB 전용)
+ * MyBatis 설정 클래스 (Major DB 전용)
  * 
  * <p>
- * TQMS 관련 MyBatis 매퍼와 데이터베이스 연결 설정을 정의합니다.
+ * Major 관련 MyBatis 매퍼와 데이터베이스 연결 설정을 정의합니다.
  * </p>
  */
 @Configuration
 @MapperScan( //
-        basePackages = { "com.jindam.app.**.mapper" }, // TQMS 관련 매퍼 패키지 스캔
-        sqlSessionFactoryRef = "tqmsSqlSessionFactory", // TQMS DB 전용 SqlSessionFactory 설정
+        basePackages = { "com.jindam.app.**.mapper" }, // Major 관련 매퍼 패키지 스캔
+        sqlSessionFactoryRef = "majorSqlSessionFactory", // Major DB 전용 SqlSessionFactory 설정
         nameGenerator = BeanNameGenerator.class // Custom Bean Name Generator 사용
 )
-public class TqmsMybatisConfig {
+public class MajorMybatisConfig {
 
     /**
-     * TQMS DB 전용 SqlSessionFactory 빈 생성
+     * Major DB 전용 SqlSessionFactory 빈 생성
      * 
      * <p>
-     * DataSource를 기반으로 MyBatis의 SqlSessionFactory를 생성합니다. 이 설정은 TQMS DB와 연동되는 매퍼와 MyBatis XML 파일을 처리합니다.
+     * DataSource를 기반으로 MyBatis의 SqlSessionFactory를 생성합니다. 이 설정은 Major DB와 연동되는 매퍼와 MyBatis XML 파일을 처리합니다.
      * </p>
      *
      * <p>
      * Primary로 지정되어 기본 SqlSessionFactory로 설정됩니다.
      * </p>
      *
-     * @param dataSourceForTqmsDb TQMS DB에 연결할 DataSource
-     * @return TQMS 전용 SqlSessionFactory 객체
+     * @param dataSourceForMajorDb Major DB에 연결할 DataSource
+     * @return Major 전용 SqlSessionFactory 객체
      * @throws Exception SqlSessionFactory 생성 중 오류가 발생할 경우 예외
      */
     @Primary
-    @Bean(name = "tqmsSqlSessionFactory")
-    public SqlSessionFactory tqmsSqlSessionFactory(@Qualifier("dataSourceForTqmsDb") DataSource dataSourceForTqmsDb) throws Exception {
+    @Bean(name = "majorSqlSessionFactory")
+    public SqlSessionFactory majorSqlSessionFactory(@Qualifier("dataSourceForMajorDb") DataSource dataSourceForMajorDb) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(dataSourceForTqmsDb); // TQMS DB 전용 DataSource 설정
+        sessionFactory.setDataSource(dataSourceForMajorDb); // Major DB 전용 DataSource 설정
 
         // MyBatis XML 매퍼 파일 경로 설정
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        sessionFactory.setMapperLocations(resolver.getResources("classpath:mybatis/mapper/**/tqms/**/*.xml"));
+        sessionFactory.setMapperLocations(resolver.getResources("classpath:mybatis/mapper/**/*.xml"));
 
         // MyBatis 타입 별칭 패키지 설정
         sessionFactory.setTypeAliasesPackage("com.jindam.app.**.model");

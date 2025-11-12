@@ -55,7 +55,7 @@ public class HistoryAppendService {
      * @param historyCreatedId 이력을 생성한 사용자 ID (nullable)
      * @param historyContent 이력 내용 (nullable)
      * @param dto DTO 객체 (이력에 저장될 데이터)
-     * @param dbSchemaName 사용할 데이터소스 스키마명 (ex. dataSourceForTqmsDb, dataSourceForIntfDb)
+     * @param dbSchemaName 사용할 데이터소스 스키마명 (ex. dataSourceForMajorDb, dataSourceForIntfDb)
      */
     private void saveHistoryToDB(String tableName, HistoryType historyType, Long historyCreatedId, String historyContent, Object dto, String dbSchemaName) {
 
@@ -125,7 +125,7 @@ public class HistoryAppendService {
      * @param historyCreatedId 이력을 생성한 사용자 ID (nullable)
      * @param historyContent 이력 내용 (nullable)
      * @param dtoList DTO 객체 리스트 (이력에 저장될 데이터)
-     * @param dbSchemaName 사용할 데이터소스 스키마명 (ex. dataSourceForTqmsDb, dataSourceForIntfDb)
+     * @param dbSchemaName 사용할 데이터소스 스키마명 (ex. dataSourceForMajorDb, dataSourceForIntfDb)
      */
     private void saveBatchHistoryToDB(String tableName, HistoryType historyType, Long historyCreatedId, String historyContent, List<?> dtoList, String dbSchemaName) {
         // 데이터소스 스키마명 검증
@@ -202,14 +202,14 @@ public class HistoryAppendService {
      * TQMS 데이터베이스용 이력 저장
      */
     public void insertHistoryForTqms(String tableName, HistoryType historyType, Long historyCreatedId, String historyContent, Object dto) {
-        historyTransactionManager.registerHistoryOperation(() -> saveHistoryToDB(tableName, historyType, historyCreatedId, historyContent, dto, "dataSourceForTqmsDb"));
+        historyTransactionManager.registerHistoryOperation(() -> saveHistoryToDB(tableName, historyType, historyCreatedId, historyContent, dto, "dataSourceForMajorDb"));
     }
 
     /**
      * TQMS 데이터베이스용 다중 이력 저장 (Batch Insert)
      */
     public void insertBatchHistoryForTqms(String tableName, HistoryType historyType, Long historyCreatedId, String historyContent, List<?> dtoList) {
-        historyTransactionManager.registerHistoryOperation(() -> saveBatchHistoryToDB(tableName, historyType, historyCreatedId, historyContent, dtoList, "dataSourceForTqmsDb"));
+        historyTransactionManager.registerHistoryOperation(() -> saveBatchHistoryToDB(tableName, historyType, historyCreatedId, historyContent, dtoList, "dataSourceForMajorDb"));
     }
 
     /**

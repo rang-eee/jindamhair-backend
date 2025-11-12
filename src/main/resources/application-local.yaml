@@ -4,16 +4,15 @@ spring:
       on-profile: local
 
   datasource:
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:mariadb://velysound.synology.me:3307/velysound
-    username: velysound
-    password: Mariadatabase1!
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 2
-      idle-timeout: 300000 # 5분
-      connection-timeout: 30000
-      pool-name: HikariJindamLocal
+    major:
+      driver: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      url: jdbc:log4jdbc:mariadb://velysound.synology.me:3307/velysound
+      username: velysound
+      password: Mariadatabase1!
+      min-idle: 2
+      max-pool-size: 10
+      max-lifetime: 1800000
+      auto-commit: true
 
   # 개발 편의
   devtools:
