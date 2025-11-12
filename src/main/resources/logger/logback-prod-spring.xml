@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true">
 
-    <!-- ✅ application.yml 값 주입 -->
+    <!-- application.yml 값 주입 -->
     <springProperty name="LOG_PATH" source="logback.path" />
     <springProperty name="LOG_FILE_NAME" source="logback.file.name.app" defaultValue="application"/>
     <springProperty name="ERR_LOG_FILE_NAME" source="logback.file.name.error" defaultValue="error"/>
@@ -34,7 +34,6 @@
     </appender>
 
     <!-- (선택) 에러 전용 파일 -->
-    <!--
     <appender name="ERR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
@@ -51,9 +50,8 @@
             <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
         </rollingPolicy>
     </appender>
-    -->
 
-    <!-- ✅ log4jdbc 로거: appender-ref는 '속성'이 아니라 '엘리먼트'입니다 -->
+    <!-- log4jdbc 로거: appender-ref는 '속성'이 아니라 '엘리먼트'입니다 -->
     <logger name="jdbc" level="OFF" additivity="false">
         <appender-ref ref="FILE"/>
     </logger>
@@ -76,21 +74,9 @@
         <appender-ref ref="FILE"/>
     </logger>
 
-    <!-- 프로필별 로깅 레벨/추가 설정(선택) -->
-    <springProfile name="local">
-        <root level="DEBUG">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="FILE"/>
-            <!-- <appender-ref ref="ERR_FILE"/> -->
-        </root>
-    </springProfile>
-
-    <springProfile name="prod">
-        <root level="INFO">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="FILE"/>
-            <!-- <appender-ref ref="ERR_FILE"/> -->
-        </root>
-    </springProfile>
-
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERR_FILE"/>
+    </root>
 </configuration>
