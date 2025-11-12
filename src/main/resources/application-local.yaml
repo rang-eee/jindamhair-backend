@@ -6,9 +6,9 @@ spring:
   datasource:
     major:
       driver: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      url: jdbc:log4jdbc:mariadb://velysound.synology.me:3307/velysound
-      username: velysound
-      password: Mariadatabase1!
+      url: jdbc:log4jdbc:postgresql://velysound.synology.me:5432/jindamhair
+      username: jindamhair
+      password: jindamhair1!
       min-idle: 2
       max-pool-size: 10
       max-lifetime: 1800000
