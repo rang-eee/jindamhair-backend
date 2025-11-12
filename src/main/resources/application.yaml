@@ -33,7 +33,7 @@ mybatis:
     map-underscore-to-camel-case: true
     default-statement-timeout: 30
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
-  # 아래 패키지/경로는 프로젝트 구조에 맞게 수정
+# 아래 패키지/경로는 프로젝트 구조에 맞게 수정
   type-aliases-package: com.jindam.**.model
   mapper-locations: classpath*:mapper/**/*Mapper.xml
 

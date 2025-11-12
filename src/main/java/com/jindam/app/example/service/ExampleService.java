@@ -184,24 +184,7 @@ public class ExampleService extends PagingService {
     private boolean isInvalidSearchType(String searchType) {
         // 유효한 검색 타입 리스트와 비교하여 확인
         return !Arrays.asList("userId", "userName")
-            .contains(searchType);
-    }
-
-    /**
-     * Interface를 사용하여 주어진 검색 조건(request)을 기반으로 데이터를 조회합니다.
-     *
-     * @param request 검색 조건을 포함하는 요청 객체
-     * @return 검색 조건에 부합하는 데이터 목록
-     * @throws ExampleException 유효하지 않은 검색 타입인 경우
-     */
-    public List<ExampleDetailResponseDto> findByCriteriaForIntf(ExampleListRequestDto request) {
-
-        // 유효하지 않은 요청 파라미터 검사 및 예외 처리
-        if (request.getSearchType() != null && isInvalidSearchType(request.getSearchType())) {
-            throw new ExampleException(ExampleException.Reason.INVALID_REQUEST);
-        }
-
-        return exampleMapper.selectByCriteria(request);
+            .contains(searchType); 
     }
 
 }

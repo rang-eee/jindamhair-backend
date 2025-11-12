@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = "00000. [공통] 예제 관련 처리")
+@Tag(name = "000. [공통] 예제 관련 처리")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/v1/api/example")
@@ -197,47 +197,6 @@ public class ExampleController extends MasterController {
 
         return apiResultVo; // 최종 API 응답 반환
 
-    }
-
-    /**
-     * 전체 목록 조회 API (intf)
-     *
-     * 기본적으로 모든 예제 항목을 조회하며, 선택적으로 검색 키워드와 검색 유형을 통해 필터링할 수 있습니다.
-     *
-     * @param searchKeyword 검색 키워드 (선택적)
-     * @param searchType 검색 유형 (default: userName)
-     * @return ApiResultVo<List<ExampleDetailResponseDto>> 예제 항목 목록을 포함하는 API 응답 객체
-     */
-    @Operation(//
-            summary = "전체 목록 TB_OHHR01 조회 테스트 (intf)", //
-            description = "intf.TB_OHHR01")
-    @GetMapping("/intf/list")
-    public ApiResultDto<List<ExampleDetailResponseDto>> getExamplesByCriteriaForIntf() {
-
-        ApiResultDto<List<ExampleDetailResponseDto>> apiResultVo = new ApiResultDto<>(); // API 응답 객체
-        List<ExampleDetailResponseDto> result; // 조회 결과
-
-        // 기본 성공 메시지 설정
-        apiResultVo.setResultCode(200);
-        apiResultVo.setResultMessage("common.proc.success.search");
-
-        // 검색 조건을 포함하는 요청 객체 생성
-        ExampleListRequestDto request = ExampleListRequestDto.builder()
-            .build();
-
-        // 서비스 호출을 통해 조회 결과 얻기
-        result = exampleService.findByCriteriaForIntf(request);
-
-        // 조회 결과가 비어있는 경우 실패 메시지 설정
-        if (ObjectUtils.isEmpty(result)) {
-            apiResultVo.setData(null);
-            apiResultVo.setResultMessage("common.proc.failed.search.empty");
-        } else {
-            // 조회 결과가 있는 경우에만 데이터 설정
-            apiResultVo.setData(result);
-        }
-
-        return apiResultVo; // 최종 API 응답 반환
     }
 
 }

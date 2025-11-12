@@ -16,9 +16,9 @@ spring:
 
 springdoc:
   swagger-ui:
-    enabled: false # 운영 UI 비활성(원하면 true)
+    enabled: true # 운영 UI 비활성(원하면 true)
   api-docs:
-    enabled: false # 스펙 엔드포인트도 기본 비활성
+    enabled: true # 스펙 엔드포인트도 기본 비활성
 
 management:
   endpoints:
