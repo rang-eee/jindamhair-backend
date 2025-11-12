@@ -14,7 +14,7 @@ spring:
 
   mvc:
     pathmatch:
-      matching-strategy: ant_path_matcher
+      matching-strategy: ANT_PATH_MATCHER
 
   # 파일 업로드 기본치 (필요 시 조정)
   servlet:
@@ -53,35 +53,11 @@ springdoc:
     path: /swagger-ui.html
 
 logging:
-  level:
-    root: INFO
-    org.springframework.web: INFO
-    org.mybatis: INFO
-    # 프로필별 세부 레벨은 각 프로파일 파일에서 오버라이드
-
-Globals:
-  osType: mac
-  # osType: window
-  # osType: linux
+  config: classpath:logger/logback-${spring.profiles.active}-spring.xml
   
-  # Log settings
-  log:
-    filename: application
-    error-filename: ${log.filename}_err
-  
-  # Path settings
-  path:
-    mac:
-      root: /Users/bbamkeylee/dev
-      log: ${Globals.path.mac.root}/logs
-      upload: ${Globals.path.mac.root}/upload
-    window:
-      root: C:\\Users\\beomg\\dev
-      log: ${Globals.path.window.root}\\logs
-      upload: ${Globals.path.window.root}\\upload
-    linux:
-      root: /jindamhair/tomcat
-      log: ${Globals.path.linux.root}\\logs
-      upload: ${Globals.path.linux.root}\\upload
-    upload: ${Globals.path.${Globals.osType}.upload}
-    log: ${Globals.path.${Globals.osType}.log}
+logback:
+  file:
+    name:
+      app: application
+      error: error
+    maxHistory: 30

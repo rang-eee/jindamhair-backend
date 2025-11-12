@@ -31,14 +31,29 @@ management:
       exposure:
         include: health,info
 
-logging:
-  level:
-    # SQL 출력 (log4jdbc)
-    jdbc:
-      sqlonly: DEBUG
-      resultsettable: DEBUG
-      audit: INFO
-    # MyBatis 매퍼 바인딩 확인
-    org.mybatis: DEBUG
-    # 스프링 웹 요청 추적이 필요하면 아래 주석 해제
-    # org.springframework.web: DEBUG
+Globals:
+  osType: mac
+  # osType: window
+  # osType: linux
+  
+  # Log settings
+  log:
+    filename: application
+    error-filename: ${log.filename}_err
+  
+  # Path settings
+  path:
+    mac:
+      root: /Users/bbamkeylee/dev
+      log: ${Globals.path.mac.root}/logs/jindamhair-backend
+      upload: ${Globals.path.mac.root}/upload/jindamhair-backend
+    window:
+      root: C:\\Users\\beomg\\dev
+      log: ${Globals.path.window.root}\\logs\\jindamhair-backend
+      upload: ${Globals.path.window.root}\\upload\\jindamhair-backend
+    linux:
+      root: /jindamhair/tomcat
+      log: ${Globals.path.linux.root}/logs/jindamhair-backend
+      upload: ${Globals.path.linux.root}/upload/jindamhair-backend
+    upload: ${Globals.path.${Globals.osType}.upload}
+    log: ${Globals.path.${Globals.osType}.log}

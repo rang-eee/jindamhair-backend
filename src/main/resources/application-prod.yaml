@@ -33,10 +33,29 @@ server:
   # servlet:
   #   context-path: /api
 
-logging:
-  level:
-    root: INFO
-    org.springframework: INFO
-    org.mybatis: INFO
-    # SQL은 APM/쿼리샘플러로 보통 대체. 꼭 필요하면 아래 수준 조절
-    # org.hibernate.SQL: WARN
+Globals:
+  # osType: mac
+  # osType: window
+  osType: linux
+  
+  # Log settings
+  log:
+    filename: application
+    error-filename: ${log.filename}_err
+  
+  # Path settings
+  path:
+    mac:
+      root: /Users/bbamkeylee/dev
+      log: ${Globals.path.mac.root}/logs
+      upload: ${Globals.path.mac.root}/upload
+    window:
+      root: C:\\Users\\beomg\\dev
+      log: ${Globals.path.window.root}\\logs
+      upload: ${Globals.path.window.root}\\upload
+    linux:
+      root: /jindamhair/tomcat
+      log: ${Globals.path.linux.root}\\logs
+      upload: ${Globals.path.linux.root}\\upload
+    upload: ${Globals.path.${Globals.osType}.upload}
+    log: ${Globals.path.${Globals.osType}.log}
