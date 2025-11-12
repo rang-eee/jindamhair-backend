@@ -15,6 +15,6 @@
 		<typeAlias alias="list" type="java.util.List" />
 		<typeAlias alias="hashMap" type="java.util.HashMap" />
 		<typeAlias alias="map" type="java.util.Map" />
-		<typeAlias alias="ListStringArrayTypeHandler" type="com.ourhome.tqms.configs.database.mybatis.ListStringArrayTypeHandler" />
+		<typeAlias alias="ListStringArrayTypeHandler" type="com.jindam.config.database.mybatis.ListStringArrayTypeHandler" />
 	</typeAliases>
 </configuration>

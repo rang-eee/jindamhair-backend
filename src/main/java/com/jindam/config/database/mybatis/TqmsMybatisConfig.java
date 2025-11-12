@@ -27,7 +27,7 @@ import com.jindam.config.spring.BeanNameGenerator;
  */
 @Configuration
 @MapperScan( //
-        basePackages = { "com.ourhome.tqms.**.mapper.tqms" }, // TQMS 관련 매퍼 패키지 스캔
+        basePackages = { "com.jindam.app.**.mapper" }, // TQMS 관련 매퍼 패키지 스캔
         sqlSessionFactoryRef = "tqmsSqlSessionFactory", // TQMS DB 전용 SqlSessionFactory 설정
         nameGenerator = BeanNameGenerator.class // Custom Bean Name Generator 사용
 )
@@ -59,7 +59,7 @@ public class TqmsMybatisConfig {
         sessionFactory.setMapperLocations(resolver.getResources("classpath:mybatis/mapper/**/tqms/**/*.xml"));
 
         // MyBatis 타입 별칭 패키지 설정
-        sessionFactory.setTypeAliasesPackage("com.ourhome.tqms.**.model");
+        sessionFactory.setTypeAliasesPackage("com.jindam.app.**.model");
 
         // MyBatis 전역 설정 파일 위치 지정
         Resource myBatisConfig = resolver.getResource("classpath:mybatis/mybatis-config.xml");
