@@ -8,5 +8,6 @@
 - local 서버 기동
 	- profile local로 설정
 		spring.profiles.active=local
-	- os type 본인에 맞게 설정
-	- log 경로 본인에 맞게 설정
+	- application-local.yml 
+		- os type 본인에 맞게 설정
+		- log 경로 본인에 맞게 설정
