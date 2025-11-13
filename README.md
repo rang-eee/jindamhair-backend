@@ -4,6 +4,10 @@
 ./gradlew dependencyManagement
 
 
+- git config 변경
+	$ git config user.name "COLON 이범규"
+	$ git config user.email "colon.dev.rang@gmail.com"
+
 
 - local 서버 기동
 	- profile local로 설정
