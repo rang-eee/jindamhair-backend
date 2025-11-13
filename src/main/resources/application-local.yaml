@@ -32,8 +32,8 @@ management:
         include: health,info
 
 Globals:
-  osType: mac
-  # osType: window
+  # osType: mac
+  osType: window
   # osType: linux
   
   # Log settings
