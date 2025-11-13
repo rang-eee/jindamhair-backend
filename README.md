@@ -1,5 +1,12 @@
 # jindamhair-backend
 
+Java : OpenJdk 17
+Springboot : 3.4.11
+Build : Gradle 8.14.3
+Database : PostgreSql
+
+---
+
 - gadle BOM(Bill of Materials) 명단 목록
 ./gradlew dependencyManagement
 
@@ -28,8 +35,10 @@
 	
 - 문서 경로
 	- AS-IS 관리
-		https://docs.google.com/spreadsheets/d/13Xu_fG7qE4kiaEmbtKgCxhuaH9tRjOXBwQvheC7gEkk/edit?gid=525747443#gid=525747443
+		- https://docs.google.com/spreadsheets/d/13Xu_fG7qE4kiaEmbtKgCxhuaH9tRjOXBwQvheC7gEkk/edit?gid=525747443#gid=525747443
 	- 데이터베이스
-		https://docs.google.com/spreadsheets/d/1mw9Vwwxin5TF0Q0DVQ0Re3jFNjqki82rQvfmfJWfzoY/edit?gid=144105260#gid=144105260
+		- https://docs.google.com/spreadsheets/d/1mw9Vwwxin5TF0Q0DVQ0Re3jFNjqki82rQvfmfJWfzoY/edit?gid=144105260#gid=144105260
 	- 코드정의서
-		https://docs.google.com/spreadsheets/d/1oW-9Ns8h27D7cLKX3XWgJ7A5MCxvKZ_VcwlVkZugUTY/edit?gid=580962851#gid=580962851
+		- https://docs.google.com/spreadsheets/d/1oW-9Ns8h27D7cLKX3XWgJ7A5MCxvKZ_VcwlVkZugUTY/edit?gid=580962851#gid=580962851
+		- 공통코드, 오류코드 관리
+		- 오류코드는 ApiResultCode.java와 일치 관리 필요
