@@ -42,3 +42,4 @@ Database : PostgreSql
 		- https://docs.google.com/spreadsheets/d/1oW-9Ns8h27D7cLKX3XWgJ7A5MCxvKZ_VcwlVkZugUTY/edit?gid=580962851#gid=580962851
 		- 공통코드, 오류코드 관리
 		- 오류코드는 ApiResultCode.java와 일치 관리 필요
+

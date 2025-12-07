@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jindam.app.setting.mapper.SettingMapper">
+
+    <select id="selectConfiguration" resultType="SettingResponseDto">
+        /* SettingMapper.selectConfiguration : tb_configuration 조회*/
+        SELECT
+         aos_last_ver
+        ,aos_permission_minimum_build_number
+        ,ios_last_ver
+        ,ios_permission_minimum_build_number
+        ,create_at
+        ,create_id
+        ,update_at
+        ,update_id
+        FROM tb_configuration
+    </select>
+</mapper>

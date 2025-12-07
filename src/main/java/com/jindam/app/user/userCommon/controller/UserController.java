@@ -1,0 +1,71 @@
+package com.jindam.app.user.userCommon.controller;
+
+import com.jindam.app.user.userCommon.model.*;
+import com.jindam.app.user.userCommon.service.UserService;
+import com.jindam.base.base.MasterController;
+import com.jindam.base.dto.ApiResultDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+
+@Tag(name = "User api")
+@RequiredArgsConstructor
+@RestController
+@RequestMapping(path = "/user")
+@Slf4j
+public class UserController extends MasterController {
+
+    private final UserService userService;
+
+    @Operation(summary = "사용자 상세 조회", description = "사용자 상세정보를 조회합니다.")
+    @GetMapping("")
+    public ApiResultDto<UserDetailResponseDto> selectOneUserByUid(UserDetailRequestDto request) {
+        ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();
+        UserDetailResponseDto result;
+
+        result = userService.selectOneUser(request);
+        apiResultVo.setData(result);
+
+        return apiResultVo;
+
+    }
+
+    @Operation(summary = "사용자 정보 생성", description = "사용자 정보를 입력합니다.")
+    @PostMapping("")
+    public ApiResultDto<UserDetailResponseDto> insertOneUser(UserInsertRequestDto request) {
+        ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();
+        UserDetailResponseDto result;
+
+        result = userService.insertUser(request);
+        apiResultVo.setData(result);
+
+        return apiResultVo;
+    }
+
+    @Operation(summary = "사용자 정보 수정", description = "사용자 상세정보를 수정합니다.")
+    @PutMapping("")
+    public ApiResultDto<UserDetailResponseDto> updateUserByUid(UserUpdateRequestDto request) {
+        ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();
+        UserDetailResponseDto result;
+
+        result = userService.updateUser(request);
+        apiResultVo.setData(result);
+
+        return apiResultVo;
+    }
+
+    @Operation(summary = "사용자 정보 수정", description = "사용자 상세정보를 삭제 처리합니다.")
+    @DeleteMapping("")
+    public ApiResultDto<UserDetailResponseDto> deleteUserByUid(UserDeleteRequestDto request) {
+        ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();
+        UserDetailResponseDto result;
+
+        result = userService.deleteUser(request);
+        apiResultVo.setData(result);
+
+        return apiResultVo;
+    }
+
+}
