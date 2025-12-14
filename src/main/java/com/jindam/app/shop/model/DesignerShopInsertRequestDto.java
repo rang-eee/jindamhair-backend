@@ -1,0 +1,81 @@
+package com.jindam.app.shop.model;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@Schema(description = "디자이너 헤어샵 등록 요청 모델")
+public class DesignerShopInsertRequestDto {
+    @Schema(description = "디자이너 헤어샵 ID", example = "123")
+    private String designerShopId;
+
+    @Schema(description = "사용자ID", example = "123")
+    private String uid;
+
+    @Schema(description = "헤어샵 ID", example = "123")
+    private String shopId;
+
+    @Schema(description = "헤어샵 등록 유형 코드", example = "123")
+    private String shopRegistTypeCode;
+
+    @Schema(description = "대표 여부", example = "N")
+    private String representativeYn;
+
+    @Schema(description = "헤어샵 명", example = "123")
+    private String shopName;
+
+    @Schema(description = "헤어샵 설명", example = "123")
+    private String shopDescription;
+
+    @Schema(description = "헤어샵 주소", example = "123")
+    private String shopAddr;
+
+    @Schema(description = "헤어샵 주소 상세", example = "123")
+    private String shopAddrDetail;
+
+    @Schema(description = "헤어샵 연락처", example = "123")
+    private String shopContact;
+
+    @Schema(description = "위치 경도", example = "123")
+    private String positionLngt;
+
+    @Schema(description = "위치 위도", example = "123")
+    private String positionLatt;
+
+    @Schema(description = "우편번호", example = "123")
+    private String zipcode;
+
+    @Schema(description = "사용 여부", example = "N")
+    private String useYn;
+
+    @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime createAt;
+
+    @Schema(description = "생성 ID", example = "123")
+    private String createId;
+
+    @Schema(description = "수정 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime updateAt;
+
+    @Schema(description = "수정 ID", example = "123")
+    private String updateId;
+
+    @Schema(description = "삭제 여부", example = "N")
+    private String deleteYn;
+
+    @Schema(description = "삭제 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime deleteAt;
+
+    @Schema(description = "삭제 ID", example = "123")
+    private String deleteId;
+}

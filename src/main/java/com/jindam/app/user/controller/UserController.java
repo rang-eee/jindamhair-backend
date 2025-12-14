@@ -1,7 +1,7 @@
-package com.jindam.app.user.userCommon.controller;
+package com.jindam.app.user.controller;
 
-import com.jindam.app.user.userCommon.model.*;
-import com.jindam.app.user.userCommon.service.UserService;
+import com.jindam.app.user.model.*;
+import com.jindam.app.user.service.UserService;
 import com.jindam.base.base.MasterController;
 import com.jindam.base.dto.ApiResultDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -68,4 +68,16 @@ public class UserController extends MasterController {
         return apiResultVo;
     }
 
+    @Operation(summary = "사용자 로그인 처리", description = "사용자 상세정보를 조회 후 최종 로그인 일시 업데이트")
+    @GetMapping("/login")
+    public ApiResultDto<UserDetailResponseDto> loginUserByUid(UserDetailRequestDto request) {
+        ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();
+        UserDetailResponseDto result;
+
+        result = userService.loginUser(request);
+        apiResultVo.setData(result);
+
+        return apiResultVo;
+
+    }
 }

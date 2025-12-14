@@ -1,4 +1,4 @@
-package com.jindam.app.user.userCommon.model;
+package com.jindam.app.user.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "UserInfoDto")
-public class UserDeleteRequestDto {
+public class UserInsertRequestDto {
 
     @Schema(description = "유저 아이디")
     private String uid;

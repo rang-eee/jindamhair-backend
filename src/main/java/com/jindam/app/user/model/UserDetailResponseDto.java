@@ -1,4 +1,4 @@
-package com.jindam.app.user.userCommon.model;
+package com.jindam.app.user.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -14,44 +14,47 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "UserInfoDto")
-public class UserInsertRequestDto {
+@Schema(description = "사용자 상세 조회 응답 모델")
+public class UserDetailResponseDto {
 
-    @Schema(description = "유저 아이디")
+    @Schema(description = "유저 아이디", example = "KShJUkrtJrVdRKNXCNz4BT8oRyn1")
     private String uid;
 
-    @Schema(description = "유저 이메일")
+    @Schema(description = "유저 이메일", example = "text@gmail.com")
     private String userEmail;
 
-    @Schema(description = "유저 연락처")
+    @Schema(description = "유저 연락처", example = "010-1234-1234")
     private String userContact;
 
-    @Schema(description = "유저 이름")
+    @Schema(description = "유저 이름", example = "홍길동")
     private String userName;
 
-    @Schema(description = "유저 별명")
+    @Schema(description = "유저 별명", example = "아버지를 아버지라 부르지 못하고")
     private String userNickname;
 
-    @Schema(description = "유저 상태 코드")
+    @Schema(description = "유저 상태 코드", example = "??")
     private String userStatusCode;
 
-    @Schema(description = "유저 성별 코드")
+    @Schema(description = "유저 성별 코드", example = "female or male")
     private String userGenderCode;
 
-    @Schema(description = "유저 agg 코드")
+    @Schema(description = "유저 agg 코드", example = "10 or 20 or 30 ,,,")
     private String userAggCode;
 
-    @Schema(description = "유저 유형 코드")
+    @Schema(description = "유저 유형 코드", example = "designer or cusertomer")
     private String userTypeCode;
 
-    @Schema(description = "유저 생년월일")
+    @Schema(description = "유저 생년월일", example = "yyyymmdd")
     private String userBrdt;
 
-    @Schema(description = "유저 가입 유형 코드")
+    @Schema(description = "유저 가입 유형 코드", example = "google, apple, kakao")
     private String userJoinTypeCode;
 
-    @Schema(description = "푸쉬 토큰")
+    @Schema(description = "푸쉬 토큰", example = "??")
     private String pushToken;
+
+    @Schema(description = "최종 로그인 일시", example = "yyyymmddHHMISS")
+    private LocalDateTime lastLoginAt;
 
     @Schema(description = "디자이너 승인 상태 코드")
     private String designerApprStatusCode;

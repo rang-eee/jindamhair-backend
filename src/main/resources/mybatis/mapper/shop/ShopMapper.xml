@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jindam.app.shop.mapper.ShopMapper">
+
+    <select id="selectListShop" resultType="ShopDetailResponseDto">
+    /*ShopMapper.selectListShop*/
+        SELECT
+             shop_id
+            ,shop_name
+            ,shop_description
+            ,shop_addr
+            ,shop_addr_detail
+            ,shop_contact
+            ,position_lngt
+            ,position_latt
+            ,zipcode
+            ,use_yn
+            ,create_at
+            ,create_id
+        FROM tb_shop
+        <where>
+            AND use_yn = 'Y'
+        </where>
+    </select>
+
+    <select id="selectListShopById" parameterType="DesignerShopInsertRequestDto" resultType="DesingerShopDetailResponseDto">
+       /*ShopMapper.selectListShopById*/
+        SELECT
+           designer_shop_id
+           ,uid
+           ,shop_id
+           ,shop_regist_type_code
+           ,representative_yn
+           ,shop_name
+           ,shop_description
+           ,shop_addr
+           ,shop_addr_detail
+           ,shop_contact
+           ,position_lngt
+           ,position_latt
+           ,zipcode
+           ,use_yn
+           ,create_at
+           ,create_id
+           ,update_at
+           ,update_id
+        FROM tb_designer_shop
+       <where>
+          AND use_yn = 'Y'
+          AND uid = #{uid}
+       </where>
+    </select>
+
+    <insert id="insertListShop" parameterType="DesignerShopInsertRequestDto">
+        INSERT INTO tb_designer_shop(
+             designer_shop_id
+             ,uid
+             ,shop_id
+             ,shop_regist_type_code
+             ,representative_yn
+             ,shop_name
+             ,shop_description
+             ,shop_addr
+             ,shop_addr_detail
+             ,shop_contact
+             ,position_lngt
+             ,position_latt
+             ,zipcode
+             ,use_yn
+             ,create_at
+             ,create_id
+            )
+            VALUES (
+                    #{designerShopId}
+                   ,#{uid}
+                   ,#{shopId}
+                   ,#{shopRegistTypeCode}
+                   ,#{representativeYn}
+                   ,#{shopName}
+                   ,#{shopDescription}
+                   ,#{shopAddr}
+                   ,#{shopAddrDetail}
+                   ,#{shopContact}
+                   ,#{positionLngt}
+                   ,#{positionLatt}
+                   ,#{zipcode}
+                   ,#{useYn}
+                   ,NOW()
+                   ,#{createId}
+                   )
+    </insert>
+
+    <update id="updateListShop" parameterType="DesignerShopUpdateRequestDto">
+        UPDATE tb_designer_shop
+            <set>
+                <if test='designerShopId != "" and designerShopId != ApiConstant.NULL_STRING'>
+                    designer_shop_id = #{designerShopId}
+                </if>
+                <if test='uid != "" and uid != ApiConstant.NULL_STRING'>
+                    Uid = #{uid}
+                </if>
+                <if test='shopId != "" and shopId != ApiConstant.NULL_STRING'>
+                    shop_id = #{shopId}
+                </if>
+                <if test='shopRegistTypeCode != "" and shopRegistTypeCode != ApiConstant.NULL_STRING'>
+                    shop_regist_type_code = #{shopRegistTypeCode}
+                </if>
+                <if test='representativeYn != "" and representativeYn != ApiConstant.NULL_STRING'>
+                    representative_yn = #{representativeYn}
+                </if>
+                <if test='shopName != "" and shopName != ApiConstant.NULL_STRING'>
+                    shop_name = #{shopName}
+                </if>
+                <if test='shopDescription != "" and shopDescription != ApiConstant.NULL_STRING'>
+                    shop_description = #{shopDescription}
+                </if>
+                <if test='shopAddr != "" and shopAddr != ApiConstant.NULL_STRING'>
+                    shop_addr = #{shopAddr}
+                </if>
+                <if test='shopAddrDetail != "" and shopAddrDetail != ApiConstant.NULL_STRING'>
+                    shop_addr_detail = #{shopAddrDetail}
+                </if>
+                <if test='shopContact != "" and shopContact != ApiConstant.NULL_STRING'>
+                    shop_contact = #{shopContact}
+                </if>
+                <if test='positionLngt != "" and positionLngt != ApiConstant.NULL_STRING'>
+                    position_lngt = #{positionLngt}
+                </if>
+                <if test='positionLatt != "" and positionLatt != ApiConstant.NULL_STRING'>
+                    position_latt = #{positionLatt}
+                </if>
+                <if test='zipcode != "" and zipcode != ApiConstant.NULL_STRING'>
+                    Zipcode = #{zipcode}
+                </if>
+                <if test='updateAt != "" and updateAt != ApiConstant.NULL_STRING'>
+                    update_at = NOW()
+                </if>
+                <if test='updateId != "" and updateId != ApiConstant.NULL_STRING'>
+                    update_id = #{updateId}
+                </if>
+            </set>
+        <where>
+            AND uid = #{uid}
+            AND designer_shop_id = #{designerShopId}
+            AND use_yn = #{useYn}
+        </where>
+    </update>
+
+    <update id="deleteListshop" parameterType="DesingerShopDeleteRequestDto">
+        UPDATE tb_designer_shop
+        <set>
+            delete_yn = #{deleteYn}
+            delete_at = NOW()
+            delete_id = #{deleteId}
+        </set>
+        <where>
+            AND uid = #{uid}
+            AND designer_shop_id = #{designerShopId}
+        </where>
+    </update>
+
+</mapper>

@@ -1,18 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jindam.app.user.userCommon.mapper.UserMapper">
+<mapper namespace="com.jindam.app.user.mapper.UserMapper">
+
+    <!-- 사용자 테이블 조회 -->
+    <sql id="getSelectUser">
+        SELECT
+            uid
+             , userEmail
+             , userContact
+             , userName
+             , userNickname
+             , userStatusCode
+             , userGenderCode
+             , userAggCode
+             , userTypeCode
+             , userBrdt
+             , userJoinTypeCode
+             , pushToken
+        FROM tb_user
+    </sql>
 
     <select id="selectOneUserByUid" resultType="UserDetailResponseDto">
         /* UserMapper.selectOneUserByUid : 사용자 조회 */
-        SELECT
-            uid
-        FROM tb_user
-        WHERE 1=1
+        <include refid="getSelectUser" />
+        <where>
             AND uid = #{uid}
+        </where>
     </select>
 
-    <insert id="insertUser" parameterType="UserInsertRequestDto">
-        INSERT INTO (
+    <select id="selectOneUserByEmailAndUserJoinTypeCode" parameterType="UserDetailRequestDto" resultType="UserDetailResponseDto">
+        /* UserMapper.selectOneUserByEmailAndUserJoinTypeCode : 사용자 조회. 이메일, 가입유형 */
+        <include refid="getSelectUser" />
+        <where>
+            AND user_email = #{userEmail}
+            AND user_join_type_code = #{userJoinTypeCode}
+        </where>
+    </select>
+
+    <insert id="insertUser" parameterType="UserDetailRequestDto">
+        /* UserMapper.insertUser : 사용자 생성 */
+        INSERT INTO tb_user (
              uid
             ,user_email
             ,user_contact
@@ -41,7 +68,8 @@
         )
     </insert>
 
-    <update id="updateUser" parameterType="UserInsertRequestDto">
+    <update id="updateUser" parameterType="UserUpdateRequestDto">
+        /* UserMapper.updateUser : 사용자 업데이트 */
         UPDATE tb_user
             <set>
                 update_at = NOW(),
@@ -296,7 +324,7 @@
             </set>
     </update>
 
-    <update id="deleteUser" parameterType="UserInsertRequestDto">
+    <update id="deleteUser" parameterType="UserDeleteRequestDto">
         UPDATE  tb_user
             <set>
                 delete_yn = 'Y'
@@ -306,29 +334,28 @@
             WHERE uid = #{uid}
     </update>
 
-<!--    <select id="loginUser" parameterType="LoginUserRequestDto" resultType="UserDetailResponseDto">-->
-<!--        BEGIN-->
-<!--            SELECT-->
-<!--                 user_email-->
-<!--                ,user_contact-->
-<!--                ,user_name-->
-<!--                ,user_nickname-->
-<!--                ,user_status_code-->
-<!--                ,user_gender_code-->
-<!--                ,user_agg_code-->
-<!--                ,user_type_code-->
-<!--                ,user_brdt-->
-<!--                ,user_join_type_code-->
-<!--                ,push_token-->
-<!--            FROM tb_user-->
-<!--            WHERE 1=1-->
-<!--             AND  uid = #{uid};-->
+    <select id="loginUserByUid" parameterType="UserDetailRequestDto" resultType="UserDetailResponseDto">
+        SELECT
+            user_email
+             ,user_contact
+             ,user_name
+             ,user_nickname
+             ,user_status_code
+             ,user_gender_code
+             ,user_agg_code
+             ,user_type_code
+             ,user_brdt
+             ,user_join_type_code
+             ,push_token
+        FROM tb_user
+        WHERE 1=1
+          AND  uid = #{uid};
+    </select>
 
-<!--            UPDATE tb_user-->
-<!--                SET last_login_at = NOW();-->
-<!--            WHERE uid = #{uid};-->
-
-<!--        END;-->
-<!--    </select>-->
-
+    <update id="updateLastLoginByUid" parameterType="UserUpdateRequestDto">
+        UPDATE tb_user
+        <set>
+            last_login_at = #{lastLoginAt}
+        </set>
+    </update>
 </mapper>
