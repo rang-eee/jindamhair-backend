@@ -7,11 +7,11 @@ import com.jindam.base.code.handler.CodeEnum;
 
 @Getter
 @AllArgsConstructor
-public enum UserTypeCode implements CodeEnum {
-    // 사용자 유형 코드 : USTP
+public enum BannerDisplayTimeCode implements CodeEnum {
+    // 배너 노출 시간 코드 : BDTM
 
-    USTP001("고객"), //
-    USTP002("디자이너"), //
+    BDTM001("항상"), //
+    BDTM002("시간 조건"), //
     ;
 
     private final String text;

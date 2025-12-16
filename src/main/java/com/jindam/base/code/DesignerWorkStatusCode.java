@@ -7,11 +7,11 @@ import com.jindam.base.code.handler.CodeEnum;
 
 @Getter
 @AllArgsConstructor
-public enum UserTypeCode implements CodeEnum {
-    // 사용자 유형 코드 : USTP
+public enum DesignerWorkStatusCode implements CodeEnum {
+    // 디자이너 근무 상태 코드 : DWST
 
-    USTP001("고객"), //
-    USTP002("디자이너"), //
+    DWST001("정상근무"), //
+    DWST002("휴무"), //
     ;
 
     private final String text;

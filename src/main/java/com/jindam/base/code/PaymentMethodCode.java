@@ -7,11 +7,11 @@ import com.jindam.base.code.handler.CodeEnum;
 
 @Getter
 @AllArgsConstructor
-public enum UserTypeCode implements CodeEnum {
-    // 사용자 유형 코드 : USTP
+public enum PaymentMethodCode implements CodeEnum {
+    // 결제 방법 코드 : PMMT
 
-    USTP001("고객"), //
-    USTP002("디자이너"), //
+    PMMT001("현장결제"), //
+    PMMT002("온라인결제"), //
     ;
 
     private final String text;

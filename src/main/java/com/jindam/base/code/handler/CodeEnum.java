@@ -1,4 +1,4 @@
-package com.jindam.base.code;
+package com.jindam.base.code.handler;
 
 public interface CodeEnum {
     String getText();

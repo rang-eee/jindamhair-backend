@@ -7,11 +7,12 @@ import com.jindam.base.code.handler.CodeEnum;
 
 @Getter
 @AllArgsConstructor
-public enum UserTypeCode implements CodeEnum {
-    // 사용자 유형 코드 : USTP
+public enum PushTypeCode implements CodeEnum {
+    // 푸시 유형 코드 : PSTP
 
-    USTP001("고객"), //
-    USTP002("디자이너"), //
+    PSTP001("채팅"), //
+    PSTP002("예약"), //
+    PSTP003("추천"), //
     ;
 
     private final String text;

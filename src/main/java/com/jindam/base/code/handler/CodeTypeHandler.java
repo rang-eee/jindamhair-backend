@@ -1,4 +1,4 @@
-package com.jindam.base.code;
+package com.jindam.base.code.handler;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;

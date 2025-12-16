@@ -7,11 +7,13 @@ import com.jindam.base.code.handler.CodeEnum;
 
 @Getter
 @AllArgsConstructor
-public enum UserTypeCode implements CodeEnum {
-    // 사용자 유형 코드 : USTP
+public enum FileTypeCode implements CodeEnum {
+    // 파일 유형 코드 : FLTP
 
-    USTP001("고객"), //
-    USTP002("디자이너"), //
+    FLTP001("이미지"), //
+    FLTP002("동영상"), //
+    FLTP003("PDF"), //
+    FLTP004("텍스트"), //
     ;
 
     private final String text;

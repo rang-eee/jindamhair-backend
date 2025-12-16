@@ -7,11 +7,11 @@ import com.jindam.base.code.handler.CodeEnum;
 
 @Getter
 @AllArgsConstructor
-public enum UserTypeCode implements CodeEnum {
-    // 사용자 유형 코드 : USTP
+public enum UserGenderCode implements CodeEnum {
+    // 사용자 성별 코드 : USGD
 
-    USTP001("고객"), //
-    USTP002("디자이너"), //
+    USGD001("여성"), //
+    USGD002("남성"), //
     ;
 
     private final String text;

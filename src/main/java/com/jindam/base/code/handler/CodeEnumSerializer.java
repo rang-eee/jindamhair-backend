@@ -1,4 +1,4 @@
-package com.jindam.base.code;
+package com.jindam.base.code.handler;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
