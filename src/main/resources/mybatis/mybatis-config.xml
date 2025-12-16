@@ -7,6 +7,9 @@
 		<setting name="jdbcTypeForNull" value="NULL" />
 		<setting name="returnInstanceForEmptyRow" value="true"/>
 		<setting name="defaultExecutorType" value="SIMPLE" />
+		
+		<!-- ✅ enum 공통 변환: DB코드(USTP001) <-> Enum.name() -->
+		<setting name="defaultEnumTypeHandler" value="com.jindam.base.code.CodeTypeHandler"/>
 	</settings>
 	
 	<typeAliases>

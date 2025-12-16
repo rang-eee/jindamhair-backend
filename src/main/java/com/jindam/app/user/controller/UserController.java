@@ -26,6 +26,7 @@ public class UserController extends MasterController {
         UserDetailResponseDto result;
 
         result = userService.selectOneUser(request);
+
         apiResultVo.setData(result);
 
         return apiResultVo;

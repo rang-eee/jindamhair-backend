@@ -11,30 +11,20 @@
             , tu.user_name
             , tu.user_nickname
             , tu.user_status_code
-            , tci1.item_name AS user_gender_name
             , tu.user_gender_code
-            , tci2.item_name AS user_gender_name
             , tu.user_agg_code
-            , tci3.item_name AS user_agg_name
             , tu.user_type_code
-            , tci4.item_name AS user_type_name
             , tu.user_brdt
             , tu.user_join_type_code
-            , tci5.item_name AS user_join_type_name
             , tu.push_token
         FROM tb_user tu
-            LEFT OUTER JOIN tb_code_item tci1 ON tci1.item_code = tu.user_status_code
-            LEFT OUTER JOIN tb_code_item tci2 ON tci2.item_code = tu.user_gender_code
-            LEFT OUTER JOIN tb_code_item tci3 ON tci3.item_code = tu.user_agg_code
-            LEFT OUTER JOIN tb_code_item tci4 ON tci4.item_code = tu.user_type_code
-            LEFT OUTER JOIN tb_code_item tci5 ON tci5.item_code = tu.user_join_type_code
     </sql>
 
-    <select id="selectOneUserByUid" resultType="UserDetailResponseDto">
+    <select id="selectOneUserByUid" parameterType="UserDetailRequestDto" resultType="UserDetailResponseDto">
         /* UserMapper.selectOneUserByUid : 사용자 조회 */
         <include refid="getSelectUser" />
         <where>
-            AND uid = #{uid}
+        AND uid = #{uid}
         </where>
     </select>
 
@@ -50,7 +40,7 @@
     <insert id="insertUser" parameterType="UserDetailRequestDto">
         /* UserMapper.insertUser : 사용자 생성 */
         INSERT INTO tb_user (
-             uid
+            uid
             ,user_email
             ,user_contact
             ,user_name
@@ -63,7 +53,7 @@
             ,user_join_type_code
             ,push_token
         ) VALUES (
-             #{uid}
+            #{uid}
             ,#{userEmail}
             ,#{userContact}
             ,#{userName}

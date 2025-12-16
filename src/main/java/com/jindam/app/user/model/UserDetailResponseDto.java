@@ -1,13 +1,16 @@
 package com.jindam.app.user.model;
 
+import java.time.LocalDateTime;
+
+import com.jindam.base.code.UserStatusCode;
+import com.jindam.base.code.UserTypeCode;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -33,7 +36,7 @@ public class UserDetailResponseDto {
     private String userNickname;
 
     @Schema(description = "유저 상태 코드", example = "??")
-    private String userStatusCode;
+    private UserStatusCode userStatusCode;
 
     @Schema(description = "유저 성별 코드", example = "female or male")
     private String userGenderCode;
@@ -42,7 +45,7 @@ public class UserDetailResponseDto {
     private String userAggCode;
 
     @Schema(description = "유저 유형 코드", example = "designer or cusertomer")
-    private String userTypeCode;
+    private UserTypeCode userTypeCode;
 
     @Schema(description = "유저 생년월일", example = "yyyymmdd")
     private String userBrdt;
