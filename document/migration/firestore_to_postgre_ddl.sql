@@ -51,6 +51,8 @@ create table fs_chatrooms (
 create table fs_configuration (
   doc_id text primary key,
   data jsonb not null,
+  created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now()
 );
 
@@ -58,6 +60,8 @@ create table fs_configuration (
 create table fs_dynamiclinks (
   doc_id text primary key,
   data jsonb not null,
+  created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now()
 );
 
@@ -93,6 +97,7 @@ create table fs_pushes (
   doc_id text primary key,
   data jsonb not null,
   created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now()
 );
 
@@ -110,6 +115,7 @@ create table fs_reviews (
   doc_id text primary key,
   data jsonb not null,
   created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now()
 );
 
@@ -117,6 +123,8 @@ create table fs_reviews (
 create table fs_statistics (
   doc_id text primary key,
   data jsonb not null,
+  created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now()
 );
 
@@ -133,6 +141,8 @@ create table fs_stores (
 create table fs_treatmentclassfications (
   doc_id text primary key,
   data jsonb not null,
+  created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now()
 );
 
@@ -140,6 +150,8 @@ create table fs_treatmentclassfications (
 create table fs_treatments (
   doc_id text primary key,
   data jsonb not null,
+  created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now()
 );
 
@@ -156,6 +168,8 @@ create table fs_users (
 create table fs_usersfavorites (
   doc_id text primary key,
   data jsonb not null,
+  created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now()
 );
 
@@ -167,6 +181,8 @@ create table fs_appointments__menus (
   parent_doc_id text not null,
   doc_id text not null,
   data jsonb not null,
+  created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now(),
   primary key (parent_doc_id, doc_id)
 );
@@ -175,6 +191,7 @@ create table fs_chatrooms__chatmessages (
   doc_id text not null,
   data jsonb not null,
   created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now(),
   primary key (parent_doc_id, doc_id)
 );
@@ -189,6 +206,8 @@ create table fs_reservations__menus (
   parent_doc_id text not null,
   doc_id text not null,
   data jsonb not null,
+  created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now(),
   primary key (parent_doc_id, doc_id)
 );
@@ -197,6 +216,8 @@ create table fs_users__menus (
   parent_doc_id text not null,
   doc_id text not null,
   data jsonb not null,
+  created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now(),
   primary key (parent_doc_id, doc_id)
 );
@@ -206,6 +227,8 @@ create table fs_users__notificationcenters (
   parent_doc_id text not null,
   doc_id text not null,
   data jsonb not null,
+  created_at timestamptz,
+  updated_at timestamptz,
   migrated_at timestamptz default now(),
   primary key (parent_doc_id, doc_id)
 );
