@@ -1,5 +1,6 @@
 package com.jindam.app.shop.model;
 
+import com.jindam.base.code.ShopRegistTypeCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +27,7 @@ public class DesignerShopUpdateRequestDto {
     private String shopId;
 
     @Schema(description = "헤어샵 등록 유형 코드", example = "123")
-    private String shopRegistTypeCode;
+    private ShopRegistTypeCode shopRegistTypeCode;
 
     @Schema(description = "대표 여부", example = "N")
     private String representativeYn;

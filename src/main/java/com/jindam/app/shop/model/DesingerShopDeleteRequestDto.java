@@ -1,5 +1,6 @@
 package com.jindam.app.shop.model;
 
+import com.jindam.base.code.ShopRegistTypeCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "헤어샵 상세 조회 모델")
+@Schema(description = "디자이너 헤어샵 삭제 요청 모델")
 public class DesingerShopDeleteRequestDto {
     @Schema(description = "디자이너 헤어샵 ID", example = "123")
     private String designerShopId;
@@ -26,7 +27,7 @@ public class DesingerShopDeleteRequestDto {
     private String shopId;
 
     @Schema(description = "헤어샵 등록 유형 코드", example = "123")
-    private String shopRegistTypeCode;
+    private ShopRegistTypeCode shopRegistTypeCode;
 
     @Schema(description = "대표 여부", example = "N")
     private String representativeYn;

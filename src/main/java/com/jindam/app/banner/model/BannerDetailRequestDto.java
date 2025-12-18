@@ -1,5 +1,6 @@
 package com.jindam.app.banner.model;
 
+import com.jindam.base.code.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "배너 상세 조회 모델")
+@Schema(description = "배너 상세 조회 요청 모델")
 public class BannerDetailRequestDto {
     @Schema(description = "배너 ID", example = "123")
     private String bannerId;
@@ -28,32 +29,32 @@ public class BannerDetailRequestDto {
     @Schema(description = "배너 레이어 높이", example = "123")
     private String bannerLayerHeight;
 
-    @Schema(description = "노출 시작 일시", example = "123")
-    private String displayStartAt;
+    @Schema(description = "노출 시작 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime displayStartAt;
 
-    @Schema(description = "노출 종료 일시", example = "123")
-    private String displayEndAt;
+    @Schema(description = "노출 종료 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime displayEndAt;
 
     @Schema(description = "정렬 순서", example = "123")
     private String sortOrder;
 
     @Schema(description = "배너 유형 코드", example = "123")
-    private String bannerTypeCode;
+    private BannerTypeCode bannerTypeCode;
 
     @Schema(description = "배너 노출 위치 코드", example = "123")
-    private String bannerDisplayPositionCode;
+    private BannerDisplayPositionCode bannerDisplayPositionCode;
 
     @Schema(description = "배너 노출 대상 코드", example = "123")
-    private String bannerDisplayTargetCode;
+    private BannerDisplayTargetCode bannerDisplayTargetCode;
 
     @Schema(description = "배너 노출 상태 코드", example = "123")
-    private String bannerDisplayStatusCode;
+    private BannerDisplayStatusCode bannerDisplayStatusCode;
 
     @Schema(description = "배너 노출 시간 코드", example = "123")
-    private String bannerDisplayTimeCode;
+    private BannerDisplayTimeCode bannerDisplayTimeCode;
 
     @Schema(description = "배너 아이콘 코드", example = "123")
-    private String bannerIconCode;
+    private BannerIconCode bannerIconCode;
 
     @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime createAt;

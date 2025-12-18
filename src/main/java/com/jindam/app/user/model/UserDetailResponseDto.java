@@ -1,7 +1,6 @@
 package com.jindam.app.user.model;
 
-import com.jindam.base.code.UserStatusCode;
-import com.jindam.base.code.UserTypeCode;
+import com.jindam.base.code.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,118 +19,154 @@ import java.util.List;
 @Schema(description = "사용자 상세 조회 응답 모델")
 public class UserDetailResponseDto {
 
-    @Schema(description = "유저 아이디", example = "KShJUkrtJrVdRKNXCNz4BT8oRyn1")
+    @Schema(description = "사용자ID")
     private String uid;
 
-    @Schema(description = "유저 이메일", example = "text@gmail.com")
+    @Schema(description = "사용자 이메일사용자 이메일")
     private String userEmail;
 
-    @Schema(description = "유저 연락처", example = "010-1234-1234")
+    @Schema(description = "사용자 연락처사용자 연락처")
     private String userContact;
 
-    @Schema(description = "유저 이름", example = "홍길동")
+    @Schema(description = "사용자 명사용자 명")
     private String userName;
 
-    @Schema(description = "유저 별명", example = "아버지를 아버지라 부르지 못하고")
+    @Schema(description = "사용자 닉네임사용자 닉네임")
     private String userNickname;
 
-    @Schema(description = "유저 상태 코드", example = "??")
+    @Schema(description = "사용자 상태 코드사용자 상태 코드")
     private UserStatusCode userStatusCode;
 
-    @Schema(description = "유저 성별 코드", example = "female or male")
-    private String userGenderCode;
+    @Schema(description = "사용자 성별 코드사용자 성별 코드")
+    private UserGenderCode userGenderCode;
 
-    @Schema(description = "유저 agg 코드", example = "10 or 20 or 30 ,,,")
-    private String userAggCode;
+    @Schema(description = "사용자 연령대 코드사용자 연령대 코드")
+    private UserAggCode userAggCode;
 
-    @Schema(description = "유저 유형 코드", example = "designer or cusertomer")
+    @Schema(description = "사용자 유형 코드사용자 유형 코드")
     private UserTypeCode userTypeCode;
 
-    @Schema(description = "유저 생년월일", example = "yyyymmdd")
+    @Schema(description = "사용자 생년월일사용자 생년월일")
     private String userBrdt;
 
-    @Schema(description = "유저 가입 유형 코드", example = "google, apple, kakao")
-    private String userJoinTypeCode;
+    @Schema(description = "사용자 가입 유형 코드사용자 가입 유형 코드")
+    private UserJoinTypeCode userJoinTypeCode;
 
-    @Schema(description = "푸쉬 토큰", example = "??")
+    @Schema(description = "푸시 토큰푸시 토큰")
     private String pushToken;
 
-    @Schema(description = "최종 로그인 일시", example = "yyyymmddHHMISS")
+    @Schema(description = "최종 로그인 일시최종 로그인 일시")
     private LocalDateTime lastLoginAt;
 
-    @Schema(description = "디자이너 승인 상태 코드")
-    private String designerApprStatusCode;
+    @Schema(description = "즐겨찾기 사용자 ID 배열즐겨찾기 사용자 ID 배열")
+    private List<String> bookmarkUserIdArr;
 
-    @Schema(description = "디자이너 소개 내용")
-    private String designerIntroduceContent;
+    @Schema(description = "차단 사용자 ID 배열차단 사용자 ID 배열")
+    private List<String> interceptionUserIdArr;
 
-    @Schema(description = "디자이너 태그")
-    private String designerTag;
+    @Schema(description = "개인정보처리방침 동의 여부개인정보처리방침 동의 여부")
+    private String prvcplcAgreeYn;
 
-    @Schema(description = "디자이너 근무 상태 코드")
-    private String designerWorkStatusCode;
+    @Schema(description = "서비스 이용약관 동의 여부서비스 이용약관 동의 여부")
+    private String termsAgreeYn;
 
-    @Schema(description = "디자이너 오픈 요일 배열")
-    private List<String> designerOpenDayArr;
+    @Schema(description = "전체 알림 수신 여부전체 알림 수신 여부")
+    private String allNotificationReceptionYn;
 
-    @Schema(description = "디자이너 오픈 시간 배열")
-    private List<String> designerOpenTimeArr;
+    @Schema(description = "전체 알림 수신 일시전체 알림 수신 일시")
+    private String allNotificationReceptionAt;
 
-    @Schema(description = "디자이너 오프 시간 배열")
-    private List<String> designerCloseTimeArr;
+    @Schema(description = "공지 알림 수신 여부공지 알림 수신 여부")
+    private String noticeNotificationReceptionYn;
 
-    @Schema(description = "디자이너 자동예양 확정 여부")
-    private String designerAppointmentAutomaticConfirmYn;
+    @Schema(description = "공지 알림 수신 일시공지 알림 수신 일시")
+    private String noticeNotificationReceptionAt;
 
-    @Schema(description = "디자이너 앱링크 URL")
-    private String designerApplinkUrl;
+    @Schema(description = "마케팅 알림 수신 여부마케팅 알림 수신 여부")
+    private String marketingNotificationReceptionYn;
 
-    @Schema(description = "위치 주소")
+    @Schema(description = "마케팅 알림 수신 일시마케팅 알림 수신 일시")
+    private String marketingNotificationReceptionAt;
+
+    @Schema(description = "제안 알림 수신 여부제안 알림 수신 여부")
+    private String offerNotificationReceptionYn;
+
+    @Schema(description = "제안 알림 수신 일시제안 알림 수신 일시")
+    private String offerNotificationReceptionAt;
+
+    @Schema(description = "채팅 알림 수신 여부채팅 알림 수신 여부")
+    private String chatNotificationReceptionYn;
+
+    @Schema(description = "채팅 알림 수신 일시채팅 알림 수신 일시")
+    private String chatNotificationReceptionAt;
+
+    @Schema(description = "위치 주소위치 주소")
     private String positionAddr;
 
-    @Schema(description = "위치 위도")
+    @Schema(description = "위치 위도위치 위도")
     private String positionLatt;
 
-    @Schema(description = "위치 경도")
+    @Schema(description = "위치 경도위치 경도")
     private String positionLngt;
 
-    @Schema(description = "위치 거리")
+    @Schema(description = "위치 거리위치 거리")
     private String positionDistance;
 
-    @Schema(description = "헤어샵 ID")
-    private String shopId;
+    @Schema(description = "프로필 사진 파일 ID프로필 사진 파일 ID")
+    private String profilePhotoFileId;
 
-    @Schema(description = "헤어샵 명")
-    private String shopName;
+    @Schema(description = "디자이너 승인 상태 코드디자이너 승인 상태 코드")
+    private DesignerApprStatusCode designerApprStatusCode;
 
-    @Schema(description = "헤어샵 주소")
-    private String shopAddr;
+    @Schema(description = "디자이너 소개 내용디자이너 소개 내용")
+    private String designerIntroduceContent;
 
-    @Schema(description = "헤어샵 연락처")
-    private String shopContact;
+    @Schema(description = "디자이너 태그 배열디자이너 태그 배열")
+    private List<String> designerTagArr;
 
-    @Schema(description = "디자이너 세부파일 사진 아이디")
+    @Schema(description = "디자이너 근무 상태 코드디자이너 근무 상태 코드")
+    private DesignerWorkStatusCode designerWorkStatusCode;
+
+    @Schema(description = "디자이너 오픈 요일 배열디자이너 오픈 요일 배열")
+    private List<String> designerOpenDayArr;
+
+    @Schema(description = "디자이너 오픈 시간 배열디자이너 오픈 시간 배열")
+    private List<String> designerOpenTimeArr;
+
+    @Schema(description = "디자이너 오프 시간 배열디자이너 오프 시간 배열")
+    private List<String> designerCloseTimeArr;
+
+    @Schema(description = "디자이너 예약 자동 확정 여부디자이너 예약 자동 확정 여부")
+    private String designerAppointmentAutomaticConfirmYn;
+
+    @Schema(description = "디자이너 앱링크 URL디자이너 앱링크 URL")
+    private String designerApplinkUrl;
+
+    @Schema(description = "디자이너 세부 사진 파일 ID디자이너 세부 사진 파일 ID")
     private String designerDetailPhotoFileId;
 
-    @Schema(description = "생성 일시")
+    @Schema(description = "디자이너 계좌 브랜드 코드디자이너 계좌 브랜드 코드")
+    private DesignerApprStatusCode designerAccountBrandCode;
+
+    @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime createAt;
 
-    @Schema(description = "생성자 ID")
+    @Schema(description = "생성 ID", example = "123")
     private String createId;
 
-    @Schema(description = "수정 일시")
+    @Schema(description = "수정 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime updateAt;
 
-    @Schema(description = "수정자 ID")
+    @Schema(description = "수정 ID", example = "123")
     private String updateId;
 
-    @Schema(description = "삭제여부")
+    @Schema(description = "삭제 여부", example = "N")
     private String deleteYn;
 
-    @Schema(description = "삭제자 ID")
-    private String deleteId;
-
-    @Schema(description = "삭제 일시")
+    @Schema(description = "삭제 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime deleteAt;
+
+    @Schema(description = "삭제 ID", example = "123")
+    private String deleteId;
 
 }

@@ -5,49 +5,49 @@
     <select id="selectListShop" resultType="ShopDetailResponseDto">
     /*ShopMapper.selectListShop*/
         SELECT
-             shop_id
-            ,shop_name
-            ,shop_description
-            ,shop_addr
-            ,shop_addr_detail
-            ,shop_contact
-            ,position_lngt
-            ,position_latt
-            ,zipcode
-            ,use_yn
-            ,create_at
-            ,create_id
-        FROM tb_shop
+             ts.shop_id
+            ,ts.shop_name
+            ,ts.shop_description
+            ,ts.shop_addr
+            ,ts.shop_addr_detail
+            ,ts.shop_contact
+            ,ts.position_lngt
+            ,ts.position_latt
+            ,ts.zipcode
+            ,ts.use_yn
+            ,ts.create_at
+            ,ts.create_id
+        FROM tb_shop ts
         <where>
-            AND use_yn = 'Y'
+            AND ts.use_yn = 'Y'
         </where>
     </select>
 
     <select id="selectListShopById" parameterType="DesignerShopInsertRequestDto" resultType="DesingerShopDetailResponseDto">
        /*ShopMapper.selectListShopById*/
         SELECT
-           designer_shop_id
-           ,uid
-           ,shop_id
-           ,shop_regist_type_code
-           ,representative_yn
-           ,shop_name
-           ,shop_description
-           ,shop_addr
-           ,shop_addr_detail
-           ,shop_contact
-           ,position_lngt
-           ,position_latt
-           ,zipcode
-           ,use_yn
-           ,create_at
-           ,create_id
-           ,update_at
-           ,update_id
-        FROM tb_designer_shop
+           tds.designer_shop_id
+           ,tds.uid
+           ,tds.shop_id
+           ,tds.shop_regist_type_code
+           ,tds.representative_yn
+           ,tds.shop_name
+           ,tds.shop_description
+           ,tds.shop_addr
+           ,tds.shop_addr_detail
+           ,tds.shop_contact
+           ,tds.position_lngt
+           ,tds.position_latt
+           ,tds.zipcode
+           ,tds.use_yn
+           ,tds.create_at
+           ,tds.create_id
+           ,tds.update_at
+           ,tds.update_id
+        FROM tb_designer_shop tds
        <where>
-          AND use_yn = 'Y'
-          AND uid = #{uid}
+          AND tds.use_yn = 'Y'
+          AND tds.uid = #{uid}
        </where>
     </select>
 
@@ -142,7 +142,7 @@
         <where>
             AND uid = #{uid}
             AND designer_shop_id = #{designerShopId}
-            AND use_yn = #{useYn}
+            AND use_yn = 'Y'
         </where>
     </update>
 

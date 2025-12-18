@@ -4,22 +4,22 @@
 
     <select id="selectBanner" parameterType="BannerDetailRequestDto" resultType="BannerDetailResponseDto">
         SELECT
-            banner_id
-            ,banner_title
-            ,banner_content
-            ,banner_layer_height
-            ,display_start_at
-            ,display_end_at
-            ,sort_order
-            ,banner_type_code
-            ,banner_display_position_code
-            ,banner_display_target_code
-            ,banner_display_status_code
-            ,banner_display_time_code
-            ,banner_icon_code
-        FROM tb_banner
+             tb.banner_id
+            ,tb.banner_title
+            ,tb.banner_content
+            ,tb.banner_layer_height
+            ,tb.display_start_at
+            ,tb.display_end_at
+            ,tb.sort_order
+            ,tb.banner_type_code
+            ,tb.banner_display_position_code
+            ,tb.banner_display_target_code
+            ,tb.banner_display_status_code
+            ,tb.banner_display_time_code
+            ,tb.banner_icon_code
+        FROM tb_banner tb
         <where>
-            AND delete_yn = 'N'
+            AND tb.delete_yn = 'N'
         </where>
         ORDER BY sort_order
     </select>

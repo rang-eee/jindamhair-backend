@@ -43,25 +43,25 @@ public class ShopDetailResponseDto {
     @Schema(description = "우편번호", example = "123")
     private String zipcode;
 
-    @Schema(description = "사용 여부", example = "123")
+    @Schema(description = "사용 여부", example = "Y")
     private String useYn;
 
-    @Schema(description = "생성 일시", example = "123")
+    @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime createAt;
 
     @Schema(description = "생성 ID", example = "123")
     private String createId;
 
-    @Schema(description = "수정 일시", example = "123")
+    @Schema(description = "수정 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime updateAt;
 
     @Schema(description = "수정 ID", example = "123")
     private String updateId;
 
-    @Schema(description = "삭제 여부", example = "123")
+    @Schema(description = "삭제 여부", example = "N")
     private String deleteYn;
 
-    @Schema(description = "삭제 일시", example = "123")
+    @Schema(description = "삭제 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime deleteAt;
 
     @Schema(description = "삭제 ID", example = "123")
