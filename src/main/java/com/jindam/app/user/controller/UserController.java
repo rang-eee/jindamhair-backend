@@ -4,13 +4,12 @@ import com.jindam.app.user.model.*;
 import com.jindam.app.user.service.UserService;
 import com.jindam.base.base.MasterController;
 import com.jindam.base.dto.ApiResultDto;
+import com.jindam.base.dto.PagingResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "사용자 관련 요청")
 @RequiredArgsConstructor
@@ -86,12 +85,12 @@ public class UserController extends MasterController {
 
     @Operation(summary = "디자이너 목록 조회", description = "디자이너 상세정보를 조회(페이징)")
     @GetMapping("/desinger-page")
-    public ApiResultDto<List<UserDetailResponseDto>> selectListDesigner(UserDetailRequestDto request) {
-        ApiResultDto<List<UserDetailResponseDto>> apiResultVo = new ApiResultDto<>();
-        UserDetailResponseDto result;
+    public ApiResultDto<PagingResponseDto<UserDetailResponseDto>> selectListDesignerPaging(UserDetailRequestDto request) {
+        ApiResultDto<PagingResponseDto<UserDetailResponseDto>> apiResultVo = new ApiResultDto<>();
+        PagingResponseDto<UserDetailResponseDto> result;
 
-        //        result = userService.loginUser(request);
-        //        apiResultVo.setData(result);
+        result = userService.selectListDesignerPaging(request);
+        apiResultVo.setData(result);
 
         return apiResultVo;
 

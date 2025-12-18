@@ -1,5 +1,7 @@
 package com.jindam.app.user.model;
 
+import com.jindam.base.code.UserJoinTypeCode;
+import com.jindam.base.dto.PagingRequestDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "사용자 상세 조회 요청 모델")
-public class UserDetailRequestDto {
+public class UserDetailRequestDto extends PagingRequestDto {
 
     @Schema(description = "유저 아이디", example = "KShJUkrtJrVdRKNXCNz4BT8oRyn1")
     private String uid;
@@ -23,8 +25,11 @@ public class UserDetailRequestDto {
     @Schema(description = "유저 아이디", example = "test@email.com")
     private String userEmail;
 
-    @Schema(description = "유저 아이디", example = "test1234")
-    private String userJoinTypeCode;
+    @Schema(description = "유저 닉네임", example = "binggre")
+    private String userNickname;
+
+    @Schema(description = "사용자 가입 유형 코드", example = "UJTP001")
+    private UserJoinTypeCode userJoinTypeCode;
 
     @Schema(description = "추천 디자이너 이메일", example = "test@email.com")
     private String recommendDesignerEmail;

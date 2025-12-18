@@ -2,6 +2,8 @@ package com.jindam.app.user.mapper;
 
 import com.jindam.app.user.model.*;
 
+import java.util.List;
+
 /**
  * ExampleMapper 인터페이스
  *
@@ -37,4 +39,13 @@ public interface UserMapper {
 
     int updateLastLoginByUid(UserUpdateRequestDto request);
 
+    /**
+     * 디자이너 목록 페이징 처리 후 조회
+     */
+    List<UserDetailResponseDto> selectListDesignerPaging(UserDetailRequestDto request);
+
+    /**
+     * 디자이너 목록 카운트 조회
+     */
+    int selectListDesignerPagingCount(UserDetailRequestDto request);
 }

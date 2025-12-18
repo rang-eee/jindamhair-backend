@@ -5,6 +5,7 @@ import com.jindam.app.user.exception.UserException.Reason;
 import com.jindam.app.user.mapper.UserMapper;
 import com.jindam.app.user.model.*;
 import com.jindam.base.base.PagingService;
+import com.jindam.base.dto.PagingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -109,8 +110,10 @@ public class UserService extends PagingService {
         return param;
     }
 
-    //    public List<UserDetailResponseDto> selectListDesigner(UserDetailRequestDto request) {
-    //        List<UserDetailResponseDto> result = userMapper.selectListDesigner(request);
-    //        return result;
-    //    }
+    public PagingResponseDto<UserDetailResponseDto> selectListDesignerPaging(UserDetailRequestDto request) {
+
+        PagingResponseDto<UserDetailResponseDto> pagingResult = findData(userMapper, "selectListDesignerPaging", request);
+        
+        return pagingResult;
+    }
 }

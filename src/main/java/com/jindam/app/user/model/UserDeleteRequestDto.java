@@ -22,130 +22,130 @@ public class UserDeleteRequestDto {
     @Schema(description = "사용자ID")
     private String uid;
 
-    @Schema(description = "사용자 이메일사용자 이메일")
+    @Schema(description = "사용자 이메일")
     private String userEmail;
 
-    @Schema(description = "사용자 연락처사용자 연락처")
+    @Schema(description = "사용자 연락처")
     private String userContact;
 
-    @Schema(description = "사용자 명사용자 명")
+    @Schema(description = "사용자 명")
     private String userName;
 
-    @Schema(description = "사용자 닉네임사용자 닉네임")
+    @Schema(description = "사용자 닉네임")
     private String userNickname;
 
-    @Schema(description = "사용자 상태 코드사용자 상태 코드")
+    @Schema(description = "사용자 상태 코드")
     private UserStatusCode userStatusCode;
 
-    @Schema(description = "사용자 성별 코드사용자 성별 코드")
+    @Schema(description = "사용자 성별 코드")
     private UserGenderCode userGenderCode;
 
-    @Schema(description = "사용자 연령대 코드사용자 연령대 코드")
+    @Schema(description = "사용자 연령대 코드")
     private UserAggCode userAggCode;
 
-    @Schema(description = "사용자 유형 코드사용자 유형 코드")
+    @Schema(description = "사용자 유형 코드")
     private UserTypeCode userTypeCode;
 
-    @Schema(description = "사용자 생년월일사용자 생년월일")
+    @Schema(description = "사용자 생년월일")
     private String userBrdt;
 
-    @Schema(description = "사용자 가입 유형 코드사용자 가입 유형 코드")
+    @Schema(description = "사용자 가입 유형 코드")
     private UserJoinTypeCode userJoinTypeCode;
 
     @Schema(description = "푸시 토큰푸시 토큰")
     private String pushToken;
 
-    @Schema(description = "최종 로그인 일시최종 로그인 일시")
+    @Schema(description = "최종 로그인 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime lastLoginAt;
 
-    @Schema(description = "즐겨찾기 사용자 ID 배열즐겨찾기 사용자 ID 배열")
+    @Schema(description = "즐겨찾기 사용자 ID 배열")
     private List<String> bookmarkUserIdArr;
 
-    @Schema(description = "차단 사용자 ID 배열차단 사용자 ID 배열")
+    @Schema(description = "차단 사용자 ID 배열")
     private List<String> interceptionUserIdArr;
 
-    @Schema(description = "개인정보처리방침 동의 여부개인정보처리방침 동의 여부")
+    @Schema(description = "개인정보처리방침 동의 여부", example = "Y")
     private String prvcplcAgreeYn;
 
-    @Schema(description = "서비스 이용약관 동의 여부서비스 이용약관 동의 여부")
+    @Schema(description = "서비스 이용약관 동의 여부", example = "Y")
     private String termsAgreeYn;
 
-    @Schema(description = "전체 알림 수신 여부전체 알림 수신 여부")
+    @Schema(description = "전체 알림 수신 여부", example = "Y")
     private String allNotificationReceptionYn;
 
-    @Schema(description = "전체 알림 수신 일시전체 알림 수신 일시")
-    private String allNotificationReceptionAt;
+    @Schema(description = "전체 알림 수신 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime allNotificationReceptionAt;
 
-    @Schema(description = "공지 알림 수신 여부공지 알림 수신 여부")
+    @Schema(description = "공지 알림 수신 여부", example = "Y")
     private String noticeNotificationReceptionYn;
 
-    @Schema(description = "공지 알림 수신 일시공지 알림 수신 일시")
-    private String noticeNotificationReceptionAt;
+    @Schema(description = "공지 알림 수신 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime noticeNotificationReceptionAt;
 
-    @Schema(description = "마케팅 알림 수신 여부마케팅 알림 수신 여부")
+    @Schema(description = "마케팅 알림 수신 여부", example = "Y")
     private String marketingNotificationReceptionYn;
 
-    @Schema(description = "마케팅 알림 수신 일시마케팅 알림 수신 일시")
-    private String marketingNotificationReceptionAt;
+    @Schema(description = "마케팅 알림 수신 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime marketingNotificationReceptionAt;
 
-    @Schema(description = "제안 알림 수신 여부제안 알림 수신 여부")
+    @Schema(description = "제안 알림 수신 여부", example = "Y")
     private String offerNotificationReceptionYn;
 
-    @Schema(description = "제안 알림 수신 일시제안 알림 수신 일시")
-    private String offerNotificationReceptionAt;
+    @Schema(description = "제안 알림 수신 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime offerNotificationReceptionAt;
 
-    @Schema(description = "채팅 알림 수신 여부채팅 알림 수신 여부")
+    @Schema(description = "채팅 알림 수신 여부", example = "Y")
     private String chatNotificationReceptionYn;
 
-    @Schema(description = "채팅 알림 수신 일시채팅 알림 수신 일시")
-    private String chatNotificationReceptionAt;
+    @Schema(description = "채팅 알림 수신 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime chatNotificationReceptionAt;
 
-    @Schema(description = "위치 주소위치 주소")
+    @Schema(description = "위치 주소")
     private String positionAddr;
 
-    @Schema(description = "위치 위도위치 위도")
+    @Schema(description = "위치 위도")
     private String positionLatt;
 
-    @Schema(description = "위치 경도위치 경도")
+    @Schema(description = "위치 경도")
     private String positionLngt;
 
-    @Schema(description = "위치 거리위치 거리")
+    @Schema(description = "위치 거리")
     private String positionDistance;
 
-    @Schema(description = "프로필 사진 파일 ID프로필 사진 파일 ID")
+    @Schema(description = "프로필 사진 파일 ID")
     private String profilePhotoFileId;
 
-    @Schema(description = "디자이너 승인 상태 코드디자이너 승인 상태 코드")
+    @Schema(description = "디자이너 승인 상태 코드")
     private DesignerApprStatusCode designerApprStatusCode;
 
-    @Schema(description = "디자이너 소개 내용디자이너 소개 내용")
+    @Schema(description = "디자이너 소개 내용")
     private String designerIntroduceContent;
 
-    @Schema(description = "디자이너 태그 배열디자이너 태그 배열")
+    @Schema(description = "디자이너 태그 배열")
     private List<String> designerTagArr;
 
-    @Schema(description = "디자이너 근무 상태 코드디자이너 근무 상태 코드")
+    @Schema(description = "디자이너 근무 상태 코드")
     private DesignerWorkStatusCode designerWorkStatusCode;
 
-    @Schema(description = "디자이너 오픈 요일 배열디자이너 오픈 요일 배열")
+    @Schema(description = "디자이너 오픈 요일 배열")
     private List<String> designerOpenDayArr;
 
-    @Schema(description = "디자이너 오픈 시간 배열디자이너 오픈 시간 배열")
+    @Schema(description = "디자이너 오픈 시간 배열")
     private List<String> designerOpenTimeArr;
 
-    @Schema(description = "디자이너 오프 시간 배열디자이너 오프 시간 배열")
+    @Schema(description = "디자이너 오프 시간 배열")
     private List<String> designerCloseTimeArr;
 
-    @Schema(description = "디자이너 예약 자동 확정 여부디자이너 예약 자동 확정 여부")
+    @Schema(description = "디자이너 예약 자동 확정 여부", example = "Y")
     private String designerAppointmentAutomaticConfirmYn;
 
-    @Schema(description = "디자이너 앱링크 URL디자이너 앱링크 URL")
+    @Schema(description = "디자이너 앱링크 URL")
     private String designerApplinkUrl;
 
-    @Schema(description = "디자이너 세부 사진 파일 ID디자이너 세부 사진 파일 ID")
+    @Schema(description = "디자이너 세부 사진 파일 ID")
     private String designerDetailPhotoFileId;
 
-    @Schema(description = "디자이너 계좌 브랜드 코드디자이너 계좌 브랜드 코드")
+    @Schema(description = "디자이너 계좌 브랜드 코드")
     private DesignerApprStatusCode designerAccountBrandCode;
 
     @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
