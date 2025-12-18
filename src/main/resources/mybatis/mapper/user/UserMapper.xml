@@ -6,25 +6,56 @@
     <sql id="getSelectUser">
         SELECT
             tu.uid
-            , tu.user_email
-            , tu.user_contact
-            , tu.user_name
-            , tu.user_nickname
-            , tu.user_status_code
-            , tu.user_gender_code
-            , tu.user_agg_code
-            , tu.user_type_code
-            , tu.user_brdt
-            , tu.user_join_type_code
-            , tu.push_token
+             ,tu.user_email
+             ,tu.user_contact
+             ,tu.user_name
+             ,tu.user_nickname
+             ,tu.user_status_code
+             ,tu.user_gender_code
+             ,tu.user_agg_code
+             ,tu.user_type_code
+             ,tu.user_brdt
+             ,tu.user_join_type_code
+             ,tu.push_token
+             ,tu.last_login_at
+             ,tu.bookmark_user_id_arr
+             ,tu.interception_user_id_arr
+             ,tu.prvcplc_agree_yn
+             ,tu.terms_agree_yn
+             ,tu.all_notification_reception_yn
+             ,tu.all_notification_reception_at
+             ,tu.notice_notification_reception_yn
+             ,tu.notice_notification_reception_at
+             ,tu.marketing_notification_reception_yn
+             ,tu.marketing_notification_reception_at
+             ,tu.offer_notification_reception_yn
+             ,tu.offer_notification_reception_at
+             ,tu.chat_notification_reception_yn
+             ,tu.chat_notification_reception_at
+             ,tu.position_addr
+             ,tu.position_latt
+             ,tu.position_lngt
+             ,tu.position_distance
+             ,tu.profile_photo_file_id
+             ,tu.designer_appr_status_code
+             ,tu.designer_introduce_content
+             ,tu.designer_tag
+             ,tu.designer_work_status_code
+             ,tu.designer_open_day_arr
+             ,tu.designer_open_time_arr
+             ,tu.designer_close_time_arr
+             ,tu.designer_appointment_automatic_confirm_yn
+             ,tu.designer_applink_url
+             ,tu.designer_detail_photo_file_id
+             ,tu.designer_account_brand_code
         FROM tb_user tu
     </sql>
 
-    <select id="selectOneUserByUid" parameterType="UserDetailRequestDto" resultType="UserDetailResponseDto">
+    <select id="selectOneUserByUid" resultType="UserDetailResponseDto">
         /* UserMapper.selectOneUserByUid : 사용자 조회 */
         <include refid="getSelectUser" />
         <where>
-        AND uid = #{uid}
+            AND tu.uid = #{uid}
         </where>
     </select>
 
@@ -32,324 +63,359 @@
         /* UserMapper.selectOneUserByEmailAndUserJoinTypeCode : 사용자 조회. 이메일, 가입유형 */
         <include refid="getSelectUser" />
         <where>
-            AND user_email = #{userEmail}
-            AND user_join_type_code = #{userJoinTypeCode}
+            AND tu.user_email = #{userEmail}
+            AND tu.user_join_type_code = #{userJoinTypeCode}
         </where>
     </select>
 
     <insert id="insertUser" parameterType="UserDetailRequestDto">
         /* UserMapper.insertUser : 사용자 생성 */
         INSERT INTO tb_user (
-            uid
-            ,user_email
-            ,user_contact
-            ,user_name
-            ,user_nickname
-            ,user_status_code
-            ,user_gender_code
-            ,user_agg_code
-            ,user_type_code
-            ,user_brdt
-            ,user_join_type_code
-            ,push_token
+                              uid
+                            ,user_email
+                            ,user_contact
+                            ,user_name
+                            ,user_nickname
+                            ,user_status_code
+                            ,user_gender_code
+                            ,user_agg_code
+                            ,user_type_code
+                            ,user_brdt
+                            ,user_join_type_code
+                            ,push_token
         ) VALUES (
-            #{uid}
-            ,#{userEmail}
-            ,#{userContact}
-            ,#{userName}
-            ,#{userNickname}
-            ,#{userStatusCode}
-            ,#{userGenderCode}
-            ,#{userAggCode}
-            ,#{userTypeCoUde}
-            ,#{userBrdt}
-            ,NOW()
-            ,#{pushToken}
-        )
+                   #{uid}
+                 ,#{userEmail}
+                 ,#{userContact}
+                 ,#{userName}
+                 ,#{userNickname}
+                 ,#{userStatusCode}
+                 ,#{userGenderCode}
+                 ,#{userAggCode}
+                 ,#{userTypeCoUde}
+                 ,#{userBrdt}
+                 ,NOW()
+                 ,#{pushToken}
+                 )
     </insert>
 
     <update id="updateUser" parameterType="UserUpdateRequestDto">
         /* UserMapper.updateUser : 사용자 업데이트 */
         UPDATE tb_user
-            <set>
-                update_at = NOW(),
-                update_id = #{updateId}
+        <set>
+            update_at = NOW(),
+            update_id = #{updateId}
 
-                <if test='userEmail != null and userEmail != "" and userEmail != ApiConstant.NULL_STRING'>
-                    user_email = #{userEmail}
-                </if>
-                <if test = 'userEmail == ApiConstant.NULL_STRING'>
-                    user_email = null
-                </if>
-                <if test='userContact != null and userContact != "" and userContact != ApiConstant.NULL_STRING'>
-                    user_contact = #{userContact}
-                </if>
-                <if test = 'userContact == ApiConstant.NULL_STRING'>
-                    user_contact = null
-                </if>
-                <if test='userName != null and userName != "" and userName != ApiConstant.NULL_STRING'>
-                    user_name = #{userName}
-                </if>
-                <if test = 'userName == ApiConstant.NULL_STRING'>
-                    user_name = null
-                </if>
-                <if test='userNickname != null and userNickname != "" and userNickname != ApiConstant.NULL_STRING'>
-                    user_nickname = #{userNickname}
-                </if>
-                <if test = 'userNickname == ApiConstant.NULL_STRING'>
-                    user_nickname = null
-                </if>
-                <if test='userStatusCode != null and userStatusCode != "" and userStatusCode != ApiConstant.NULL_STRING'>
-                    user_status_code = #{userStatusCode}
-                </if>
-                <if test = 'userStatusCode == ApiConstant.NULL_STRING'>
-                    user_status_code = null
-                </if>
-                <if test='userGenderCode != null and userGenderCode != "" and userGenderCode != ApiConstant.NULL_STRING'>
-                    user_gender_code = #{userGenderCode}
-                </if>
-                <if test = 'userGenderCode == ApiConstant.NULL_STRING'>
-                    user_gender_code = null
-                </if>
-                <if test='userAggCode != null and userAggCode != "" and userAggCode != ApiConstant.NULL_STRING'>
-                    user_agg_code = #{userAggCode}
-                </if>
-                <if test = 'userAggCode == ApiConstant.NULL_STRING'>
-                    user_agg_code = null
-                </if>
-                <if test='userTypeCode != null and userTypeCode != "" and userTypeCode != ApiConstant.NULL_STRING'>
-                    user_type_code = #{userTypeCode}
-                </if>
-                <if test = 'userTypeCode == ApiConstant.NULL_STRING'>
-                    user_type_code = null
-                </if>
-                <if test='userBrdt != null and userBrdt != "" and userBrdt != ApiConstant.NULL_STRING'>
-                    user_brdt = #{userBrdt}
-                </if>
-                <if test = 'userBrdt == ApiConstant.NULL_STRING'>
-                    user_brdt = null
-                </if>
-                <if test='userJoinTypeCode != null and userJoinTypeCode != "" and userJoinTypeCode != ApiConstant.NULL_STRING'>
-                    user_join_type_code = #{userJoinTypeCode}
-                </if>
-                <if test = 'userJoinTypeCode == ApiConstant.NULL_STRING'>
-                    user_join_type_code = null
-                </if>
-                <if test='pushToken != null and pushToken != "" and pushToken != ApiConstant.NULL_STRING'>
-                    push_token = #{pushToken}
-                </if>
-                <if test = 'pushToken == ApiConstant.NULL_STRING'>
-                    push_token = null
-                </if>
-                <if test='lastLoginAt != null and lastLoginAt != "" and lastLoginAt != ApiConstant.NULL_STRING'>
-                    last_login_at = #{lastLoginAt}
-                </if>
-                <if test = 'lastLoginAt == ApiConstant.NULL_STRING'>
-                    last_login_at = null
-                </if>
-                <if test='bookmarkUserIdArr != null and bookmarkUserIdArr != "" and bookmarkUserIdArr != ApiConstant.NULL_STRING'>
-                    bookmark_user_id_arr = #{bookmarkUserIdArr}
-                </if>
-                <if test = 'bookmarkUserIdArr == ApiConstant.NULL_STRING'>
-                    bookmark_user_id_arr = null
-                </if>
-                <if test='interceptionUserIdArr != null and interceptionUserIdArr != "" and interceptionUserIdArr != ApiConstant.NULL_STRING'>
-                    interception_user_id_arr = #{interceptionUserIdArr}
-                </if>
-                <if test = 'interceptionUserIdArr == ApiConstant.NULL_STRING'>
-                    interception_user_id_arr = null
-                </if>
-                <if test='prvcplcAgreeYn != null and prvcplcAgreeYn != "" and prvcplcAgreeYn != ApiConstant.NULL_STRING'>
-                    prvcplc_agree_yn = #{prvcplcAgreeYn}
-                </if>
-                <if test = 'prvcplcAgreeYn == ApiConstant.NULL_STRING'>
-                    prvcplc_agree_yn = null
-                </if>
-                <if test='termsAgreeYn != null and termsAgreeYn != "" and termsAgreeYn != ApiConstant.NULL_STRING'>
-                    terms_agree_yn = #{termsAgreeYn}
-                </if>
-                <if test = 'termsAgreeYn == ApiConstant.NULL_STRING'>
-                    terms_agree_yn = null
-                </if>
-                <if test='allNotificationReceptionYn != null and allNotificationReceptionYn != "" and allNotificationReceptionYn != ApiConstant.NULL_STRING'>
-                    all_notification_reception_yn = #{allNotificationReceptionYn}
-                </if>
-                <if test = 'allNotificationReceptionYn == ApiConstant.NULL_STRING'>
-                    all_notification_reception_yn = null
-                </if>
-                <if test='allNotificationReceptionAt != null and allNotificationReceptionAt != "" and allNotificationReceptionAt != ApiConstant.NULL_STRING'>
-                    all_notification_reception_at = #{allNotificationReceptionAt}
-                </if>
-                <if test = 'allNotificationReceptionAt == ApiConstant.NULL_STRING'>
-                    all_notification_reception_at = null
-                </if>
-                <if test='noticeNotificationReceptionYn != null and noticeNotificationReceptionYn != "" and noticeNotificationReceptionYn != ApiConstant.NULL_STRING'>
-                    notice_notification_reception_yn = #{noticeNotificationReceptionYn}
-                </if>
-                <if test = 'noticeNotificationReceptionYn == ApiConstant.NULL_STRING'>
-                    notice_notification_reception_yn = null
-                </if>
-                <if test='noticeNotificationReceptionAt != null and noticeNotificationReceptionAt != "" and noticeNotificationReceptionAt != ApiConstant.NULL_STRING'>
-                    notice_notification_reception_at = #{noticeNotificationReceptionAt}
-                </if>
-                <if test = 'noticeNotificationReceptionAt == ApiConstant.NULL_STRING'>
-                    notice_notification_reception_at = null
-                </if>
-                <if test='marketingNotificationReceptionYn != null and marketingNotificationReceptionYn != "" and marketingNotificationReceptionYn != ApiConstant.NULL_STRING'>
-                    marketing_notification_reception_yn = #{marketingNotificationReceptionYn}
-                </if>
-                <if test = 'marketingNotificationReceptionYn == ApiConstant.NULL_STRING'>
-                    marketing_notification_reception_yn = null
-                </if>
-                <if test='marketingNotificationReceptionAt != null and marketingNotificationReceptionAt != "" and marketingNotificationReceptionAt != ApiConstant.NULL_STRING'>
-                    marketing_notification_reception_at = #{marketingNotificationReceptionAt}
-                </if>
-                <if test = 'marketingNotificationReceptionAt == ApiConstant.NULL_STRING'>
-                    marketing_notification_reception_at = null
-                </if>
-                <if test='offerNotificationReceptionYn != null and offerNotificationReceptionYn != "" and offerNotificationReceptionYn != ApiConstant.NULL_STRING'>
-                    offer_notification_reception_yn = #{offerNotificationReceptionYn}
-                </if>
-                <if test = 'offerNotificationReceptionYn == ApiConstant.NULL_STRING'>
-                    offer_notification_reception_yn = null
-                </if>
-                <if test='offerNotificationReceptionAt != null and offerNotificationReceptionAt != "" and offerNotificationReceptionAt != ApiConstant.NULL_STRING'>
-                    offer_notification_reception_at = #{offerNotificationReceptionAt}
-                </if>
-                <if test = 'offerNotificationReceptionAt == ApiConstant.NULL_STRING'>
-                    offer_notification_reception_at = null
-                </if>
-                <if test='chatNotificationReceptionYn != null and chatNotificationReceptionYn != "" and chatNotificationReceptionYn != ApiConstant.NULL_STRING'>
-                    chat_notification_reception_yn = #{chatNotificationReceptionYn}
-                </if>
-                <if test = 'chatNotificationReceptionYn == ApiConstant.NULL_STRING'>
-                    chat_notification_reception_yn = null
-                </if>
-                <if test='chatNotificationReceptionAt != null and chatNotificationReceptionAt != "" and chatNotificationReceptionAt != ApiConstant.NULL_STRING'>
-                    chat_notification_reception_at = #{chatNotificationReceptionAt}
-                </if>
-                <if test = 'chatNotificationReceptionAt == ApiConstant.NULL_STRING'>
-                    chat_notification_reception_at = null
-                </if>
-                <if test='positionAddr != null and positionAddr != "" and positionAddr != ApiConstant.NULL_STRING'>
-                    position_addr = #{positionAddr}
-                </if>
-                <if test = 'positionAddr == ApiConstant.NULL_STRING'>
-                    position_addr = null
-                </if>
-                <if test='positionLatt != null and positionLatt != "" and positionLatt != ApiConstant.NULL_STRING'>
-                    position_latt = #{positionLatt}
-                </if>
-                <if test = 'positionLatt == ApiConstant.NULL_STRING'>
-                    position_latt = null
-                </if>
-                <if test='positionLngt != null and positionLngt != "" and positionLngt != ApiConstant.NULL_STRING'>
-                    position_lngt = #{positionLngt}
-                </if>
-                <if test = 'positionLngt == ApiConstant.NULL_STRING'>
-                    position_lngt = null
-                </if>
-                <if test='positionDistance != null and positionDistance != "" and positionDistance != ApiConstant.NULL_STRING'>
-                    position_distance = #{positionDistance}
-                </if>
-                <if test = 'positionDistance == ApiConstant.NULL_STRING'>
-                    position_distance = null
-                </if>
-                <if test='profilePhotoFileId != null and profilePhotoFileId != "" and profilePhotoFileId != ApiConstant.NULL_STRING'>
-                    profile_photo_file_id = #{profilePhotoFileId}
-                </if>
-                <if test = 'profilePhotoFileId == ApiConstant.NULL_STRING'>
-                    profile_photo_file_id = null
-                </if>
-                <if test='designerApprStatusCode != null and designerApprStatusCode != "" and designerApprStatusCode != ApiConstant.NULL_STRING'>
-                    designer_appr_status_code = #{designerApprStatusCode}
-                </if>
-                <if test = 'designerApprStatusCode == ApiConstant.NULL_STRING'>
-                    designer_appr_status_code = null
-                </if>
-                <if test='designerIntroduceContent != null and designerIntroduceContent != "" and designerIntroduceContent != ApiConstant.NULL_STRING'>
-                    designer_introduce_content = #{designerIntroduceContent}
-                </if>
-                <if test = 'designerIntroduceContent == ApiConstant.NULL_STRING'>
-                    designer_introduce_content = null
-                </if>
-                <if test='designerTag != null and designerTag != "" and designerTag != ApiConstant.NULL_STRING'>
-                    designer_tag = #{designerTag}
-                </if>
-                <if test = 'designerTag == ApiConstant.NULL_STRING'>
-                    designer_tag = null
-                </if>
-                <if test='designerWorkStatusCode != null and designerWorkStatusCode != "" and designerWorkStatusCode != ApiConstant.NULL_STRING'>
-                    designer_work_status_code = #{designerWorkStatusCode}
-                </if>
-                <if test = 'designerWorkStatusCode == ApiConstant.NULL_STRING'>
-                    designer_work_status_code = null
-                </if>
-                <if test='designerOpenDayArr != null and designerOpenDayArr != "" and designerOpenDayArr != ApiConstant.NULL_STRING'>
-                    designer_open_day_arr = #{designerOpenDayArr}
-                </if>
-                <if test = 'designerOpenDayArr == ApiConstant.NULL_STRING'>
-                    designer_open_day_arr = null
-                </if>
-                <if test='designerOpenTimeArr != null and designerOpenTimeArr != "" and designerOpenTimeArr != ApiConstant.NULL_STRING'>
-                    designer_open_time_arr = #{designerOpenTimeArr}
-                </if>
-                <if test = 'designerOpenTimeArr == ApiConstant.NULL_STRING'>
-                    designer_open_time_arr = null
-                </if>
-                <if test='designerCloseTimeArr != null and designerCloseTimeArr != "" and designerCloseTimeArr != ApiConstant.NULL_STRING'>
-                    designer_close_time_arr = #{designerCloseTimeArr}
-                </if>
-                <if test = 'designerCloseTimeArr == ApiConstant.NULL_STRING'>
-                    designer_close_time_arr = null
-                </if>
-                <if test='designerAppointmentAutomaticConfirmYn != null and designerAppointmentAutomaticConfirmYn != "" and designerAppointmentAutomaticConfirmYn != ApiConstant.NULL_STRING'>
-                    designer_appointment_automatic_confirm_yn = #{designerAppointmentAutomaticConfirmYn}
-                </if>
-                <if test = 'designerAppointmentAutomaticConfirmYn == ApiConstant.NULL_STRING'>
-                    designer_appointment_automatic_confirm_yn = null
-                </if>
-                <if test='designerApplinkUrl != null and designerApplinkUrl != "" and designerApplinkUrl != ApiConstant.NULL_STRING'>
-                    designer_applink_url = #{designerApplinkUrl}
-                </if>
-                <if test = 'designerApplinkUrl == ApiConstant.NULL_STRING'>
-                    designer_applink_url = null
-                </if>
-                <if test='designerDetailPhotoFileId != null and designerDetailPhotoFileId != "" and designerDetailPhotoFileId != ApiConstant.NULL_STRING'>
-                    designer_detail_photo_file_id = #{designerDetailPhotoFileId}
-                </if>
-                <if test = 'designerDetailPhotoFileId == ApiConstant.NULL_STRING'>
-                    designer_detail_photo_file_id = null
-                </if>
-            </set>
+            <if test='userEmail != null and userEmail != "" and userEmail != ApiConstant.NULL_STRING'>
+                user_email = #{userEmail}
+            </if>
+            <if test = 'userEmail == ApiConstant.NULL_STRING'>
+                user_email = null
+            </if>
+            <if test='userContact != null and userContact != "" and userContact != ApiConstant.NULL_STRING'>
+                user_contact = #{userContact}
+            </if>
+            <if test = 'userContact == ApiConstant.NULL_STRING'>
+                user_contact = null
+            </if>
+            <if test='userName != null and userName != "" and userName != ApiConstant.NULL_STRING'>
+                user_name = #{userName}
+            </if>
+            <if test = 'userName == ApiConstant.NULL_STRING'>
+                user_name = null
+            </if>
+            <if test='userNickname != null and userNickname != "" and userNickname != ApiConstant.NULL_STRING'>
+                user_nickname = #{userNickname}
+            </if>
+            <if test = 'userNickname == ApiConstant.NULL_STRING'>
+                user_nickname = null
+            </if>
+            <if test='userStatusCode != null and userStatusCode != "" and userStatusCode != ApiConstant.NULL_STRING'>
+                user_status_code = #{userStatusCode}
+            </if>
+            <if test = 'userStatusCode == ApiConstant.NULL_STRING'>
+                user_status_code = null
+            </if>
+            <if test='userGenderCode != null and userGenderCode != "" and userGenderCode != ApiConstant.NULL_STRING'>
+                user_gender_code = #{userGenderCode}
+            </if>
+            <if test = 'userGenderCode == ApiConstant.NULL_STRING'>
+                user_gender_code = null
+            </if>
+            <if test='userAggCode != null and userAggCode != "" and userAggCode != ApiConstant.NULL_STRING'>
+                user_agg_code = #{userAggCode}
+            </if>
+            <if test = 'userAggCode == ApiConstant.NULL_STRING'>
+                user_agg_code = null
+            </if>
+            <if test='userTypeCode != null and userTypeCode != "" and userTypeCode != ApiConstant.NULL_STRING'>
+                user_type_code = #{userTypeCode}
+            </if>
+            <if test = 'userTypeCode == ApiConstant.NULL_STRING'>
+                user_type_code = null
+            </if>
+            <if test='userBrdt != null and userBrdt != "" and userBrdt != ApiConstant.NULL_STRING'>
+                user_brdt = #{userBrdt}
+            </if>
+            <if test = 'userBrdt == ApiConstant.NULL_STRING'>
+                user_brdt = null
+            </if>
+            <if test='userJoinTypeCode != null and userJoinTypeCode != "" and userJoinTypeCode != ApiConstant.NULL_STRING'>
+                user_join_type_code = #{userJoinTypeCode}
+            </if>
+            <if test = 'userJoinTypeCode == ApiConstant.NULL_STRING'>
+                user_join_type_code = null
+            </if>
+            <if test='pushToken != null and pushToken != "" and pushToken != ApiConstant.NULL_STRING'>
+                push_token = #{pushToken}
+            </if>
+            <if test = 'pushToken == ApiConstant.NULL_STRING'>
+                push_token = null
+            </if>
+            <if test='lastLoginAt != null and lastLoginAt != "" and lastLoginAt != ApiConstant.NULL_STRING'>
+                last_login_at = #{lastLoginAt}
+            </if>
+            <if test = 'lastLoginAt == ApiConstant.NULL_STRING'>
+                last_login_at = null
+            </if>
+            <if test='bookmarkUserIdArr != null and bookmarkUserIdArr != "" and bookmarkUserIdArr != ApiConstant.NULL_STRING'>
+                bookmark_user_id_arr = #{bookmarkUserIdArr}
+            </if>
+            <if test = 'bookmarkUserIdArr == ApiConstant.NULL_STRING'>
+                bookmark_user_id_arr = null
+            </if>
+            <if test='interceptionUserIdArr != null and interceptionUserIdArr != "" and interceptionUserIdArr != ApiConstant.NULL_STRING'>
+                interception_user_id_arr = #{interceptionUserIdArr}
+            </if>
+            <if test = 'interceptionUserIdArr == ApiConstant.NULL_STRING'>
+                interception_user_id_arr = null
+            </if>
+            <if test='prvcplcAgreeYn != null and prvcplcAgreeYn != "" and prvcplcAgreeYn != ApiConstant.NULL_STRING'>
+                prvcplc_agree_yn = #{prvcplcAgreeYn}
+            </if>
+            <if test = 'prvcplcAgreeYn == ApiConstant.NULL_STRING'>
+                prvcplc_agree_yn = null
+            </if>
+            <if test='termsAgreeYn != null and termsAgreeYn != "" and termsAgreeYn != ApiConstant.NULL_STRING'>
+                terms_agree_yn = #{termsAgreeYn}
+            </if>
+            <if test = 'termsAgreeYn == ApiConstant.NULL_STRING'>
+                terms_agree_yn = null
+            </if>
+            <if test='allNotificationReceptionYn != null and allNotificationReceptionYn != "" and allNotificationReceptionYn != ApiConstant.NULL_STRING'>
+                all_notification_reception_yn = #{allNotificationReceptionYn}
+            </if>
+            <if test = 'allNotificationReceptionYn == ApiConstant.NULL_STRING'>
+                all_notification_reception_yn = null
+            </if>
+            <if test='allNotificationReceptionAt != null and allNotificationReceptionAt != "" and allNotificationReceptionAt != ApiConstant.NULL_STRING'>
+                all_notification_reception_at = #{allNotificationReceptionAt}
+            </if>
+            <if test = 'allNotificationReceptionAt == ApiConstant.NULL_STRING'>
+                all_notification_reception_at = null
+            </if>
+            <if test='noticeNotificationReceptionYn != null and noticeNotificationReceptionYn != "" and noticeNotificationReceptionYn != ApiConstant.NULL_STRING'>
+                notice_notification_reception_yn = #{noticeNotificationReceptionYn}
+            </if>
+            <if test = 'noticeNotificationReceptionYn == ApiConstant.NULL_STRING'>
+                notice_notification_reception_yn = null
+            </if>
+            <if test='noticeNotificationReceptionAt != null and noticeNotificationReceptionAt != "" and noticeNotificationReceptionAt != ApiConstant.NULL_STRING'>
+                notice_notification_reception_at = #{noticeNotificationReceptionAt}
+            </if>
+            <if test = 'noticeNotificationReceptionAt == ApiConstant.NULL_STRING'>
+                notice_notification_reception_at = null
+            </if>
+            <if test='marketingNotificationReceptionYn != null and marketingNotificationReceptionYn != "" and marketingNotificationReceptionYn != ApiConstant.NULL_STRING'>
+                marketing_notification_reception_yn = #{marketingNotificationReceptionYn}
+            </if>
+            <if test = 'marketingNotificationReceptionYn == ApiConstant.NULL_STRING'>
+                marketing_notification_reception_yn = null
+            </if>
+            <if test='marketingNotificationReceptionAt != null and marketingNotificationReceptionAt != "" and marketingNotificationReceptionAt != ApiConstant.NULL_STRING'>
+                marketing_notification_reception_at = #{marketingNotificationReceptionAt}
+            </if>
+            <if test = 'marketingNotificationReceptionAt == ApiConstant.NULL_STRING'>
+                marketing_notification_reception_at = null
+            </if>
+            <if test='offerNotificationReceptionYn != null and offerNotificationReceptionYn != "" and offerNotificationReceptionYn != ApiConstant.NULL_STRING'>
+                offer_notification_reception_yn = #{offerNotificationReceptionYn}
+            </if>
+            <if test = 'offerNotificationReceptionYn == ApiConstant.NULL_STRING'>
+                offer_notification_reception_yn = null
+            </if>
+            <if test='offerNotificationReceptionAt != null and offerNotificationReceptionAt != "" and offerNotificationReceptionAt != ApiConstant.NULL_STRING'>
+                offer_notification_reception_at = #{offerNotificationReceptionAt}
+            </if>
+            <if test = 'offerNotificationReceptionAt == ApiConstant.NULL_STRING'>
+                offer_notification_reception_at = null
+            </if>
+            <if test='chatNotificationReceptionYn != null and chatNotificationReceptionYn != "" and chatNotificationReceptionYn != ApiConstant.NULL_STRING'>
+                chat_notification_reception_yn = #{chatNotificationReceptionYn}
+            </if>
+            <if test = 'chatNotificationReceptionYn == ApiConstant.NULL_STRING'>
+                chat_notification_reception_yn = null
+            </if>
+            <if test='chatNotificationReceptionAt != null and chatNotificationReceptionAt != "" and chatNotificationReceptionAt != ApiConstant.NULL_STRING'>
+                chat_notification_reception_at = #{chatNotificationReceptionAt}
+            </if>
+            <if test = 'chatNotificationReceptionAt == ApiConstant.NULL_STRING'>
+                chat_notification_reception_at = null
+            </if>
+            <if test='positionAddr != null and positionAddr != "" and positionAddr != ApiConstant.NULL_STRING'>
+                position_addr = #{positionAddr}
+            </if>
+            <if test = 'positionAddr == ApiConstant.NULL_STRING'>
+                position_addr = null
+            </if>
+            <if test='positionLatt != null and positionLatt != "" and positionLatt != ApiConstant.NULL_STRING'>
+                position_latt = #{positionLatt}
+            </if>
+            <if test = 'positionLatt == ApiConstant.NULL_STRING'>
+                position_latt = null
+            </if>
+            <if test='positionLngt != null and positionLngt != "" and positionLngt != ApiConstant.NULL_STRING'>
+                position_lngt = #{positionLngt}
+            </if>
+            <if test = 'positionLngt == ApiConstant.NULL_STRING'>
+                position_lngt = null
+            </if>
+            <if test='positionDistance != null and positionDistance != "" and positionDistance != ApiConstant.NULL_STRING'>
+                position_distance = #{positionDistance}
+            </if>
+            <if test = 'positionDistance == ApiConstant.NULL_STRING'>
+                position_distance = null
+            </if>
+            <if test='profilePhotoFileId != null and profilePhotoFileId != "" and profilePhotoFileId != ApiConstant.NULL_STRING'>
+                profile_photo_file_id = #{profilePhotoFileId}
+            </if>
+            <if test = 'profilePhotoFileId == ApiConstant.NULL_STRING'>
+                profile_photo_file_id = null
+            </if>
+            <if test='designerApprStatusCode != null and designerApprStatusCode != "" and designerApprStatusCode != ApiConstant.NULL_STRING'>
+                designer_appr_status_code = #{designerApprStatusCode}
+            </if>
+            <if test = 'designerApprStatusCode == ApiConstant.NULL_STRING'>
+                designer_appr_status_code = null
+            </if>
+            <if test='designerIntroduceContent != null and designerIntroduceContent != "" and designerIntroduceContent != ApiConstant.NULL_STRING'>
+                designer_introduce_content = #{designerIntroduceContent}
+            </if>
+            <if test = 'designerIntroduceContent == ApiConstant.NULL_STRING'>
+                designer_introduce_content = null
+            </if>
+            <if test='designerTag != null and designerTag != "" and designerTag != ApiConstant.NULL_STRING'>
+                designer_tag = #{designerTag}
+            </if>
+            <if test = 'designerTag == ApiConstant.NULL_STRING'>
+                designer_tag = null
+            </if>
+            <if test='designerWorkStatusCode != null and designerWorkStatusCode != "" and designerWorkStatusCode != ApiConstant.NULL_STRING'>
+                designer_work_status_code = #{designerWorkStatusCode}
+            </if>
+            <if test = 'designerWorkStatusCode == ApiConstant.NULL_STRING'>
+                designer_work_status_code = null
+            </if>
+            <if test='designerOpenDayArr != null and designerOpenDayArr != "" and designerOpenDayArr != ApiConstant.NULL_STRING'>
+                designer_open_day_arr = #{designerOpenDayArr}
+            </if>
+            <if test = 'designerOpenDayArr == ApiConstant.NULL_STRING'>
+                designer_open_day_arr = null
+            </if>
+            <if test='designerOpenTimeArr != null and designerOpenTimeArr != "" and designerOpenTimeArr != ApiConstant.NULL_STRING'>
+                designer_open_time_arr = #{designerOpenTimeArr}
+            </if>
+            <if test = 'designerOpenTimeArr == ApiConstant.NULL_STRING'>
+                designer_open_time_arr = null
+            </if>
+            <if test='designerCloseTimeArr != null and designerCloseTimeArr != "" and designerCloseTimeArr != ApiConstant.NULL_STRING'>
+                designer_close_time_arr = #{designerCloseTimeArr}
+            </if>
+            <if test = 'designerCloseTimeArr == ApiConstant.NULL_STRING'>
+                designer_close_time_arr = null
+            </if>
+            <if test='designerAppointmentAutomaticConfirmYn != null and designerAppointmentAutomaticConfirmYn != "" and designerAppointmentAutomaticConfirmYn != ApiConstant.NULL_STRING'>
+                designer_appointment_automatic_confirm_yn = #{designerAppointmentAutomaticConfirmYn}
+            </if>
+            <if test = 'designerAppointmentAutomaticConfirmYn == ApiConstant.NULL_STRING'>
+                designer_appointment_automatic_confirm_yn = null
+            </if>
+            <if test='designerApplinkUrl != null and designerApplinkUrl != "" and designerApplinkUrl != ApiConstant.NULL_STRING'>
+                designer_applink_url = #{designerApplinkUrl}
+            </if>
+            <if test = 'designerApplinkUrl == ApiConstant.NULL_STRING'>
+                designer_applink_url = null
+            </if>
+            <if test='designerDetailPhotoFileId != null and designerDetailPhotoFileId != "" and designerDetailPhotoFileId != ApiConstant.NULL_STRING'>
+                designer_detail_photo_file_id = #{designerDetailPhotoFileId}
+            </if>
+            <if test = 'designerDetailPhotoFileId == ApiConstant.NULL_STRING'>
+                designer_detail_photo_file_id = null
+            </if>
+        </set>
+        <where>
+            uid = {uid}
+        </where>
     </update>
 
     <update id="deleteUser" parameterType="UserDeleteRequestDto">
         UPDATE  tb_user
-            <set>
-                delete_yn = 'Y'
-                delete_at =  NOW()
-                delete_id = #{uid}
-            </set>
-            WHERE uid = #{uid}
+        <set>
+            delete_yn = 'Y'
+            delete_at =  NOW()
+            delete_id = #{uid}
+        </set>
+        WHERE uid = #{uid}
     </update>
 
     <select id="loginUserByUid" parameterType="UserDetailRequestDto" resultType="UserDetailResponseDto">
         SELECT
-            user_email
-             ,user_contact
-             ,user_name
-             ,user_nickname
-             ,user_status_code
-             ,user_gender_code
-             ,user_agg_code
-             ,user_type_code
-             ,user_brdt
-             ,user_join_type_code
-             ,push_token
-        FROM tb_user
+            tu.uid
+             ,tu.user_email
+             ,tu.user_contact
+             ,tu.user_name
+             ,tu.user_nickname
+             ,tu.user_status_code
+             ,tu.user_gender_code
+             ,tu.user_agg_code
+             ,tu.user_type_code
+             ,tu.user_brdt
+             ,tu.user_join_type_code
+             ,tu.push_token
+             ,tu.last_login_at
+             ,tu.bookmark_user_id_arr
+             ,tu.interception_user_id_arr
+             ,tu.prvcplc_agree_yn
+             ,tu.terms_agree_yn
+             ,tu.all_notification_reception_yn
+             ,tu.all_notification_reception_at
+             ,tu.notice_notification_reception_yn
+             ,tu.notice_notification_reception_at
+             ,tu.marketing_notification_reception_yn
+             ,tu.marketing_notification_reception_at
+             ,tu.offer_notification_reception_yn
+             ,tu.offer_notification_reception_at
+             ,tu.chat_notification_reception_yn
+             ,tu.chat_notification_reception_at
+             ,tu.position_addr
+             ,tu.position_latt
+             ,tu.position_lngt
+             ,tu.position_distance
+             ,tu.profile_photo_file_id
+             ,tu.designer_appr_status_code
+             ,tu.designer_introduce_content
+             ,tu.designer_tag
+             ,tu.designer_work_status_code
+             ,tu.designer_open_day_arr
+             ,tu.designer_open_time_arr
+             ,tu.designer_close_time_arr
+             ,tu.designer_appointment_automatic_confirm_yn
+             ,tu.designer_applink_url
+             ,tu.designer_detail_photo_file_id
+             ,tu.designer_account_brand_code
+        FROM tb_user tu
         WHERE 1=1
-          AND  uid = #{uid};
+          AND  tu.uid = #{uid};
     </select>
 
     <update id="updateLastLoginByUid" parameterType="UserUpdateRequestDto">
@@ -357,5 +423,8 @@
         <set>
             last_login_at = #{lastLoginAt}
         </set>
+        <where>
+            AND uid = #{uid}
+        </where>
     </update>
 </mapper>

@@ -20,7 +20,7 @@ public class UserService extends PagingService {
     private final UserMapper userMapper;
 
     /**
-     * @param UserDetailRequestDto uid
+     *
      * @return 사용자 정보
      */
     public UserDetailResponseDto selectOneUser(UserDetailRequestDto request) {
@@ -34,8 +34,7 @@ public class UserService extends PagingService {
      */
 
     /**
-     * @param UserInsertRequestDto request
-     * @retunr int count
+     * @return int count
      */
     public UserDetailResponseDto insertUser(UserInsertRequestDto request) {
         int result;
@@ -110,4 +109,8 @@ public class UserService extends PagingService {
         return param;
     }
 
+    //    public List<UserDetailResponseDto> selectListDesigner(UserDetailRequestDto request) {
+    //        List<UserDetailResponseDto> result = userMapper.selectListDesigner(request);
+    //        return result;
+    //    }
 }

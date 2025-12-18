@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "User api")
+import java.util.List;
+
+@Tag(name = "사용자 관련 요청")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/user")
@@ -77,6 +79,19 @@ public class UserController extends MasterController {
 
         result = userService.loginUser(request);
         apiResultVo.setData(result);
+
+        return apiResultVo;
+
+    }
+
+    @Operation(summary = "디자이너 목록 조회", description = "디자이너 상세정보를 조회(페이징)")
+    @GetMapping("/desinger-page")
+    public ApiResultDto<List<UserDetailResponseDto>> selectListDesigner(UserDetailRequestDto request) {
+        ApiResultDto<List<UserDetailResponseDto>> apiResultVo = new ApiResultDto<>();
+        UserDetailResponseDto result;
+
+        //        result = userService.loginUser(request);
+        //        apiResultVo.setData(result);
 
         return apiResultVo;
 

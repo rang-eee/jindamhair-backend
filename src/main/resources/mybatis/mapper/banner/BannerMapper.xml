@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jindam.app.banner.mapper.BannerMapper">
+
+    <select id="selectBanner" parameterType="BannerDetailRequestDto" resultType="BannerDetailResponseDto">
+        SELECT
+            banner_id
+            ,banner_title
+            ,banner_content
+            ,banner_layer_height
+            ,display_start_at
+            ,display_end_at
+            ,sort_order
+            ,banner_type_code
+            ,banner_display_position_code
+            ,banner_display_target_code
+            ,banner_display_status_code
+            ,banner_display_time_code
+            ,banner_icon_code
+        FROM tb_banner
+        <where>
+            AND delete_yn = 'N'
+        </where>
+        ORDER BY sort_order
+    </select>
+
+</mapper>

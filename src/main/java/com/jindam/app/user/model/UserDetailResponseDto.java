@@ -1,16 +1,16 @@
 package com.jindam.app.user.model;
 
-import java.time.LocalDateTime;
-
 import com.jindam.base.code.UserStatusCode;
 import com.jindam.base.code.UserTypeCode;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -72,13 +72,13 @@ public class UserDetailResponseDto {
     private String designerWorkStatusCode;
 
     @Schema(description = "디자이너 오픈 요일 배열")
-    private String designerOpenDayArr;
+    private List<String> designerOpenDayArr;
 
     @Schema(description = "디자이너 오픈 시간 배열")
-    private String designerOpenTimeArr;
+    private List<String> designerOpenTimeArr;
 
     @Schema(description = "디자이너 오프 시간 배열")
-    private String designerCloseTimeArr;
+    private List<String> designerCloseTimeArr;
 
     @Schema(description = "디자이너 자동예양 확정 여부")
     private String designerAppointmentAutomaticConfirmYn;
