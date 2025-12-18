@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -34,6 +35,9 @@ public class UserDetailRequestDto extends PagingRequestDto {
     @Schema(description = "추천 디자이너 이메일", example = "test@email.com")
     private String recommendDesignerEmail;
 
+    @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime createAt;
+    
     /**
      * UserInsertRequestDto를 UserDetailRequestDto로 변환합니다.
      */

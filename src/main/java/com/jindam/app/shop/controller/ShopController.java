@@ -75,7 +75,7 @@ public class ShopController extends MasterController {
     @Operation(//
             summary = "디자이너 헤어샵 수정", //
             description = "uid의 해당하는 디자이너 헤어샵 수정 요청")
-    @PutMapping("")
+    @PatchMapping("")
     public ApiResultDto<List<DesingerShopDetailResponseDto>> updateListShop(@RequestBody List<DesignerShopUpdateRequestDto> request) {
 
         ApiResultDto<List<DesingerShopDetailResponseDto>> apiResultVo = new ApiResultDto<>(); // API 응답 객체

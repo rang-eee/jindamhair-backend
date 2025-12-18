@@ -47,7 +47,7 @@ public class UserController extends MasterController {
     }
 
     @Operation(summary = "사용자 정보 수정", description = "사용자 상세정보를 수정합니다.")
-    @PutMapping("")
+    @PatchMapping("")
     public ApiResultDto<UserDetailResponseDto> updateUserByUid(UserUpdateRequestDto request) {
         ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();
         UserDetailResponseDto result;
@@ -58,7 +58,7 @@ public class UserController extends MasterController {
         return apiResultVo;
     }
 
-    @Operation(summary = "사용자 정보 수정", description = "사용자 상세정보를 삭제 처리합니다.")
+    @Operation(summary = "사용자 정보 삭제 처리", description = "사용자 상세정보를 삭제 처리합니다.")
     @DeleteMapping("")
     public ApiResultDto<UserDetailResponseDto> deleteUserByUid(UserDeleteRequestDto request) {
         ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();

@@ -93,51 +93,56 @@
     <update id="updateListShop" parameterType="DesignerShopUpdateRequestDto">
         UPDATE tb_designer_shop
             <set>
-                <if test='designerShopId != "" and designerShopId != ApiConstant.NULL_STRING'>
+                <if test="designerShopId != null">
                     designer_shop_id = #{designerShopId}
                 </if>
-                <if test='uid != "" and uid != ApiConstant.NULL_STRING'>
-                    Uid = #{uid}
+                <if test="uid != null">
+                    ,uid = #{uid}
                 </if>
-                <if test='shopId != "" and shopId != ApiConstant.NULL_STRING'>
-                    shop_id = #{shopId}
+                <if test="shopId != null">
+                    ,shop_id = #{shopId}
                 </if>
-                <if test='shopRegistTypeCode != "" and shopRegistTypeCode != ApiConstant.NULL_STRING'>
-                    shop_regist_type_code = #{shopRegistTypeCode}
+                <if test="shopRegistTypeCode != null">
+                    ,shop_regist_type_code = #{shopRegistTypeCode}
                 </if>
-                <if test='representativeYn != "" and representativeYn != ApiConstant.NULL_STRING'>
-                    representative_yn = #{representativeYn}
+                <if test="representativeYn != null">
+                    ,representative_yn = #{representativeYn}
                 </if>
-                <if test='shopName != "" and shopName != ApiConstant.NULL_STRING'>
-                    shop_name = #{shopName}
+                <if test="shopName != null">
+                    ,shop_name = #{shopName}
                 </if>
-                <if test='shopDescription != "" and shopDescription != ApiConstant.NULL_STRING'>
-                    shop_description = #{shopDescription}
+                <if test="shopDescription != null">
+                    ,shop_description = #{shopDescription}
                 </if>
-                <if test='shopAddr != "" and shopAddr != ApiConstant.NULL_STRING'>
-                    shop_addr = #{shopAddr}
+                <if test="shopAddr != null">
+                    ,shop_addr = #{shopAddr}
                 </if>
-                <if test='shopAddrDetail != "" and shopAddrDetail != ApiConstant.NULL_STRING'>
-                    shop_addr_detail = #{shopAddrDetail}
+                <if test="shopAddrDetail != null">
+                    ,shop_addr_detail = #{shopAddrDetail}
                 </if>
-                <if test='shopContact != "" and shopContact != ApiConstant.NULL_STRING'>
-                    shop_contact = #{shopContact}
+                <if test="shopContact != null">
+                    ,shop_contact = #{shopContact}
                 </if>
-                <if test='positionLngt != "" and positionLngt != ApiConstant.NULL_STRING'>
-                    position_lngt = #{positionLngt}
+                <if test="positionLngt != null">
+                    ,position_lngt = #{positionLngt}
                 </if>
-                <if test='positionLatt != "" and positionLatt != ApiConstant.NULL_STRING'>
-                    position_latt = #{positionLatt}
+                <if test="positionLatt != null">
+                    ,position_latt = #{positionLatt}
                 </if>
-                <if test='zipcode != "" and zipcode != ApiConstant.NULL_STRING'>
-                    Zipcode = #{zipcode}
+                <if test="zipcode != null">
+                    ,zipcode = #{zipcode}
                 </if>
-                <if test='updateAt != "" and updateAt != ApiConstant.NULL_STRING'>
-                    update_at = NOW()
+                <if test="useYn != null">
+                    ,use_yn = #{useYn}
                 </if>
-                <if test='updateId != "" and updateId != ApiConstant.NULL_STRING'>
-                    update_id = #{updateId}
+                <if test="createAt != null">
+                    ,create_at = #{createAt}
                 </if>
+                <if test="createId != null">
+                    ,create_id = #{createId}
+                </if>
+                ,update_at
+                ,update_id
             </set>
         <where>
             AND uid = #{uid}
