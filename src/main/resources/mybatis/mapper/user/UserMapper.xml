@@ -64,7 +64,7 @@
         <include refid="getSelectUser" />
         <where>
             AND tu.user_email = #{userEmail}
-            AND tu.user_join_type_code = #{userJoinTypeCode}
+            AND tu.user_join_type_code = #{userJoinTypeCode.name()}
         </where>
     </select>
 
@@ -89,9 +89,9 @@
                  , #{userContact}
                  , #{userName}
                  , #{userNickname}
-                 , #{userStatusCode}
-                 , #{userGenderCode}
-                 , #{userAggCode}
+                 , #{userStatusCode.name()}
+                 , #{userGenderCode.name()}
+                 , #{userAggCode.name()}
                  , #{userTypeCoUde}
                  , #{userBrdt}
                  , NOW()
@@ -118,22 +118,22 @@
                 , user_nickname = #{userNickname}
             </if>
             <if test="userStatusCode != null">
-                , user_status_code = #{userStatusCode}
+                , user_status_code = #{userStatusCode.name()}
             </if>
             <if test="userGenderCode != null">
-                , user_gender_code = #{userGenderCode}
+                , user_gender_code = #{userGenderCode.name()}
             </if>
             <if test="userAggCode != null">
-                , user_agg_code = #{userAggCode}
+                , user_agg_code = #{userAggCode.name()}
             </if>
             <if test="userTypeCode != null">
-                , user_type_code = #{userTypeCode}
+                , user_type_code = #{userTypeCode.name()}
             </if>
             <if test="userBrdt != null">
                 , user_brdt = #{userBrdt}
             </if>
             <if test="userJoinTypeCode != null">
-                , user_join_type_code = #{userJoinTypeCode}
+                , user_join_type_code = #{userJoinTypeCode.name()}
             </if>
             <if test="pushToken != null">
                 , push_token = #{pushToken}
@@ -199,7 +199,7 @@
                 , profile_photo_file_id = #{profilePhotoFileId}
             </if>
             <if test="designerApprStatusCode != null">
-                , designer_appr_status_code = #{designerApprStatusCode}
+                , designer_appr_status_code = #{designerApprStatusCode.name()}
             </if>
             <if test="designerIntroduceContent != null">
                 , designer_introduce_content = #{designerIntroduceContent}
@@ -208,7 +208,7 @@
                 , designer_tag_arr = #{designerTagArr}
             </if>
             <if test="designerWorkStatusCode != null">
-                , designer_work_status_code = #{designerWorkStatusCode}
+                , designer_work_status_code = #{designerWorkStatusCode.name()}
             </if>
             <if test="designerOpenDayArr != null">
                 , designer_open_day_arr = #{designerOpenDayArr}
@@ -229,7 +229,7 @@
                 , designer_detail_photo_file_id = #{designerDetailPhotoFileId}
             </if>
             <if test="designerAccountBrandCode != null">
-                , designer_account_brand_code = #{designerAccountBrandCode}
+                , designer_account_brand_code = #{designerAccountBrandCode.name()}
             </if>
         </set>
         <where>
@@ -393,7 +393,7 @@
         <where>
             tb.delete_yn = 'N'
             <if test='userJoinTypeCode != null'>
-                AND tb.user_join_type_code = #{userJoinTypeCode}
+                AND tb.user_join_type_code = #{userJoinTypeCode.name()}
             </if>
         </where>
     </sql>

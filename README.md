@@ -12,8 +12,8 @@ Database : PostgreSql
 
 
 - git config 변경
-	$ git config user.name "COLON 이범규"
-	$ git config user.email "colon.dev.rang@gmail.com"
+	- git config user.name "COLON 이범규"
+	- git config user.email "colon.dev.rang@gmail.com"
 
 
 - formatter 설정
@@ -43,3 +43,11 @@ Database : PostgreSql
 		- 공통코드, 오류코드 관리
 		- 오류코드는 ApiResultCode.java와 일치 관리 필요
 
+- 맥 .Ds_store 파일 관련
+
+	- ✔︎ .Ds_store 파일 삭제
+		- find . -name '.DS_Store' -type f -delete
+		- find ~/dev/@project/jindam/jindamhair-backend -name '.DS_Store' -type f -delete
+
+	- ✔︎ .Ds_store 생성되지 않도록
+		- defaults write com.apple.desktopservices DSDontWriteNetworkStores true
