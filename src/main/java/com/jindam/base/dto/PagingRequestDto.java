@@ -29,7 +29,8 @@ public class PagingRequestDto extends PagingRequestBaseDto {
     @Schema(description = "정렬 방향", required = false, example = "desc")
     private String dir = "desc";
 
-    @Schema(description = "다중 정렬 조건", required = false, example = "[{\"name\":\"group\", \"dir\":\"desc\"}, {\"name\":\"updatedAt\", \"dir\":\"asc\"}]")
+    // @Schema(description = "다중 정렬 조건", required = false, example = "[{\"name\":\"group\", \"dir\":\"desc\"}, {\"name\":\"updatedAt\", \"dir\":\"asc\"}]")
+    @Schema(description = "다중 정렬 조건", required = false, hidden = true)
     private String sortsJsonString;
 
     @Schema(description = "다중 정렬 조건", hidden = true) // 사용자에게 노출되지 않음
