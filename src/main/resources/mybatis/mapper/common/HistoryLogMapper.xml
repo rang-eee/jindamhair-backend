@@ -3,15 +3,17 @@
 <mapper namespace="com.jindam.app.common.mapper.HistoryLogMapper">
 
     <insert id="insertErrorLog" parameterType="HistoryLogRequestDto">
-        INSERT INTO tb_com_log_error (
-            request_info,
-            create_id,
-            create_at
+        INSERT INTO tb_log_error (
+            idx
+            , request_info
+            , create_id
+            , create_at
         )
         VALUES (
-            #{requestInfo},
-            #{createId},
-            #{createAt}
+            nextval('seq_tb_log_error_idx')
+            , #{requestInfo}
+            , #{createId}
+            , #{createAt}
         )
     </insert>
 
