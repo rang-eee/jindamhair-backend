@@ -74,7 +74,7 @@
                     #{designerShopId}
                    ,#{uid}
                    ,#{shopId}
-                   ,#{shopRegistTypeCode}
+                   ,#{shopRegistTypeCode.name()}
                    ,#{representativeYn}
                    ,#{shopName}
                    ,#{shopDescription}
@@ -103,7 +103,7 @@
                     ,shop_id = #{shopId}
                 </if>
                 <if test="shopRegistTypeCode != null">
-                    ,shop_regist_type_code = #{shopRegistTypeCode}
+                    ,shop_regist_type_code = #{shopRegistTypeCode.name()}
                 </if>
                 <if test="representativeYn != null">
                     ,representative_yn = #{representativeYn}
