@@ -28,7 +28,7 @@ public class AppointmentDetailResponseDto {
     private String designerUid;
 
     @Schema(description = "헤어샵 ID", example = "123")
-    private String shopId;
+    private String designerShopId;
 
     @Schema(description = "예약 상태 코드", example = "123")
     private AppointmentStatusCode appointmentStatusCode;

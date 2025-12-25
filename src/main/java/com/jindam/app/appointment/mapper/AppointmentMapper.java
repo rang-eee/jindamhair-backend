@@ -1,7 +1,6 @@
 package com.jindam.app.appointment.mapper;
 
-import com.jindam.app.appointment.model.AppointmentDetailRequestDto;
-import com.jindam.app.appointment.model.AppointmentDetailResponseDto;
+import com.jindam.app.appointment.model.*;
 
 /**
  * ExampleMapper 인터페이스
@@ -11,5 +10,11 @@ import com.jindam.app.appointment.model.AppointmentDetailResponseDto;
  * </p>
  */
 public interface AppointmentMapper {
-    AppointmentDetailResponseDto selectBanner(AppointmentDetailRequestDto request);
+    AppointmentDetailResponseDto selectAppointmentById(AppointmentDetailRequestDto request);
+
+    int insertAppointment(AppointmentInsertRequestDto request);
+
+    int updateAppointment(AppointmentUpdateRequestDto request);
+
+    int deleteAppointment(AppointmentDeleteRequestDto request);
 }

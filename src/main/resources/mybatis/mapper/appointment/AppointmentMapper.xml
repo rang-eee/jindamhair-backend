@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jindam.app.appointment.mapper.AppointmentMapper">
 
-    <select id="selectAppointment" parameterType="AppointmentDetailRequestDto" resultType="AppointmentDetailResponseDto">
-        /*AppointmentMapper.selectAppointment*/
+    <select id="selectAppointmentByUid" parameterType="AppointmentDetailRequestDto" resultType="AppointmentDetailResponseDto">
+        /*AppointmentMapper.selectAppointmentByUid*/
         SELECT
              ta.appointment_id
             ,ta.customer_uid
             ,ta.designer_uid
-            ,ta.shop_id
+            ,ta.designer_shop_id
             ,ta.appointment_status_code
             ,ta.appointment_start_type_code
             ,ta.total_amount
@@ -136,7 +136,7 @@
         FROM tb_appointment ta
                  inner join tb_user tu on tu.uid = ta.customer_uid
                  inner join tb_user tud on tud.uid = ta.designer_uid
-                 inner join tb_designer_shop tds on tds.designer_shop_id  = ta.shop_id and tds.use_yn = 'Y'
+                 inner join tb_designer_shop tds on tds.designer_shop_id  = ta.designer_shop_id and tds.use_yn = 'Y'
         <where>
             AND ta.customer_uid = #{customerUid}
         </where>

@@ -1,9 +1,7 @@
 package com.jindam.app.appointment.service;
 
 import com.jindam.app.appointment.mapper.AppointmentMapper;
-import com.jindam.app.appointment.model.AppointmentDetailRequestDto;
-import com.jindam.app.appointment.model.AppointmentDetailResponseDto;
-import com.jindam.base.base.PagingService;
+import com.jindam.app.appointment.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,14 +11,59 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class AppointmentService extends PagingService {
-    private final AppointmentMapper bannerMapper;
+public class AppointmentService {
+    private final AppointmentMapper appointmentMapper;
 
-    public AppointmentDetailResponseDto selectBanner(AppointmentDetailRequestDto request) {
+    public AppointmentDetailResponseDto selectAppointmentById(AppointmentDetailRequestDto request) {
         AppointmentDetailResponseDto result;
-        result = bannerMapper.selectBanner(request);
+        result = appointmentMapper.selectAppointmentById(request);
 
         return result;
+    }
+
+    public AppointmentDetailResponseDto insertAppointment(AppointmentInsertRequestDto request) {
+
+        int result;
+        result = appointmentMapper.insertAppointment(request);
+
+        if (result > 0) {
+            AppointmentDetailRequestDto insertRequestDto = AppointmentDetailRequestDto.from(request);
+
+            AppointmentDetailResponseDto success = appointmentMapper.selectAppointmentById(insertRequestDto);
+            return success;
+        } else {
+            return null;
+        }
+    }
+
+    public AppointmentDetailResponseDto updateAppointment(AppointmentUpdateRequestDto request) {
+
+        int result;
+        result = appointmentMapper.updateAppointment(request);
+
+        if (result > 0) {
+            AppointmentDetailRequestDto insertRequestDto = AppointmentDetailRequestDto.from(request);
+
+            AppointmentDetailResponseDto success = appointmentMapper.selectAppointmentById(insertRequestDto);
+            return success;
+        } else {
+            return null;
+        }
+    }
+
+    public AppointmentDetailResponseDto deleteAppointment(AppointmentDeleteRequestDto request) {
+
+        int result;
+        result = appointmentMapper.deleteAppointment(request);
+
+        if (result > 0) {
+            AppointmentDetailRequestDto insertRequestDto = AppointmentDetailRequestDto.from(request);
+
+            AppointmentDetailResponseDto success = appointmentMapper.selectAppointmentById(insertRequestDto);
+            return success;
+        } else {
+            return null;
+        }
     }
 
 }
