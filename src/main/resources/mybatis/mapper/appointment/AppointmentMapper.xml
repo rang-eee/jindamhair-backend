@@ -142,7 +142,8 @@
         </where>
     </select>
 
-    <insert id="insertAppointment" parameterType="AppointmentDetailRequestDto">
+    <insert id="insertAppointment" parameterType="AppointmentInsertRequestDto">
+        /*AppointmentMapper.insertAppointment*/
         INSERT INTO tb_appointment (
                  appointment_id
                 ,customer_uid
@@ -196,4 +197,143 @@
                          )
     </insert>
 
+    <update id="updateAppointment" parameterType="AppointmentUpdateRequestDto">
+        /*AppointmentMapper.updateAppointment*/
+        UPDATE tb_appointment
+            <set>
+                update_at = #{updateAt}
+                , update_id = #{updateId}
+            <if test="appointment_id != null">
+                , appointment_id = #{appointmentId}
+            </if>
+            <if test="customer_uid != null">
+                ,customer_uid = #{customerUid}
+            </if>
+            <if test="designer_uid != null">
+                ,designer_uid = #{designerUid}
+            </if>
+            <if test="designer_shop_id != null">
+                ,designer_shop_id = #{designerShopId}
+            </if>
+            <if test="appointment_status_code != null">
+                ,appointment_status_code = #{appointmentStatusCode}
+            </if>
+            <if test="appointment_start_type_code != null">
+                ,appointment_start_type_code = #{appointmentStartTypeCode}
+            </if>
+            <if test="total_amount != null">
+                ,total_amount = #{totalAmount}
+            </if>
+            <if test="appointment_amount != null">
+                ,appointment_amount = #{appointmentAmount}
+            </if>
+            <if test="treatment_start_at != null">
+                ,treatment_start_at = #{treatmentStartAt}
+            </if>
+            <if test="treatment_end_at != null">
+                ,treatment_end_at = #{treatmentEndAt}
+            </if>
+            <if test="payment_method_code != null">
+                ,payment_method_code = #{paymentMethodCode}
+            </if>
+            <if test="appointment_content != null">
+                ,appointment_content = #{appointmentContent}
+            </if>
+            <if test="cancel_reason_content != null">
+                ,cancel_reason_content = #{cancelReasonContent}
+            </if>
+            <if test="review_id != null">
+                ,review_id = #{reviewId}
+            </if>
+            <if test="customer_name != null">
+                ,customer_name = #{customerName}
+            </if>
+            <if test="customer_nickname != null">
+                ,customer_nickname = #{customerNickname}
+            </if>
+            <if test="customer_contact != null">
+                ,customer_contact = #{customerContact}
+            </if>
+            <if test="designer_name != null">
+                ,designer_name = #{designerName}
+            </if>
+            <if test="designer_nickname != null">
+                ,designer_nickname = #{designerNickname}
+            </if>
+            <if test="designer_contact != null">
+                ,designer_contact = #{designerContact}
+            </if>
+            <if test="shop_name != null">
+                ,shop_name = #{shopName}
+            </if>
+            <if test="shop_addr != null">
+                ,shop_addr = #{shopAddr}
+            </if>
+        </set>
+    </update>
+
+    <update id="deleteAppointment" parameterType="AppointmentDeleteRequestDto">
+        /*AppointmentMapper.deleteAppointment*/
+        UPDATE  tb_appointmenttb_appointment
+        <set>
+            delete_yn = 'Y'
+            delete_at =  NOW()
+            delete_id = #{uid}
+        </set>
+        WHERE appointment_id = #{appointmentId}
+    </update>
+
+    <insert id="insertAppointmentTreatment" parameterType="AppointmentInsertRequestDto">
+        INSERT INTO tb_desinger_treatment (
+             appointment_treatment_id
+            ,uid
+            ,treatment_name
+            ,basic_amount
+            ,discount_pt
+            ,discount_amount
+            ,hair_add_type_code
+            ,add_amount
+            ,total_amount
+            ,treatment_content
+            ,treatment_require_time
+            ,treatment_photo_file_id
+            ,treatment_gender_type_code
+            ,discount_yn
+            ,add_yn
+            ,open_yn
+            ,treatment_code_1
+            ,treatment_name_1
+            ,treatment_code_2
+            ,treatment_name_2
+            ,treatment_code_3
+            ,treatment_name_3
+            ,create_at
+            ,cerate_id
+        ) VALUES (
+             #{appointmentTreatmentId}
+            ,#{uid}
+            ,#{treatmentName}
+            ,#{basicAmount}
+            ,#{discountPt}
+            ,#{discountAmount}
+            ,#{hairAddTypeCode}
+            ,#{addAmount}
+            ,#{totalAmount}
+            ,#{treatmentContent}
+            ,#{treatmentRequireTime}
+            ,#{treatmentPhotoFileId}
+            ,#{treatmentGenderTypeCode}
+            ,#{discountYn}
+            ,#{addYn}
+            ,#{openYn}
+            ,#{treatmentCode1}
+            ,#{treatmentName1}
+            ,#{treatmentCode2}
+            ,#{treatmentName2}
+            ,#{treatmentCode3}
+            ,#{treatmentName3}
+            ,NOW()
+            ,#{cerateId}
+                          )
+    </insert>
 </mapper>

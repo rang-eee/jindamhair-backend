@@ -17,4 +17,7 @@ public interface AppointmentMapper {
     int updateAppointment(AppointmentUpdateRequestDto request);
 
     int deleteAppointment(AppointmentDeleteRequestDto request);
+
+    int insertAppointmentTreatment(AppointmentInsertRequestDto request);
+
 }

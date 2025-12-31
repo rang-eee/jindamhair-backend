@@ -57,7 +57,7 @@ public class AppointmentController extends MasterController {
         return apiResultVo;
     }
 
-    @Operation(summary = "예약 삭제 요청 처리", description = "예약 건을 수정합니다.")
+    @Operation(summary = "예약 삭제 요청 처리", description = "예약 건을 삭제합니다.")
     @DeleteMapping("")
     public ApiResultDto<AppointmentDetailResponseDto> deleteAppointment(AppointmentDeleteRequestDto request) {
         ApiResultDto<AppointmentDetailResponseDto> apiResultVo = new ApiResultDto<>();
