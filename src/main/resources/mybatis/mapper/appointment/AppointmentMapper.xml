@@ -201,8 +201,8 @@
         /*AppointmentMapper.updateAppointment*/
         UPDATE tb_appointment
             <set>
-                update_at = #{updateAt}
-                , update_id = #{updateId}
+                update_at = #{workAt}
+                , update_id = #{workId}
             <if test="appointment_id != null">
                 , appointment_id = #{appointmentId}
             </if>
@@ -283,7 +283,7 @@
         WHERE appointment_id = #{appointmentId}
     </update>
 
-    <insert id="insertAppointmentTreatment" parameterType="AppointmentInsertRequestDto">
+    <insert id="insertAppointmentTreatment" parameterType="AppointmentTreatmentInsertRequestDto">
         INSERT INTO tb_desinger_treatment (
              appointment_treatment_id
             ,uid
@@ -316,13 +316,13 @@
             ,#{basicAmount}
             ,#{discountPt}
             ,#{discountAmount}
-            ,#{hairAddTypeCode}
+            ,#{hairAddTypeCode.name()}
             ,#{addAmount}
             ,#{totalAmount}
             ,#{treatmentContent}
             ,#{treatmentRequireTime}
             ,#{treatmentPhotoFileId}
-            ,#{treatmentGenderTypeCode}
+            ,#{treatmentGenderTypeCode.name()}
             ,#{discountYn}
             ,#{addYn}
             ,#{openYn}

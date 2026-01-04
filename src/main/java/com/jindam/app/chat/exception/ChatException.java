@@ -1,4 +1,4 @@
-package com.jindam.app.example.exception;
+package com.jindam.app.chat.exception;
 
 import com.jindam.base.base.ApiResultCode;
 import com.jindam.base.base.BaseReason;
@@ -8,9 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * Example API의 예외 처리 클래스 updateAppointment 정의하며, 각 예외는 `MasterException`을 상속받아 공통적인 예외 처리 방식을 유지합니다.
+ * Example API의 예외 처리 클래스
+ *
+ * Example API에서 발생할 수 있는 예외 상황들을 정의하며, 각 예외는 `MasterException`을 상속받아 공통적인 예외 처리 방식을 유지합니다.
  */
-public class ExampleException extends MasterException {
+public class ChatException extends MasterException {
 
     /**
      * Example API 예외 사유를 정의하는 열거형
@@ -37,7 +39,7 @@ public class ExampleException extends MasterException {
      *
      * @param reason 예외의 원인을 설명하는 `Reason` 객체
      */
-    public ExampleException(Reason reason) {
+    public ChatException(Reason reason) {
         super(reason);
     }
 
@@ -46,7 +48,7 @@ public class ExampleException extends MasterException {
      *
      * @param reason 예외의 원인을 설명하는 `Reason` 객체
      */
-    public ExampleException(Reason reason, String customMessage) {
+    public ChatException(Reason reason, String customMessage) {
         super(reason, customMessage);
     }
 
@@ -55,7 +57,7 @@ public class ExampleException extends MasterException {
      *
      * @param reason 예외의 원인을 설명하는 `Reason` 객체
      */
-    public ExampleException(Reason reason, String prefix, String suffix) {
+    public ChatException(Reason reason, String prefix, String suffix) {
         super(reason, prefix, suffix);
     }
 

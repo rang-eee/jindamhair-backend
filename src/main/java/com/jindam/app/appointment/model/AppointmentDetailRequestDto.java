@@ -275,8 +275,8 @@ public class AppointmentDetailRequestDto {
                 .shopAddr(dto.getShopAddr())
 
                 // 7. 시스템 관리(Audit) 정보
-                .createAt(dto.getCreateAt())
-                .createId(dto.getCreateId())
+                .createAt(dto.getWorkAt())
+                .createId(dto.getWorkId())
                 .build();
     }
 

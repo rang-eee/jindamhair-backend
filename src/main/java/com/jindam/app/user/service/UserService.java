@@ -43,13 +43,13 @@ public class UserService extends PagingService {
 
         UserDetailResponseDto dupByUid = userMapper.selectOneUserByUid(detailRequestDto);
 
-        if (dupByUid != null) {
+        if (dupByUid != null) { // 아이디 중복일경우
             throw new UserException(Reason.DUPLICATE_ID);
         }
 
         UserDetailResponseDto dupByEmailJoinTypeCode = userMapper.selectOneUserByEmailAndUserJoinTypeCode(detailRequestDto);
 
-        if (dupByEmailJoinTypeCode != null) {
+        if (dupByEmailJoinTypeCode != null) { //이메일 가입유형 코드
             throw new UserException(Reason.DUPLICATE_ID);
         }
 
@@ -69,25 +69,24 @@ public class UserService extends PagingService {
 
         int result = userMapper.updateUser(request);
 
-        if (result > 0) {
-            UserDetailRequestDto detailRequestDto = UserDetailRequestDto.from(request);
-            UserDetailResponseDto success = userMapper.selectOneUserByUid(detailRequestDto);
-            return success;
-        } else {
-            return null;
+        if (result == 0) { //유정 수정 처리 실패
+            throw new UserException(UserException.Reason.INVALID_ID);
         }
+        UserDetailRequestDto detailRequestDto = UserDetailRequestDto.from(request);
+        UserDetailResponseDto success = userMapper.selectOneUserByUid(detailRequestDto);
+        return success;
+
     }
 
     public UserDetailResponseDto deleteUser(UserDeleteRequestDto request) {
         int result = userMapper.deleteUser(request);
 
-        if (result > 0) {
-            UserDetailRequestDto detailRequestDto = UserDetailRequestDto.from(request);
-            UserDetailResponseDto success = userMapper.selectOneUserByUid(detailRequestDto);
-            return success;
-        } else {
-            return null;
+        if (result == 0) { //유저 삭제 처리 실패
+            throw new UserException(UserException.Reason.INVALID_ID);
         }
+        UserDetailRequestDto detailRequestDto = UserDetailRequestDto.from(request);
+        UserDetailResponseDto success = userMapper.selectOneUserByUid(detailRequestDto);
+        return success;
     }
 
     /**
@@ -113,7 +112,7 @@ public class UserService extends PagingService {
     public PagingResponseDto<UserDetailResponseDto> selectListDesignerPaging(UserDetailRequestDto request) {
 
         PagingResponseDto<UserDetailResponseDto> pagingResult = findData(userMapper, "selectListDesignerPaging", request);
-        
+
         return pagingResult;
     }
 }

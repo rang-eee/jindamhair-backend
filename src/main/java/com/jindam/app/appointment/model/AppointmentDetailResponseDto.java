@@ -231,6 +231,7 @@ public class AppointmentDetailResponseDto {
 
     @Schema(description = "디자이너 계좌 브랜드 코드", example = "")
     private DesignerAccountBrandCode customerDesignerAccountBrandCode;
+
     /*디자이너-------------------------------------------------------------*/
 
     @Schema(description = "사용자 이메일", example = "")
@@ -358,6 +359,7 @@ public class AppointmentDetailResponseDto {
 
     @Schema(description = "디자이너 계좌 브랜드 코드", example = "")
     private DesignerAccountBrandCode designerDesignerAccountBrandCode;
+
     /*디자이너 헤어샵----------------------------------------------------*/
     @Schema(description = "디자이너 헤어샵 ID", example = "")
     private String designerShopDesignerShopId;
@@ -398,4 +400,6 @@ public class AppointmentDetailResponseDto {
     @Schema(description = "우편번호", example = "")
     private String designerShopZipcode;
 
+    @Schema(description = "예약 시술 목록", example = "")
+    List<AppointmentTreatmentInsertRequestDto> treatmentList;
 }

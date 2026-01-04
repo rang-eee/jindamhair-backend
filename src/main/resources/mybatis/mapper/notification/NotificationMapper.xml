@@ -23,4 +23,56 @@
                          )
     </insert>
 
+    <insert id="insertAppointmentTreatment" parameterType="AppointmentTreatmentInsertRequestDto">
+        INSERT INTO tb_appointment_treatment (
+                ,designer_treatment_id
+                ,appointment_treatment_id
+                ,uid
+                ,treatment_name
+                ,basic_amount
+                ,discount_pt
+                ,discount_amount
+                ,hair_add_type_code
+                ,add_amount
+                ,total_amount
+                ,treatment_content
+                ,treatment_require_time
+                ,treatment_photo_file_id
+                ,treatment_gender_type_code
+                ,discount_yn
+                ,add_yn
+                ,open_yn
+                ,treatment_code_1
+                ,treatment_name_1
+                ,treatment_code_2
+                ,treatment_name_2
+                ,treatment_code_3
+                ,treatment_name_3
+        ) values (
+                #{appointmentTreatmentId}
+                #{designerTreatmentId}
+                #{Uid}
+                #{treatmentName}
+                #{basicAmount}
+                #{discountPt}
+                #{discountAmount}
+                #{hairAddTypeCode}
+                #{addAmount}
+                #{totalAmount}
+                #{treatmentContent}
+                #{treatmentRequireTime}
+                #{treatmentPhotoFileId}
+                #{treatmentGenderTypeCode}
+                #{discountYn}
+                #{addYn}
+                #{openYn}
+                #{treatmentCode1}
+                #{treatmentName1}
+                #{treatmentCode2}
+                #{treatmentName2}
+                #{treatmentCode3}
+                #{treatmentName3}
+                         )
+    </insert>
+
 </mapper>

@@ -1,12 +1,17 @@
 package com.jindam.app.appointment.service;
 
+import com.jindam.app.appointment.exception.AppointmentException;
 import com.jindam.app.appointment.mapper.AppointmentMapper;
 import com.jindam.app.appointment.model.*;
+import com.jindam.app.chat.service.ChatService;
+import com.jindam.app.notification.service.NotificationService;
 import com.jindam.base.code.AppointmentStatusCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class AppointmentService {
     private final AppointmentMapper appointmentMapper;
+    private final NotificationService notificationService;
+    private final ChatService chatService;
 
     public AppointmentDetailResponseDto selectAppointmentById(AppointmentDetailRequestDto request) {
         AppointmentDetailResponseDto result;
@@ -24,8 +31,13 @@ public class AppointmentService {
 
     public AppointmentDetailResponseDto insertAppointment(AppointmentInsertRequestDto request) {
 
-        int result;
+        int result = 0;
         result = appointmentMapper.insertAppointment(request);
+
+        // 예약 마스터 등록 실패
+        if (result == 0) {
+            throw new AppointmentException(AppointmentException.Reason.INVALID_ID);
+        }
 
         /* to-do
          * 예약성공시
@@ -50,38 +62,57 @@ public class AppointmentService {
          *
          * */
 
-        if (result > 0) { // 예약인서트 성공
-            int resultInsertAppTreat;
-            resultInsertAppTreat = appointmentMapper.insertAppointmentTreatment(request);
-            AppointmentDetailRequestDto insertRequestDto = AppointmentDetailRequestDto.from(request);
+        List<AppointmentTreatmentInsertRequestDto> aList = request.getTreatmentList();
+        int resultInsertAppTreat = 0;
 
-            if (resultInsertAppTreat > 0) {//예약시술테이블 인서트 성공
-                //예약 자동처리여부 확인
-                AppointmentDetailResponseDto tt;
-                tt = appointmentMapper.selectAppointmentById(insertRequestDto);
-                String autoYn = tt.getDesignerDesignerAppointmentAutomaticConfirmYn();
+        for (AppointmentTreatmentInsertRequestDto input : aList) {
+            resultInsertAppTreat = appointmentMapper.insertAppointmentTreatment(input);
 
-                if (autoYn.equals("Y")) {
-                    //예약상태 업데이트
-                    AppointmentUpdateRequestDto updateDto = AppointmentUpdateRequestDto.from(request);
-                    updateDto.setAppointmentStatusCode(AppointmentStatusCode.APST005);//예약완료
-                    appointmentMapper.updateAppointment(updateDto);
-
-                    //
-                    //알림센터 인서트
-                    //푸쉬알림 테이블 인서트
-                    //채팅 보내기
-                } else {
-
-                }
-
+            if (resultInsertAppTreat == 0) {//예약시술테이블 인서트 실패
+                throw new AppointmentException(AppointmentException.Reason.INVALID_ID);
             }
-
-            AppointmentDetailResponseDto success = appointmentMapper.selectAppointmentById(insertRequestDto);
-            return null;
-        } else {
-            return null;
         }
+
+        //예약 자동처리여부 확인
+        AppointmentDetailResponseDto tt;
+        AppointmentDetailRequestDto insertRequestDto = AppointmentDetailRequestDto.from(request);
+        tt = appointmentMapper.selectAppointmentById(insertRequestDto);
+        String autoYn = tt.getDesignerDesignerAppointmentAutomaticConfirmYn();
+
+        if (autoYn.equals("Y")) {
+            //예약상태 업데이트
+            AppointmentUpdateRequestDto updateDto = AppointmentUpdateRequestDto.builder()
+                    .appointmentId(request.getAppointmentId())
+                    .appointmentStatusCode(AppointmentStatusCode.APST005)
+                    //.workAt(LocalDateTime.now())
+                    //.workId(request.ge)
+                    .build();
+
+            updateDto.setAppointmentStatusCode(AppointmentStatusCode.APST005);//예약완료
+            int updateResult = appointmentMapper.updateAppointment(updateDto);
+
+            if (updateResult == 0) { // 예약상태 변경 실패
+                throw new AppointmentException(AppointmentException.Reason.INVALID_ID);
+            }
+            //알림센터 인서트
+            //notificationService.insertNotification();
+            //if (insertNotiReslut == 0){
+            //   throw new NotificationException(AppointmentException.Reason.INVALID_ID);
+            // }
+            //푸쉬알림 테이블 인서트
+            //notificationService.insertNotificationPush();
+            //채팅 보내기
+            //chatService.selectChatRoom();
+            //if(chatRoomResult  != null) {
+            //chatService.insertChat();
+            // }
+
+        } else {
+            
+        }
+
+        AppointmentDetailResponseDto success = appointmentMapper.selectAppointmentById(insertRequestDto);
+        return null;
     }
 
     public AppointmentDetailResponseDto updateAppointment(AppointmentUpdateRequestDto request) {

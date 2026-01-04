@@ -18,6 +18,6 @@ public interface AppointmentMapper {
 
     int deleteAppointment(AppointmentDeleteRequestDto request);
 
-    int insertAppointmentTreatment(AppointmentInsertRequestDto request);
+    int insertAppointmentTreatment(AppointmentTreatmentInsertRequestDto request);
 
 }

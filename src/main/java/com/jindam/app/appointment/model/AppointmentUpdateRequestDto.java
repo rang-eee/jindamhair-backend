@@ -207,11 +207,11 @@ public class AppointmentUpdateRequestDto {
                 .reviewId(dto.getReviewId())
 
                 // 6. 시스템 관리 정보 (업데이트 시점 기록용)
-                .updateId(dto.getUpdateId()) // 혹은 dto.getUid()
-                .updateAt(dto.getUpdateAt()) // 혹은 LocalDateTime.now()
-                .deleteYn(dto.getDeleteYn())
-                .deleteAt(dto.getDeleteAt())
-                .deleteId(dto.getDeleteId())
+                //                .updateId(dto.getUpdateId()) // 혹은 dto.getUid()
+                //                .updateAt(dto.getUpdateAt()) // 혹은 LocalDateTime.now()
+                //                .deleteYn(dto.getDeleteYn())
+                //                .deleteAt(dto.getDeleteAt())
+                //                .deleteId(dto.getDeleteId())
 
                 /* [체크] UpdateDto에 없는 필드(단순 조인용 이름 등)는 제외됨
                  * customerName, shopName, createAt 등은 보통 수정 대상이 아니므로 뺍니다.
