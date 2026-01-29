@@ -326,12 +326,7 @@ public class AppointmentDetailRequestDto {
                 .designerContact(dto.getDesignerContact())
                 .shopName(dto.getShopName())
                 .shopAddr(dto.getShopAddr())
-
-                // 7. 시스템 관리(Audit) 정보
-                .deleteYn(dto.getDeleteYn())
-                .deleteAt(dto.getDeleteAt())
-                .deleteId(dto.getDeleteId())
-
+                
                 .build();
     }
 

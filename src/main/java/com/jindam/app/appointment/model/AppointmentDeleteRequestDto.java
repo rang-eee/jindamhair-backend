@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -85,24 +86,12 @@ public class AppointmentDeleteRequestDto {
     @Schema(description = "헤어샵 주소", example = "123")
     private String shopAddr;
 
-    @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
+    @Schema(description = "예약 시술 목록", example = "123")
+    List<AppointmentTreatmentInsertRequestDto> treatmentList;
+
+    @Schema(description = "작업 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime createAt;
 
-    @Schema(description = "생성 ID", example = "123")
+    @Schema(description = "작업자 ID", example = "123")
     private String createId;
-
-    @Schema(description = "수정 일시", example = "2024-11-11T17:04:56.082147")
-    private LocalDateTime updateAt;
-
-    @Schema(description = "수정 ID", example = "123")
-    private String updateId;
-
-    @Schema(description = "삭제 여부", example = "N")
-    private String deleteYn;
-
-    @Schema(description = "삭제 일시", example = "2024-11-11T17:04:56.082147")
-    private LocalDateTime deleteAt;
-
-    @Schema(description = "삭제 ID", example = "123")
-    private String deleteId;
 }

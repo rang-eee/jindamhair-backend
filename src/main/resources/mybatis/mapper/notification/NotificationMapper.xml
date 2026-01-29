@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jindam.app.notification.mapper.NotificationMapper">
+
     <insert id="insertNotification" parameterType="NotificationInsertRequestDto">
         INSERT INTO tb_notification (
              notification_id
@@ -12,67 +13,88 @@
             ,create_at
             ,create_id
         ) VALUES (
-                  notification_id = #{notificationId}
-                 ,receiver_uid = #{receiverUid}
-                 ,notification_title = #{notificationTitle}
-                 ,notification_content = #{notificationContent}
-                 ,notification_topic = #{notificationTopic}
-                 ,event_click = #{eventClick}
-                 ,create_at = NOW()
-                 ,create_id = #{createId}
+                  nextval('seq_tb_notification'),
+                  #{receiverUid},
+                  #{notificationTitle},
+                  #{notificationContent},
+                  #{notificationTopic},
+                  #{eventClick},
+                  NOW(),
+                  #{createId}
                          )
     </insert>
 
-    <insert id="insertAppointmentTreatment" parameterType="AppointmentTreatmentInsertRequestDto">
-        INSERT INTO tb_appointment_treatment (
-                ,designer_treatment_id
-                ,appointment_treatment_id
-                ,uid
-                ,treatment_name
-                ,basic_amount
-                ,discount_pt
-                ,discount_amount
-                ,hair_add_type_code
-                ,add_amount
-                ,total_amount
-                ,treatment_content
-                ,treatment_require_time
-                ,treatment_photo_file_id
-                ,treatment_gender_type_code
-                ,discount_yn
-                ,add_yn
-                ,open_yn
-                ,treatment_code_1
-                ,treatment_name_1
-                ,treatment_code_2
-                ,treatment_name_2
-                ,treatment_code_3
-                ,treatment_name_3
-        ) values (
-                #{appointmentTreatmentId}
-                #{designerTreatmentId}
-                #{Uid}
-                #{treatmentName}
-                #{basicAmount}
-                #{discountPt}
-                #{discountAmount}
-                #{hairAddTypeCode}
-                #{addAmount}
-                #{totalAmount}
-                #{treatmentContent}
-                #{treatmentRequireTime}
-                #{treatmentPhotoFileId}
-                #{treatmentGenderTypeCode}
-                #{discountYn}
-                #{addYn}
-                #{openYn}
-                #{treatmentCode1}
-                #{treatmentName1}
-                #{treatmentCode2}
-                #{treatmentName2}
-                #{treatmentCode3}
-                #{treatmentName3}
+    <insert id="insertNotificationCenter" parameterType="NotificationInsertCenterRequestDto">
+        INSERT INTO tb_notification_center (
+             notification_center_id
+           ,notification_topic
+           ,event_click
+           ,notification_type_code
+           ,notification_title
+           ,notification_content
+           ,receiver_uid
+           ,appointment_id
+           ,appointment_at
+           ,designer_name
+           ,user_name
+           ,create_at
+           ,create_id
+        ) VALUES (
+            nextval('seq_tb_notification_center'),
+            #{notificationTopic},
+            #{eventClick},
+            #{notificationTypeCode},
+            #{notificationTitle},
+            #{notificationContent},
+            #{receiverUid},
+            #{appointmentId},
+            #{appointmentAt},
+            #{designerName},
+            #{userName},
+            #{createAt},
+            #{createId},
                          )
     </insert>
+
+    <insert id="insertNotificationPush" parameterType="NotificationInsertPushRequestDto">
+        INSERT INTO tb_user_push (
+            user_push_id
+            ,sender_uid
+            ,receiver_uid
+            ,push_title
+            ,push_content
+            ,send_at
+            ,send_yn
+            ,send_complete_at
+            ,push_type_code
+            ,push_link_val
+            ,create_at
+            ,create_id
+        ) VALUES (
+            nextVal('seq_tb_user_push'),
+            #{senderUid},
+            #{receiverUid},
+            #{pushTitle},
+            #{pushContent},
+            #{sendAt},
+            #{sendYn},
+            #{sendCompleteAt},
+            #{pushTypeCode},
+            #{pushLinkVal},
+            #{workAt},
+            #{workId}
+                         )
+    </insert>
+
+    <delete id="deleteNotificationPush" parameterType="NotificationDeletePushRequestDto">
+        UPDATE tb_user_push
+            <set>
+                delete_yn = 'Y'
+            </set>
+        <where>
+            sender_uid = #{senderUid}
+            receiver_uid =#{receiverUid}
+        </where>
+    </delete>
 
 </mapper>

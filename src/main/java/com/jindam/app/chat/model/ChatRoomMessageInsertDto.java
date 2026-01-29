@@ -1,7 +1,5 @@
 package com.jindam.app.chat.model;
 
-import com.jindam.base.code.ChatMessageContentTypeCode;
-import com.jindam.base.code.ChatMessageTypeCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,9 +14,8 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "예약 생성 요청 모델")
-public class ChatInsertRequestDto {
-
+@Schema(description = "예약 상세 응답 모델")
+public class ChatRoomMessageInsertDto {
     @Schema(description = "채팅 메시지 ID")
     private String chatMessageId;
 
@@ -29,10 +26,10 @@ public class ChatInsertRequestDto {
     private String writeUid;
 
     @Schema(description = "채팅 메시지 유형 코드")
-    private ChatMessageTypeCode chatMessageTypeCode;
+    private String chatMessageTypeCode;
 
     @Schema(description = "채팅 메시지 내용 유형 코드")
-    private ChatMessageContentTypeCode chatMessageContentTypeCode;
+    private String chatMessageContentTypeCode;
 
     @Schema(description = "채팅 메시지 내용")
     private String chatMessageContent;
@@ -42,9 +39,6 @@ public class ChatInsertRequestDto {
 
     @Schema(description = "예약 ID")
     private String appointmentId;
-
-    @Schema(description = "수신자 ID")
-    private String receiverId;
 
     @Schema(description = "작업 일시")
     private LocalDateTime workAt;

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Schema(description = "예약 생성 요청 모델")
 public class NotificationInsertRequestDto {
-    @Schema(description = "알림 ID", example = "123")
+    @Schema(description = "알림 ID", example = "1231111111")
     private String notificationId;
 
     @Schema(description = "수신자 사용자ID", example = "123")
@@ -35,24 +35,10 @@ public class NotificationInsertRequestDto {
     private String eventClick;
 
     @Schema(description = "생성 일시", example = "123")
-    private LocalDateTime createAt;
+    private LocalDateTime workAt;
 
     @Schema(description = "생성 ID", example = "123")
-    private String createId;
+    private String workId;
 
-    @Schema(description = "수정 일시", example = "123")
-    private LocalDateTime updateAt;
-
-    @Schema(description = "수정 ID", example = "123")
-    private String updateId;
-
-    @Schema(description = "삭제 여부", example = "Y")
-    private String deleteYn;
-
-    @Schema(description = "삭제 일시", example = "123")
-    private LocalDateTime deleteAt;
-
-    @Schema(description = "삭제 ID", example = "123")
-    private String deleteId;
 }
 

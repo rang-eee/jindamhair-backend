@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -106,72 +107,15 @@ public class AppointmentUpdateRequestDto {
 
     @Schema(description = "삭제 ID", example = "123")
     private String deleteId;
-    /*============================================================ 예약 시술 테이블 인서트*/
-    @Schema(description = "예약 시술 ID", example = "123")
-    private String appointmentTreatmentId;
 
-    @Schema(description = "사용자ID(디자이너 아이디)", example = "123")
-    private String uid;
+    @Schema(description = "작업일시", example = "123")
+    private LocalDateTime workAt;
 
-    @Schema(description = "시술 명", example = "123")
-    private String treatmentName;
+    @Schema(description = "작업자 ID", example = "123")
+    private String workId;
 
-    @Schema(description = "기본 금액", example = "123")
-    private String basicAmount;
-
-    @Schema(description = "할인 백분율", example = "123")
-    private String discountPt;
-
-    @Schema(description = "할인 금액", example = "123")
-    private String discountAmount;
-
-    @Schema(description = "헤어 추가 유형 코드", example = "123")
-    private String hairAddTypeCode;
-
-    @Schema(description = "추가 금액", example = "123")
-    private String addAmount;
-
-    @Schema(description = "총 금액", example = "123")
-    private String treatmentTotalAmount;
-
-    @Schema(description = "시술 내용", example = "123")
-    private String treatmentContent;
-
-    @Schema(description = "시술 소요 시간", example = "123")
-    private String treatmentRequireTime;
-
-    @Schema(description = "시술 사진 파일 ID", example = "123")
-    private String treatmentPhotoFileId;
-
-    @Schema(description = "시술 성별 유형 코드", example = "123")
-    private String treatmentGenderTypeCode;
-
-    @Schema(description = "할인 여부", example = "123")
-    private String discountYn;
-
-    @Schema(description = "추가 여부", example = "123")
-    private String addYn;
-
-    @Schema(description = "오픈 여부", example = "123")
-    private String openYn;
-
-    @Schema(description = "시술 코드 1", example = "123")
-    private String treatmentCode1;
-
-    @Schema(description = "시술 명 1", example = "123")
-    private String treatmentName1;
-
-    @Schema(description = "시술 코드 2", example = "123")
-    private String treatmentCode2;
-
-    @Schema(description = "시술 명 2", example = "123")
-    private String treatmentName2;
-
-    @Schema(description = "시술 코드 3", example = "123")
-    private String treatmentCode3;
-
-    @Schema(description = "시술 명 3", example = "123")
-    private String treatmentName3;
+    @Schema(description = "예약 시술 목록", example = "123")
+    List<AppointmentTreatmentInsertRequestDto> treatmentList;
 
     /**
      * AppointmentInsertRequestDto -> AppointmentUpdateRequestDto 변환 사용법: AppointmentUpdateRequestDto updateDto = AppointmentUpdateRequestDto.from(insertDto);

@@ -2,6 +2,8 @@ package com.jindam.app.appointment.mapper;
 
 import com.jindam.app.appointment.model.*;
 
+import java.util.List;
+
 /**
  * ExampleMapper 인터페이스
  *
@@ -11,6 +13,8 @@ import com.jindam.app.appointment.model.*;
  */
 public interface AppointmentMapper {
     AppointmentDetailResponseDto selectAppointmentById(AppointmentDetailRequestDto request);
+
+    List<AppointmentDetailResponseDto> selectAppointmentByEmail(AppointmentEmailRequestDto request);
 
     int insertAppointment(AppointmentInsertRequestDto request);
 

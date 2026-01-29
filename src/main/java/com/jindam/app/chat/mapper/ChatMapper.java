@@ -1,6 +1,7 @@
 package com.jindam.app.chat.mapper;
 
 import com.jindam.app.chat.model.ChatInsertRequestDto;
+import com.jindam.app.chat.model.ChatRoomMemberResponseDto;
 
 /**
  * ExampleMapper 인터페이스
@@ -10,5 +11,9 @@ import com.jindam.app.chat.model.ChatInsertRequestDto;
  * </p>
  */
 public interface ChatMapper {
-    int insertNotification(ChatInsertRequestDto request);
+    ChatRoomMemberResponseDto selectChatRoomByUserId(ChatInsertRequestDto request);
+
+    int insertChatRoom(ChatInsertRequestDto request);
+
+    int insertChatMessage(ChatInsertRequestDto request);
 }

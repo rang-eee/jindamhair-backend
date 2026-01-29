@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jindam.app.notification.mapper.ChatMapper">
-    <insert id="insertNotification" parameterType="NotificationInsertRequestDto">
-        INSERT INTO tb_notification (
-             notification_id
-            ,receiver_uid
-            ,notification_title
-            ,notification_content
-            ,notification_topic
-            ,event_click
-            ,create_at
-            ,create_id
+    <insert id="selectChatRoomByUserId" parameterType="ChatInsertRequestDto">
+        SELECT
+            chatroom_member_id
+            chatroom_id
+            uid
+            chatroom_name
+        FROM
+            (SELECT
+                 *
+             FROM tb_chatroom_member
+             WHERE uid = #{writeUid} AND delete_yn = 'N' AND delete_at IS null AND delete_id IS NULL) me
+                JOIN (SELECT * FROM tb_chatroom_member
+                      WHERE uid = #{receiverId} AND delete_yn = 'N' AND delete_at IS null AND delete_id IS NULL) trg
+                ON me.chatroom_id = trg.chatroom_id
+    </insert>
+
+    <insert id="insertChatRoom" parameterType="ChatInsertRequestDto">
+        INSERT INTO tb_chatroom (
+            chatroom_id
+            create_at
+            create_id
         ) VALUES (
-                  notification_id = #{notificationId}
-                 ,receiver_uid = #{receiverUid}
-                 ,notification_title = #{notificationTitle}
-                 ,notification_content = #{notificationContent}
-                 ,notification_topic = #{notificationTopic}
-                 ,event_click = #{eventClick}
-                 ,create_at = NOW()
-                 ,create_id = #{createId}
-                         )
+             nextval('seq_tb_chatroom'),
+             now(),
+             #{writeUid}
+           )
+
     </insert>
 
 </mapper>

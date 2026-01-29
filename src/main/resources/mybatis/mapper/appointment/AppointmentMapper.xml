@@ -142,6 +142,146 @@
         </where>
     </select>
 
+    <select id="selectAppointmentByEmail" parameterType="AppointmentEmailRequestDto" resultType="AppointmentDetailResponseDto">
+        /*AppointmentMapper.selectAppointmentByEmail*/
+        SELECT
+             ta.appointment_id
+            ,ta.customer_uid
+            ,ta.designer_uid
+            ,ta.designer_shop_id
+            ,ta.appointment_status_code
+            ,ta.appointment_start_type_code
+            ,ta.total_amount
+            ,ta.appointment_amount
+            ,ta.treatment_start_at
+            ,ta.treatment_end_at
+            ,ta.payment_method_code
+            ,ta.appointment_content
+            ,ta.cancel_reason_content
+            ,ta.review_id
+            ,ta.customer_name
+            ,ta.customer_nickname
+            ,ta.customer_contact
+            ,ta.designer_name
+            ,ta.designer_nickname
+            ,ta.designer_contact
+            ,ta.shop_name
+            ,ta.shop_addr
+            ,ta.create_at
+            ,ta.create_id
+            ,ta.update_at
+            ,ta.update_id
+            ,ta.delete_yn
+            ,ta.delete_at
+            ,ta.delete_id
+        --고객
+            ,tu.user_email  as customer_user_email
+            ,tu.user_contact    as customer_user_contact
+            ,tu.user_name   as customer_user_name
+            ,tu.user_nickname   as customer_user_nickname
+            ,tu.user_status_code    as customer_user_status_code
+            ,tu.user_gender_code    as customer_user_gender_code
+            ,tu.user_agg_code   as customer_user_agg_code
+            ,tu.user_type_code  as customer_user_type_code
+            ,tu.user_brdt   as customer_user_brdt
+            ,tu.user_join_type_code as customer_user_join_type_code
+            ,tu.push_token  as customer_push_token
+            ,tu.last_login_at   as customer_last_login_at
+            ,tu.bookmark_user_id_arr    as customer_bookmark_user_id_arr
+            ,tu.interception_user_id_arr    as customer_interception_user_id_arr
+            ,tu.prvcplc_agree_yn    as customer_prvcplc_agree_yn
+            ,tu.terms_agree_yn  as customer_terms_agree_yn
+            ,tu.all_notification_reception_yn   as customer_all_notification_reception_yn
+            ,tu.all_notification_reception_at   as customer_all_notification_reception_at
+            ,tu.notice_notification_reception_yn    as customer_notice_notification_reception_yn
+            ,tu.notice_notification_reception_at    as customer_notice_notification_reception_at
+            ,tu.marketing_notification_reception_yn as customer_marketing_notification_reception_yn
+            ,tu.marketing_notification_reception_at as customer_marketing_notification_reception_at
+            ,tu.offer_notification_reception_yn as customer_offer_notification_reception_yn
+            ,tu.offer_notification_reception_at as customer_offer_notification_reception_at
+            ,tu.chat_notification_reception_yn  as customer_chat_notification_reception_yn
+            ,tu.chat_notification_reception_at  as customer_chat_notification_reception_at
+            ,tu.position_addr   as customer_position_addr
+            ,tu.position_latt   as customer_position_latt
+            ,tu.position_lngt   as customer_position_lngt
+            ,tu.position_distance   as customer_position_distance
+            ,tu.profile_photo_file_id   as customer_profile_photo_file_id
+            ,tu.designer_appr_status_code   as customer_designer_appr_status_code
+            ,tu.designer_introduce_content  as customer_designer_introduce_content
+            ,tu.designer_tag_arr    as customer_designer_tag_arr
+            ,tu.designer_work_status_code   as customer_designer_work_status_code
+            ,tu.designer_open_day_arr   as customer_designer_open_day_arr
+            ,tu.designer_open_time_arr  as customer_designer_open_time_arr
+            ,tu.designer_close_time_arr as customer_designer_close_time_arr
+            ,tu.designer_appointment_automatic_confirm_yn   as customer_designer_appointment_automatic_confirm_yn
+            ,tu.designer_applink_url    as customer_designer_applink_url
+            ,tu.designer_detail_photo_file_id   as customer_designer_detail_photo_file_id
+            ,tu.designer_account_brand_code as customer_designer_account_brand_code
+        --디자이너
+            ,tud.user_email     as designer_user_email
+            ,tud.user_contact   as designer_user_contact
+            ,tud.user_name  as designer_user_name
+            ,tud.user_nickname  as designer_user_nickname
+            ,tud.user_status_code   as designer_user_status_code
+            ,tud.user_gender_code   as designer_user_gender_code
+            ,tud.user_agg_code  as designer_user_agg_code
+            ,tud.user_type_code     as designer_user_type_code
+            ,tud.user_brdt  as designer_user_brdt
+            ,tud.user_join_type_code    as designer_user_join_type_code
+            ,tud.push_token     as designer_push_token
+            ,tud.last_login_at  as designer_last_login_at
+            ,tud.bookmark_user_id_arr   as designer_bookmark_user_id_arr
+            ,tud.interception_user_id_arr   as designer_interception_user_id_arr
+            ,tud.prvcplc_agree_yn   as designer_prvcplc_agree_yn
+            ,tud.terms_agree_yn     as designer_terms_agree_yn
+            ,tud.all_notification_reception_yn  as designer_all_notification_reception_yn
+            ,tud.all_notification_reception_at  as designer_all_notification_reception_at
+            ,tud.notice_notification_reception_yn   as designer_notice_notification_reception_yn
+            ,tud.notice_notification_reception_at   as designer_notice_notification_reception_at
+            ,tud.marketing_notification_reception_yn    as designer_marketing_notification_reception_yn
+            ,tud.marketing_notification_reception_at    as designer_marketing_notification_reception_at
+            ,tud.offer_notification_reception_yn    as designer_offer_notification_reception_yn
+            ,tud.offer_notification_reception_at    as designer_offer_notification_reception_at
+            ,tud.chat_notification_reception_yn     as designer_chat_notification_reception_yn
+            ,tud.chat_notification_reception_at     as designer_chat_notification_reception_at
+            ,tud.position_addr  as designer_position_addr
+            ,tud.position_latt  as designer_position_latt
+            ,tud.position_lngt  as designer_position_lngt
+            ,tud.position_distance  as designer_position_distance
+            ,tud.profile_photo_file_id  as designer_profile_photo_file_id
+            ,tud.designer_appr_status_code  as designer_designer_appr_status_code
+            ,tud.designer_introduce_content     as designer_designer_introduce_content
+            ,tud.designer_tag_arr   as designer_designer_tag_arr
+            ,tud.designer_work_status_code  as designer_designer_work_status_code
+            ,tud.designer_open_day_arr  as designer_designer_open_day_arr
+            ,tud.designer_open_time_arr     as designer_designer_open_time_arr
+            ,tud.designer_close_time_arr    as designer_designer_close_time_arr
+            ,tud.designer_appointment_automatic_confirm_yn  as designer_designer_appointment_automatic_confirm_yn
+            ,tud.designer_applink_url   as designer_designer_applink_url
+            ,tud.designer_detail_photo_file_id  as designer_designer_detail_photo_file_id
+            ,tud.designer_account_brand_code    as designer_designer_account_brand_code
+        --디자이너 헤어샵
+            ,tds.designer_shop_id as designer_shop_designer_shop_id
+            ,tds.uid as designer_shop_uid
+            ,tds.shop_regist_type_code as designer_shop_shop_regist_type_code
+            ,tds.representative_yn as designer_shop_representative_yn
+            ,tds.shop_name as designer_shop_shop_name
+            ,tds.shop_description as designer_shop_shop_description
+            ,tds.shop_addr as designer_shop_shop_addr
+            ,tds.shop_addr_detail as designer_shop_shop_addr_detail
+            ,tds.shop_contact as designer_shop_shop_contact
+            ,tds.position_lngt as designer_shop_position_lngt
+            ,tds.position_latt as designer_shop_position_latt
+            ,tds.zipcode as designer_shop_zipcode
+        FROM tb_appointment ta
+                 inner join tb_user tu on tu.uid = ta.customer_uid
+                 inner join tb_user tud on tud.uid = ta.designer_uid
+                 inner join tb_designer_shop tds on tds.designer_shop_id  = ta.designer_shop_id and tds.use_yn = 'Y'
+        <where>
+            AND tu.user_email = #{userEmail}
+        </where>
+    </select>
+
     <insert id="insertAppointment" parameterType="AppointmentInsertRequestDto">
         /*AppointmentMapper.insertAppointment*/
         INSERT INTO tb_appointment (
@@ -170,7 +310,7 @@
                 ,create_at
                 ,create_id
         ) VALUES (
-                  #{appointmentId}
+                  nextVal('seq_tb_appointment')
                  ,#{customerUid}
                  ,#{designerUid}
                  ,#{designerShopId}
@@ -278,7 +418,7 @@
         <set>
             delete_yn = 'Y'
             delete_at =  NOW()
-            delete_id = #{uid}
+            delete_id = #{designerUid}
         </set>
         WHERE appointment_id = #{appointmentId}
     </update>
@@ -335,5 +475,57 @@
             ,NOW()
             ,#{cerateId}
                           )
+    </insert>
+
+    <insert id="insertAppointmentTreatment" parameterType="AppointmentTreatmentInsertRequestDto">
+        INSERT INTO tb_appointment_treatment (
+                                             ,designer_treatment_id
+                                             ,appointment_treatment_id
+                                             ,uid
+                                             ,treatment_name
+                                             ,basic_amount
+                                             ,discount_pt
+                                             ,discount_amount
+                                             ,hair_add_type_code
+                                             ,add_amount
+                                             ,total_amount
+                                             ,treatment_content
+                                             ,treatment_require_time
+                                             ,treatment_photo_file_id
+                                             ,treatment_gender_type_code
+                                             ,discount_yn
+                                             ,add_yn
+                                             ,open_yn
+                                             ,treatment_code_1
+                                             ,treatment_name_1
+                                             ,treatment_code_2
+                                             ,treatment_name_2
+                                             ,treatment_code_3
+                                             ,treatment_name_3
+        ) values (
+                     nextVal('seq_tb_appointment_treatment')
+                         #{designerTreatmentId}
+                             #{Uid}
+                             #{treatmentName}
+                             #{basicAmount}
+                             #{discountPt}
+                             #{discountAmount}
+                             #{hairAddTypeCode}
+                             #{addAmount}
+                             #{totalAmount}
+                             #{treatmentContent}
+                             #{treatmentRequireTime}
+                             #{treatmentPhotoFileId}
+                             #{treatmentGenderTypeCode}
+                             #{discountYn}
+                             #{addYn}
+                             #{openYn}
+                             #{treatmentCode1}
+                             #{treatmentName1}
+                             #{treatmentCode2}
+                             #{treatmentName2}
+                             #{treatmentCode3}
+                             #{treatmentName3}
+                 )
     </insert>
 </mapper>

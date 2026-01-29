@@ -1,5 +1,8 @@
 package com.jindam.app.notification.mapper;
 
+import com.jindam.app.notification.model.NotificationDeletePushRequestDto;
+import com.jindam.app.notification.model.NotificationInsertCenterRequestDto;
+import com.jindam.app.notification.model.NotificationInsertPushRequestDto;
 import com.jindam.app.notification.model.NotificationInsertRequestDto;
 
 /**
@@ -11,4 +14,10 @@ import com.jindam.app.notification.model.NotificationInsertRequestDto;
  */
 public interface NotificationMapper {
     int insertNotification(NotificationInsertRequestDto request);
+
+    int insertNotificationCenter(NotificationInsertCenterRequestDto request);
+
+    int insertNotificationPush(NotificationInsertPushRequestDto request);
+
+    int deleteNotificationPush(NotificationDeletePushRequestDto request);
 }
