@@ -90,8 +90,8 @@ public class AppointmentDeleteRequestDto {
     List<AppointmentTreatmentInsertRequestDto> treatmentList;
 
     @Schema(description = "작업 일시", example = "2024-11-11T17:04:56.082147")
-    private LocalDateTime createAt;
+    private LocalDateTime workAt;
 
     @Schema(description = "작업자 ID", example = "123")
-    private String createId;
+    private String workId;
 }

@@ -2,8 +2,11 @@ package com.jindam.app.chat.service;
 
 import com.jindam.app.chat.mapper.ChatMapper;
 import com.jindam.app.chat.model.ChatInsertRequestDto;
+import com.jindam.app.chat.model.ChatRoomDetailRequestDto;
 import com.jindam.app.chat.model.ChatRoomMemberResponseDto;
 import com.jindam.app.notification.exception.NotificationException;
+import com.jindam.base.base.PagingService;
+import com.jindam.base.dto.PagingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class ChatService {
+public class ChatService extends PagingService {
 
     private final ChatMapper chatMapper;
 
@@ -36,6 +39,13 @@ public class ChatService {
         }
 
         return insertChatMessageResult;
+    }
+
+    public PagingResponseDto<ChatRoomMemberResponseDto> selectChatRoomPaging(ChatRoomDetailRequestDto request) {
+
+        PagingResponseDto<ChatRoomMemberResponseDto> pagingResult = findData(chatMapper, "selectChatRoomPaging", request);
+
+        return pagingResult;
     }
 
 }

@@ -360,46 +360,6 @@ public class AppointmentDetailResponseDto {
     @Schema(description = "디자이너 계좌 브랜드 코드", example = "")
     private DesignerAccountBrandCode designerDesignerAccountBrandCode;
 
-    /*디자이너 헤어샵----------------------------------------------------*/
-    @Schema(description = "디자이너 헤어샵 ID", example = "")
-    private String designerShopDesignerShopId;
-
-    @Schema(description = "사용자ID", example = "")
-    private String designerShopUid;
-
-    @Schema(description = "헤어샵 ID", example = "")
-    private String designerShopShopId;
-
-    @Schema(description = "헤어샵 등록 유형 코드", example = "")
-    private ShopRegistTypeCode designerShopShopRegistTypeCode;
-
-    @Schema(description = "대표 여부", example = "")
-    private String designerShopRepresentativeYn;
-
-    @Schema(description = "헤어샵 명", example = "")
-    private String designerShopShopName;
-
-    @Schema(description = "헤어샵 설명", example = "")
-    private String designerShopShopDescription;
-
-    @Schema(description = "헤어샵 주소", example = "")
-    private String designerShopShopAddr;
-
-    @Schema(description = "헤어샵 주소 상세", example = "")
-    private String designerShopShopAddrDetail;
-
-    @Schema(description = "헤어샵 연락처", example = "")
-    private String designerShopShopContact;
-
-    @Schema(description = "위치 경도", example = "")
-    private String designerShopPositionLngt;
-
-    @Schema(description = "위치 위도", example = "")
-    private String designerShopPositionLatt;
-
-    @Schema(description = "우편번호", example = "")
-    private String designerShopZipcode;
-
     @Schema(description = "예약 시술 목록", example = "")
     List<AppointmentTreatmentInsertRequestDto> treatmentList;
 }

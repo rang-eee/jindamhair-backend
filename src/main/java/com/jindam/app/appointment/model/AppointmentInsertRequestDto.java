@@ -23,7 +23,7 @@ public class AppointmentInsertRequestDto {
     @Schema(description = "예약 ID", example = "123")
     private String appointmentId;
 
-    @Schema(description = "고객 사용자ID", example = "123")
+    @Schema(description = "고객 사용자ID", example = "4124124")
     private String customerUid;
 
     @Schema(description = "디자이너 사용자ID", example = "123")

@@ -3,6 +3,7 @@ package com.jindam.app.appointment.model;
 import com.jindam.base.code.AppointmentStartTypeCode;
 import com.jindam.base.code.AppointmentStatusCode;
 import com.jindam.base.code.PaymentMethodCode;
+import com.jindam.base.dto.PagingRequestDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "예약 상세 조회 요청 모델")
-public class AppointmentDetailRequestDto {
+public class AppointmentDetailRequestDto extends PagingRequestDto {
     @Schema(description = "예약 ID", example = "123")
     private String appointmentId;
 
@@ -86,89 +87,11 @@ public class AppointmentDetailRequestDto {
     @Schema(description = "헤어샵 주소", example = "123")
     private String shopAddr;
 
-    @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
-    private LocalDateTime createAt;
+    @Schema(description = "작업 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime workAt;
 
     @Schema(description = "생성 ID", example = "123")
     private String createId;
-
-    @Schema(description = "수정 일시", example = "2024-11-11T17:04:56.082147")
-    private LocalDateTime updateAt;
-
-    @Schema(description = "수정 ID", example = "123")
-    private String updateId;
-
-    @Schema(description = "삭제 여부", example = "N")
-    private String deleteYn;
-
-    @Schema(description = "삭제 일시", example = "2024-11-11T17:04:56.082147")
-    private LocalDateTime deleteAt;
-
-    @Schema(description = "삭제 ID", example = "123")
-    private String deleteId;
-    /*============================================================ 예약 시술 테이블 인서트*/
-    @Schema(description = "디자이너 시술 ID", example = "123")
-    private String designerTreatmentId;
-
-    @Schema(description = "디자이너 아이디같은데 ??", example = "123")
-    private String uid;
-
-    @Schema(description = "시술 명", example = "123")
-    private String treatmentName;
-
-    @Schema(description = "기본 금액", example = "123")
-    private String basicAmount;
-
-    @Schema(description = "할인 백분율", example = "123")
-    private String discountPt;
-
-    @Schema(description = "할인 금액", example = "123")
-    private String discountAmount;
-
-    @Schema(description = "시술 총 금액", example = "123")
-    private String treatmentTotalAmount;
-
-    @Schema(description = "시술 내용", example = "123")
-    private String treatmentContent;
-
-    @Schema(description = "시술 소요 시간", example = "123")
-    private String treatmentRequireTime;
-
-    @Schema(description = "시술 사진 파일 ID", example = "123")
-    private String treatmentPhotoFileId;
-
-    @Schema(description = "시술 성별 유형 코드", example = "123")
-    private String treatmentGenderTypeCode;
-
-    @Schema(description = "할인 여부", example = "123")
-    private String discountYn;
-
-    @Schema(description = "추가 여부", example = "Y")
-    private String addYn;
-
-    @Schema(description = "오픈 여부", example = "Y")
-    private String openYn;
-
-    @Schema(description = "정렬 순서", example = "123")
-    private String sortOrder;
-
-    @Schema(description = "시술 코드 1", example = "123")
-    private String treatmentCode1;
-
-    @Schema(description = "시술 명 1", example = "123")
-    private String treatmentName1;
-
-    @Schema(description = "시술 코드 2", example = "123")
-    private String treatmentCode2;
-
-    @Schema(description = "시술 명 2", example = "123")
-    private String treatmentName2;
-
-    @Schema(description = "시술 코드 3", example = "123")
-    private String treatmentCode3;
-
-    @Schema(description = "시술 명 3", example = "123")
-    private String treatmentName3;
 
     /**
      * AppointmentUpdateRequestDto를  AppointmentDetailRequestDto로 변환합니다.
@@ -216,13 +139,6 @@ public class AppointmentDetailRequestDto {
                 .designerContact(dto.getDesignerContact())
                 .shopName(dto.getShopName())
                 .shopAddr(dto.getShopAddr())
-
-                // 7. 시스템 관리(Audit) 정보
-                .updateAt(dto.getUpdateAt())
-                .updateId(dto.getUpdateId())
-                .deleteYn(dto.getDeleteYn())
-                .deleteAt(dto.getDeleteAt())
-                .deleteId(dto.getDeleteId())
 
                 .build();
     }
@@ -273,10 +189,7 @@ public class AppointmentDetailRequestDto {
                 .designerContact(dto.getDesignerContact())
                 .shopName(dto.getShopName())
                 .shopAddr(dto.getShopAddr())
-
-                // 7. 시스템 관리(Audit) 정보
-                .createAt(dto.getWorkAt())
-                .createId(dto.getWorkId())
+                
                 .build();
     }
 
@@ -326,7 +239,7 @@ public class AppointmentDetailRequestDto {
                 .designerContact(dto.getDesignerContact())
                 .shopName(dto.getShopName())
                 .shopAddr(dto.getShopAddr())
-                
+
                 .build();
     }
 

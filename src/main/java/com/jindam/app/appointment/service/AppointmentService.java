@@ -11,11 +11,12 @@ import com.jindam.app.notification.model.NotificationInsertCenterRequestDto;
 import com.jindam.app.notification.model.NotificationInsertPushRequestDto;
 import com.jindam.app.notification.model.NotificationInsertRequestDto;
 import com.jindam.app.notification.service.NotificationService;
+import com.jindam.base.base.PagingService;
 import com.jindam.base.code.*;
+import com.jindam.base.dto.PagingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,9 +26,8 @@ import static com.jindam.base.code.AppointmentStartTypeCode.APSR003;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Slf4j
-public class AppointmentService {
+public class AppointmentService extends PagingService {
     private final AppointmentMapper appointmentMapper;
     private final NotificationService notificationService;
     private final ChatService chatService;
@@ -35,8 +35,14 @@ public class AppointmentService {
     public AppointmentDetailResponseDto selectAppointmentById(AppointmentDetailRequestDto request) {
         AppointmentDetailResponseDto result;
         result = appointmentMapper.selectAppointmentById(request);
-
         return result;
+    }
+
+    public PagingResponseDto<AppointmentDetailResponseDto> selectAppointmentByCustIdPaging(AppointmentDetailRequestDto request) {
+
+        PagingResponseDto<AppointmentDetailResponseDto> pagingResult = findData(appointmentMapper, "selectAppointmentByCustIdPaging", request);
+
+        return pagingResult;
     }
 
     public List<AppointmentDetailResponseDto> selectAppointmentByEmail(AppointmentEmailRequestDto request) {
@@ -81,6 +87,7 @@ public class AppointmentService {
         int resultInsertAppTreat = 0;
 
         for (AppointmentTreatmentInsertRequestDto input : aList) {
+
             resultInsertAppTreat = appointmentMapper.insertAppointmentTreatment(input);
 
             if (resultInsertAppTreat == 0) {//예약시술테이블 인서트 실패
@@ -91,6 +98,8 @@ public class AppointmentService {
         //예약 자동처리여부 확인
         AppointmentDetailResponseDto tt;
         AppointmentDetailRequestDto insertRequestDto = AppointmentDetailRequestDto.from(request);
+        //        String newId = request.getAppointmentId();
+        //        insertRequestDto.setAppointmentId(newId);
         tt = appointmentMapper.selectAppointmentById(insertRequestDto);
         String autoYn = tt.getDesignerDesignerAppointmentAutomaticConfirmYn();
 

@@ -14,6 +14,16 @@ import java.util.List;
 public interface AppointmentMapper {
     AppointmentDetailResponseDto selectAppointmentById(AppointmentDetailRequestDto request);
 
+    /**
+     * 목록 페이징 처리 후 조회
+     */
+    List<AppointmentDetailResponseDto> selectAppointmentByCustIdPaging(AppointmentDetailRequestDto request);
+
+    /**
+     * 목록 카운트 조회
+     */
+    int selectAppointmentByCustIdCount(AppointmentDetailRequestDto request);
+
     List<AppointmentDetailResponseDto> selectAppointmentByEmail(AppointmentEmailRequestDto request);
 
     int insertAppointment(AppointmentInsertRequestDto request);
