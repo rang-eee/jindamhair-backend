@@ -40,7 +40,7 @@
              ,tu.profile_photo_file_id
              ,tu.designer_appr_status_code
              ,tu.designer_introduce_content
-             ,tu.designer_tag
+             ,tu.designer_tag_arr
              ,tu.designer_work_status_code
              ,tu.designer_open_day_arr
              ,tu.designer_open_time_arr
@@ -287,7 +287,7 @@
              ,tu.profile_photo_file_id
              ,tu.designer_appr_status_code
              ,tu.designer_introduce_content
-             ,tu.designer_tag
+             ,tu.designer_tag_arr
              ,tu.designer_work_status_code
              ,tu.designer_open_day_arr
              ,tu.designer_open_time_arr

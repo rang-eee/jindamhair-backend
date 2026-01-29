@@ -1,15 +1,26 @@
 package com.jindam.app.user.controller;
 
-import com.jindam.app.user.model.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.jindam.app.user.model.UserDeleteRequestDto;
+import com.jindam.app.user.model.UserDetailRequestDto;
+import com.jindam.app.user.model.UserDetailResponseDto;
+import com.jindam.app.user.model.UserInsertRequestDto;
+import com.jindam.app.user.model.UserUpdateRequestDto;
 import com.jindam.app.user.service.UserService;
 import com.jindam.base.base.MasterController;
 import com.jindam.base.dto.ApiResultDto;
 import com.jindam.base.dto.PagingResponseDto;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "사용자 관련 요청")
 @RequiredArgsConstructor
