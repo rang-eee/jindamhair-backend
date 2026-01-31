@@ -18,7 +18,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "예약 상세 조회 요청 모델")
+@Schema(description = "예약 삭제 요청 모델")
 public class AppointmentDeleteRequestDto {
     @Schema(description = "예약 ID", example = "123")
     private String appointmentId;

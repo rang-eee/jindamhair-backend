@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "예약 상세 응답 모델")
+@Schema(description = " 응답 모델")
 public class NotificationDetailResponseDto {
     @Schema(description = "알림 ID", example = "123")
     private String notificationId;

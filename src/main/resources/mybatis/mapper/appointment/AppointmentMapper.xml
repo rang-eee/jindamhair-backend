@@ -585,4 +585,29 @@
                              ,#{treatmentName3}
                  )
     </insert>
+
+    <insert id="insertAppointmentSign" parameterType="AppointmentSignInsertRequestDto">
+        INSERT INTO tb_appointment_sign (
+            appointment_sign_id
+            appointment_id
+            sign_offset_x
+            sign_offset_y
+            sign_size
+            sign_color
+            sort_order
+            create_at
+            create_id
+        ) VALUES (
+             nextVal('seq_tb_appointment_sign_id'),
+            #{appointmentId},
+            #{signOffsetX},
+            #{signOffsetY},
+            #{signSize},
+            #{signColor},
+            #{sortOrder},
+            #{workAt},
+            #{workId}
+                   )
+
+    </insert>
 </mapper>

@@ -19,7 +19,7 @@ import java.util.Objects;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "예약 상세 조회 요청 모델")
+@Schema(description = " 요청 모델")
 public class AppointmentDetailRequestDto extends PagingRequestDto {
     @Schema(description = "예약 ID", example = "123")
     private String appointmentId;
@@ -189,7 +189,7 @@ public class AppointmentDetailRequestDto extends PagingRequestDto {
                 .designerContact(dto.getDesignerContact())
                 .shopName(dto.getShopName())
                 .shopAddr(dto.getShopAddr())
-                
+
                 .build();
     }
 

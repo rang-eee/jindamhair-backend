@@ -44,7 +44,17 @@ public class AppointmentController extends MasterController {
 
         return apiResultVo;
     }
-    //@Operation(summary = "디자이너 예약 관리 목록 조회", description = "디자이너ID 로 조회합니다.")
+
+    @Operation(summary = "디자이너 예약 관리 목록 조회", description = "디자이너ID로 조회합니다. 페이징을 조회합니다.")
+    @GetMapping("/designer")
+    public ApiResultDto<PagingResponseDto<AppointmentDetailResponseDto>> selectAppointmentByDesignerId(AppointmentDetailRequestDto request) {
+        ApiResultDto<PagingResponseDto<AppointmentDetailResponseDto>> apiResultVo = new ApiResultDto<>();
+        PagingResponseDto<AppointmentDetailResponseDto> result;
+        result = appointmentService.selectAppointmentByDesignerIdPaging(request);
+        apiResultVo.setData(result);
+
+        return apiResultVo;
+    }
 
     @Operation(summary = "이메일 기반 예약 내역 목록 조회", description = "주니 테스트로 생성된  api.")
     @GetMapping("/email")
@@ -93,6 +103,12 @@ public class AppointmentController extends MasterController {
         //        ApiResultDto<AppointmentDetailResponseDto> apiResultVo = new ApiResultDto<>();
         //        AppointmentDetailResponseDto result;
         appointmentService.deleteAppointment(request);
+    }
+
+    @Operation(summary = "서명 완료 처리", description = "예약 아이디로 서명데이터를 생성합니다.")
+    @PutMapping("/sign")
+    public void insertAppointmentSign(AppointmentSignInsertRequestDto request) {
+        appointmentService.insertAppointmentSign(request);
     }
 
 }

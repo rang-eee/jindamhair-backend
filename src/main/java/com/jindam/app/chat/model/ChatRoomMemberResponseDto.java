@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "예약 상세 응답 모델")
+@Schema(description = "채팅방멤버 응답 모델")
 public class ChatRoomMemberResponseDto {
     @Schema(description = "채팅방 멤버 ID")
     private String chatroomMemberId;

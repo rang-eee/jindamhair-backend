@@ -19,10 +19,14 @@ public interface AppointmentMapper {
      */
     List<AppointmentDetailResponseDto> selectAppointmentByCustIdPaging(AppointmentDetailRequestDto request);
 
+    List<AppointmentDetailResponseDto> selectAppointmentByDesingerIdPaging(AppointmentDetailRequestDto request);
+
     /**
      * 목록 카운트 조회
      */
     int selectAppointmentByCustIdCount(AppointmentDetailRequestDto request);
+
+    int selectAppointmentByDesignerIdCount(AppointmentDetailRequestDto request);
 
     List<AppointmentDetailResponseDto> selectAppointmentByEmail(AppointmentEmailRequestDto request);
 
@@ -33,5 +37,7 @@ public interface AppointmentMapper {
     int deleteAppointment(AppointmentDeleteRequestDto request);
 
     int insertAppointmentTreatment(AppointmentTreatmentInsertRequestDto request);
+
+    int insertAppointmentSign(AppointmentSignInsertRequestDto request);
 
 }

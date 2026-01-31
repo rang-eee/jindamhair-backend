@@ -45,6 +45,13 @@ public class AppointmentService extends PagingService {
         return pagingResult;
     }
 
+    public PagingResponseDto<AppointmentDetailResponseDto> selectAppointmentByDesignerIdPaging(AppointmentDetailRequestDto request) {
+
+        PagingResponseDto<AppointmentDetailResponseDto> pagingResult = findData(appointmentMapper, "selectAppointmentByCustIdPaging", request);
+
+        return pagingResult;
+    }
+
     public List<AppointmentDetailResponseDto> selectAppointmentByEmail(AppointmentEmailRequestDto request) {
         return appointmentMapper.selectAppointmentByEmail(request);
     }
@@ -580,6 +587,16 @@ public class AppointmentService extends PagingService {
         }
 
         if (chatResult == 0) {
+            throw new NotificationException(NotificationException.Reason.INVALID_ID);
+        }
+    }
+
+    public void insertAppointmentSign(AppointmentSignInsertRequestDto request) {
+        request.setWorkAt(LocalDateTime.now());
+
+        int signInsertResult = appointmentMapper.insertAppointmentSign(request);
+
+        if (signInsertResult == 0) {
             throw new NotificationException(NotificationException.Reason.INVALID_ID);
         }
     }
