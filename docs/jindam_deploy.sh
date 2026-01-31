@@ -10,6 +10,7 @@ NAS_DOCKER_DIR="/volume1/docker/jindamhair-backend"
 IMAGE_NAME="my-spring-app"
 CONTAINER_NAME="springboot-app"
 HOST_PORT="8080"
+SPRING_PROFILE="dev"
 
 UPLOAD_PATH="${1:-/tmp/app-upload.jar}"
 
@@ -49,7 +50,8 @@ if [[ "${2:-}" == "--as-root" ]]; then
     --name "${CONTAINER_NAME}" \
     --restart=always \
     -p "${HOST_PORT}:8080" \
-    "${IMAGE_NAME}:latest"
+    "${IMAGE_NAME}:latest" \
+    --spring.profiles.active="${SPRING_PROFILE}"
 
   echo "✅ status"
   docker ps --filter "name=${CONTAINER_NAME}"
