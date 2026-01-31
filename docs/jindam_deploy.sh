@@ -1,7 +1,7 @@
-# 서버 내에 위치한 shell 스크립트
-
 #!/bin/bash
 set -euo pipefail
+
+echo "서버 내에 위치한 shell 스크립트"
 
 LOG_FILE="/volume1/docker/jindamhair-backend/deploy.log"
 exec > >(tee -a "$LOG_FILE") 2>&1
