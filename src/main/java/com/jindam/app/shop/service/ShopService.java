@@ -39,18 +39,21 @@ public class ShopService extends PagingService {
     public List<DesingerShopDetailResponseDto> insertListShop(List<DesignerShopInsertRequestDto> request) {
         for (DesignerShopInsertRequestDto input : request) {
             try {
-                //단건 인서트
+                // 단건 인서트
                 shopMapper.insertListShop(input);
             } catch (Exception e) {
-                //exception 추가
+                // exception 추가
                 throw e;
             }
         }
-        DesingerShopDetailResponseDto uid;
+
         List<DesingerShopDetailResponseDto> rtn;
 
-        uid = DesingerShopDetailResponseDto.from(request.get(0));
-        rtn = shopMapper.selectListShopById(uid);
+        DesignerShopInsertRequestDto req = DesignerShopInsertRequestDto.builder()
+            .uid(request.get(0)
+                .getUid())
+            .build();
+        rtn = shopMapper.selectListShopById(req);
 
         return rtn;
     }
@@ -63,17 +66,20 @@ public class ShopService extends PagingService {
 
         for (DesignerShopUpdateRequestDto input : request) {
             try {
-                //업데이트
+                // 업데이트
                 shopMapper.updateListShop(input);
             } catch (Exception e) {
                 throw e;
             }
         }
-        DesingerShopDetailResponseDto uid;
+
         List<DesingerShopDetailResponseDto> rtn;
 
-        uid = DesingerShopDetailResponseDto.from(request.get(0));
-        rtn = shopMapper.selectListShopById(uid);
+        DesignerShopInsertRequestDto req = DesignerShopInsertRequestDto.builder()
+            .uid(request.get(0)
+                .getUid())
+            .build();
+        rtn = shopMapper.selectListShopById(req);
 
         return rtn;
     }
@@ -86,17 +92,20 @@ public class ShopService extends PagingService {
 
         for (DesingerShopDeleteRequestDto input : request) {
             try {
-                //딜리트
+                // 딜리트
                 shopMapper.deleteListShop(input);
             } catch (Exception e) {
                 throw e;
             }
         }
-        DesingerShopDetailResponseDto uid;
+
         List<DesingerShopDetailResponseDto> rtn;
 
-        uid = DesingerShopDetailResponseDto.from(request.get(0));
-        rtn = shopMapper.selectListShopById(uid);
+        DesignerShopInsertRequestDto req = DesignerShopInsertRequestDto.builder()
+            .uid(request.get(0)
+                .getUid())
+            .build();
+        rtn = shopMapper.selectListShopById(req);
 
         return rtn;
     }
