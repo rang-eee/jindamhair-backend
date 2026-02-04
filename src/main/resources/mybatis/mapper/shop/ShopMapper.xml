@@ -24,31 +24,55 @@
     </select>
 
     <select id="selectListShopById" parameterType="DesignerShopInsertRequestDto" resultType="DesingerShopDetailResponseDto">
-       /*ShopMapper.selectListShopById*/
+        /*ShopMapper.selectListShopById*/
         SELECT
-           tds.designer_shop_id
-           ,tds.uid
-           ,tds.shop_id
-           ,tds.shop_regist_type_code
-           ,tds.representative_yn
-           ,tds.shop_name
-           ,tds.shop_description
-           ,tds.shop_addr
-           ,tds.shop_addr_detail
-           ,tds.shop_contact
-           ,tds.position_lngt
-           ,tds.position_latt
-           ,tds.zipcode
-           ,tds.use_yn
-           ,tds.create_at
-           ,tds.create_id
-           ,tds.update_at
-           ,tds.update_id
+            tds.designer_shop_id
+            , tds.uid
+            , tds.shop_id
+            , tds.shop_regist_type_code
+            , tds.representative_yn
+            , tds.shop_name
+            , tds.shop_description
+            , tds.shop_addr
+            , tds.shop_addr_detail
+            , tds.shop_contact
+            , tds.position_lngt
+            , tds.position_latt
+            , tds.zipcode
+            , tds.use_yn
+            , tds.create_at
+            , tds.create_id
+            , tds.update_at
+            , tds.update_id
+            , ts.shop_id AS shp_shop_id
+            , ts.shop_name AS shp_shop_name
+            , ts.shop_description AS shp_shop_description
+            , ts.shop_addr AS shp_shop_addr
+            , ts.shop_addr_detail AS shp_shop_addr_detail
+            , ts.shop_contact AS shp_shop_contact
+            , ts.position_lngt AS shp_position_lngt
+            , ts.position_latt AS shp_position_latt
+            , ts.zipcode AS shp_zipcode
+            , ts.use_yn AS shp_use_yn
+            , ts.create_at AS shp_create_at
+            , ts.create_id AS shp_create_id
         FROM tb_designer_shop tds
-       <where>
-          AND tds.use_yn = 'Y'
-          AND tds.uid = #{uid}
-       </where>
+        LEFT JOIN tb_shop ts
+            ON (
+                tds.shop_id = ts.shop_id
+                AND ts.delete_yn = 'N'
+                AND ts.delete_at IS NOT NULL
+                AND ts.delete_id IS NOT NULL
+                AND ts.use_yn = 'Y'
+            )
+        WHERE tds.delete_yn = 'N'
+            AND tds.delete_at IS NOT NULL
+            AND tds.delete_id IS NOT NULL
+            AND tds.use_yn = 'Y'
+        <where>
+            AND tds.use_yn = 'Y'
+            AND tds.uid = #{uid}
+        </where>
     </select>
 
     <insert id="insertListShop" parameterType="DesignerShopInsertRequestDto">

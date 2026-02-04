@@ -81,6 +81,57 @@ public class DesingerShopDetailResponseDto {
     @Schema(description = "삭제 ID", example = "123")
     private String deleteId;
 
+    @Schema(description = "헤어샵 ID", example = "123")
+    private String shpShopId;
+
+    @Schema(description = "헤어샵 명", example = "123")
+    private String shpShopName;
+
+    @Schema(description = "헤어샵 설명", example = "123")
+    private String shpShopDescription;
+
+    @Schema(description = "헤어샵 주소", example = "123")
+    private String shpShopAddr;
+
+    @Schema(description = "헤어샵 주소 상세", example = "123")
+    private String shpShopAddrDetail;
+
+    @Schema(description = "헤어샵 연락처", example = "123")
+    private String shpShopContact;
+
+    @Schema(description = "위치 경도", example = "123")
+    private String shpPositionLngt;
+
+    @Schema(description = "위치 위도", example = "123")
+    private String shpPositionLatt;
+
+    @Schema(description = "우편번호", example = "123")
+    private String shpZipcode;
+
+    @Schema(description = "사용 여부", example = "Y")
+    private String shpUseYn;
+
+    @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime shpCreateAt;
+
+    @Schema(description = "생성 ID", example = "123")
+    private String shpCreateId;
+
+    @Schema(description = "수정 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime shpUpdateAt;
+
+    @Schema(description = "수정 ID", example = "123")
+    private String shpUpdateId;
+
+    @Schema(description = "삭제 여부", example = "N")
+    private String shpDeleteYn;
+
+    @Schema(description = "삭제 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime shpDeleteAt;
+
+    @Schema(description = "삭제 ID", example = "123")
+    private String shpDeleteId;
+
     /**
      * DesignerShopInsertRequestDto DesingerShopDetailResponseDto 변환합니다.
      */
@@ -90,23 +141,23 @@ public class DesingerShopDetailResponseDto {
         Objects.requireNonNull(dto.getUid(), "DesignerShopInsertRequestDto uid는 null일 수 없습니다.");
 
         return DesingerShopDetailResponseDto.builder()
-                .designerShopId(dto.getDesignerShopId())
-                .uid(dto.getUid())
-                .shopId(dto.getShopId())
-                .shopRegistTypeCode(dto.getShopRegistTypeCode())
-                .representativeYn(dto.getRepresentativeYn())
-                .shopName(dto.getShopName())
-                .shopDescription(dto.getShopDescription())
-                .shopAddr(dto.getShopAddr())
-                .shopAddrDetail(dto.getShopAddrDetail())
-                .shopContact(dto.getShopContact())
-                .positionLngt(dto.getPositionLngt())
-                .positionLatt(dto.getPositionLatt())
-                .zipcode(dto.getZipcode())
-                .useYn(dto.getUseYn())
-                .createAt(dto.getCreateAt())
-                .createId(dto.getCreateId())
-                .build();
+            .designerShopId(dto.getDesignerShopId())
+            .uid(dto.getUid())
+            .shopId(dto.getShopId())
+            .shopRegistTypeCode(dto.getShopRegistTypeCode())
+            .representativeYn(dto.getRepresentativeYn())
+            .shopName(dto.getShopName())
+            .shopDescription(dto.getShopDescription())
+            .shopAddr(dto.getShopAddr())
+            .shopAddrDetail(dto.getShopAddrDetail())
+            .shopContact(dto.getShopContact())
+            .positionLngt(dto.getPositionLngt())
+            .positionLatt(dto.getPositionLatt())
+            .zipcode(dto.getZipcode())
+            .useYn(dto.getUseYn())
+            .createAt(dto.getCreateAt())
+            .createId(dto.getCreateId())
+            .build();
     }
 
     /**
@@ -119,23 +170,23 @@ public class DesingerShopDetailResponseDto {
         Objects.requireNonNull(dto.getDesignerShopId(), " getDesignerShopId null일 수 없습니다.");
 
         return DesingerShopDetailResponseDto.builder()
-                .designerShopId(dto.getDesignerShopId())
-                .uid(dto.getUid())
-                .shopId(dto.getShopId())
-                .shopRegistTypeCode(dto.getShopRegistTypeCode())
-                .representativeYn(dto.getRepresentativeYn())
-                .shopName(dto.getShopName())
-                .shopDescription(dto.getShopDescription())
-                .shopAddr(dto.getShopAddr())
-                .shopAddrDetail(dto.getShopAddrDetail())
-                .shopContact(dto.getShopContact())
-                .positionLngt(dto.getPositionLngt())
-                .positionLatt(dto.getPositionLatt())
-                .zipcode(dto.getZipcode())
-                .useYn(dto.getUseYn())
-                .updateAt(dto.getUpdateAt())
-                .updateId(dto.getUpdateId())
-                .build();
+            .designerShopId(dto.getDesignerShopId())
+            .uid(dto.getUid())
+            .shopId(dto.getShopId())
+            .shopRegistTypeCode(dto.getShopRegistTypeCode())
+            .representativeYn(dto.getRepresentativeYn())
+            .shopName(dto.getShopName())
+            .shopDescription(dto.getShopDescription())
+            .shopAddr(dto.getShopAddr())
+            .shopAddrDetail(dto.getShopAddrDetail())
+            .shopContact(dto.getShopContact())
+            .positionLngt(dto.getPositionLngt())
+            .positionLatt(dto.getPositionLatt())
+            .zipcode(dto.getZipcode())
+            .useYn(dto.getUseYn())
+            .updateAt(dto.getUpdateAt())
+            .updateId(dto.getUpdateId())
+            .build();
     }
 
     /**
@@ -148,14 +199,14 @@ public class DesingerShopDetailResponseDto {
         Objects.requireNonNull(dto.getDesignerShopId(), " getDesignerShopId null일 수 없습니다.");
 
         return DesingerShopDetailResponseDto.builder()
-                .designerShopId(dto.getDesignerShopId())
-                .uid(dto.getUid())
-                .shopId(dto.getShopId())
-                .shopRegistTypeCode(dto.getShopRegistTypeCode())
-                .useYn(dto.getUseYn())
-                .deleteAt(dto.getDeleteAt())
-                .deleteId(dto.getDeleteId())
-                .deleteYn(dto.getDeleteYn())
-                .build();
+            .designerShopId(dto.getDesignerShopId())
+            .uid(dto.getUid())
+            .shopId(dto.getShopId())
+            .shopRegistTypeCode(dto.getShopRegistTypeCode())
+            .useYn(dto.getUseYn())
+            .deleteAt(dto.getDeleteAt())
+            .deleteId(dto.getDeleteId())
+            .deleteYn(dto.getDeleteYn())
+            .build();
     }
 }

@@ -1,5 +1,8 @@
 package com.jindam.app.user.service;
 
+import com.jindam.app.shop.mapper.ShopMapper;
+import com.jindam.app.shop.model.DesignerShopInsertRequestDto;
+import com.jindam.app.shop.model.DesingerShopDetailResponseDto;
 import com.jindam.app.user.exception.UserException;
 import com.jindam.app.user.exception.UserException.Reason;
 import com.jindam.app.user.mapper.UserMapper;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ import java.time.LocalDateTime;
 @Slf4j
 public class UserService extends PagingService {
     private final UserMapper userMapper;
+    private final ShopMapper shopMapper;
 
     /**
      *
@@ -26,6 +31,19 @@ public class UserService extends PagingService {
      */
     public UserDetailResponseDto selectOneUser(UserDetailRequestDto request) {
         UserDetailResponseDto result = userMapper.selectOneUserByUid(request);
+
+        // 매장 조회
+        DesignerShopInsertRequestDto req = DesignerShopInsertRequestDto.builder()
+            .uid(result.getUid())
+            .build();
+        List<DesingerShopDetailResponseDto> shopList = shopMapper.selectListShopById(req);
+
+        DesingerShopDetailResponseDto repShop = shopList.stream()
+            .filter(s -> "Y".equals(s.getRepresentativeYn()))
+            .findFirst()
+            .orElse(null); // 없으면 null
+        result.setShopDetail(repShop);
+
         return result;
     }
 
@@ -49,7 +67,7 @@ public class UserService extends PagingService {
 
         UserDetailResponseDto dupByEmailJoinTypeCode = userMapper.selectOneUserByEmailAndUserJoinTypeCode(detailRequestDto);
 
-        if (dupByEmailJoinTypeCode != null) { //이메일 가입유형 코드
+        if (dupByEmailJoinTypeCode != null) { // 이메일 가입유형 코드
             throw new UserException(Reason.DUPLICATE_ID);
         }
 
@@ -69,7 +87,7 @@ public class UserService extends PagingService {
 
         int result = userMapper.updateUser(request);
 
-        if (result == 0) { //유정 수정 처리 실패
+        if (result == 0) { // 유정 수정 처리 실패
             throw new UserException(UserException.Reason.INVALID_ID);
         }
         UserDetailRequestDto detailRequestDto = UserDetailRequestDto.from(request);
@@ -81,7 +99,7 @@ public class UserService extends PagingService {
     public UserDetailResponseDto deleteUser(UserDeleteRequestDto request) {
         int result = userMapper.deleteUser(request);
 
-        if (result == 0) { //유저 삭제 처리 실패
+        if (result == 0) { // 유저 삭제 처리 실패
             throw new UserException(UserException.Reason.INVALID_ID);
         }
         UserDetailRequestDto detailRequestDto = UserDetailRequestDto.from(request);

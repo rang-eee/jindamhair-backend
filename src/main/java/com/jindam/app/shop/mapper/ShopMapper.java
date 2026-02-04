@@ -42,6 +42,5 @@ public interface ShopMapper {
      * @param request 등록 요청 객체
      * @return 입력된 건수
      */
-    List<DesingerShopDetailResponseDto> selectListShopById(DesingerShopDetailResponseDto request);
-
+    List<DesingerShopDetailResponseDto> selectListShopById(DesignerShopInsertRequestDto request);
 }

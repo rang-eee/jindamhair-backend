@@ -1,15 +1,23 @@
 package com.jindam.app.user.model;
 
-import com.jindam.base.code.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.jindam.app.shop.model.DesingerShopDetailResponseDto;
+import com.jindam.base.code.DesignerApprStatusCode;
+import com.jindam.base.code.DesignerWorkStatusCode;
+import com.jindam.base.code.UserAggCode;
+import com.jindam.base.code.UserGenderCode;
+import com.jindam.base.code.UserJoinTypeCode;
+import com.jindam.base.code.UserStatusCode;
+import com.jindam.base.code.UserTypeCode;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -100,6 +108,12 @@ public class UserDetailResponseDto {
     @Schema(description = "채팅 알림 수신 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime chatNotificationReceptionAt;
 
+    @Schema(description = "예약 알림 수신 여부", example = "Y")
+    private String appointment_notification_reception_yn;
+
+    @Schema(description = "예약 알림 수신 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime appointment_notification_reception_at;
+
     @Schema(description = "위치 주소")
     private String positionAddr;
 
@@ -169,4 +183,13 @@ public class UserDetailResponseDto {
     @Schema(description = "삭제 ID", example = "123")
     private String deleteId;
 
+    @Schema(description = "즐겨찾기 사용자ID")
+    private String favoriteUid;
+
+    @Schema(description = "디자이너 대표 매장")
+    private DesingerShopDetailResponseDto shopDetail;
+    
+    // 추가 예정 {ReviewTypeCode.code : count,  ReviewTypeCode.code : count, ...}
+    // @Schema(description = "후기") 
+    // private ReviewResponseDto reviewList;
 }
