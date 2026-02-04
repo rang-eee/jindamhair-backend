@@ -17,6 +17,7 @@ public class CodeEnumSerializer extends JsonSerializer<CodeEnum> {
         gen.writeStartObject();
         gen.writeStringField("code", value.getCode());
         gen.writeStringField("text", value.getText());
+        gen.writeStringField("front", value.getFront());
         gen.writeEndObject();
     }
 }

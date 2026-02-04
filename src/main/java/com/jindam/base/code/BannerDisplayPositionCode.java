@@ -1,18 +1,21 @@
 
 package com.jindam.base.code;
 
+import com.jindam.base.code.handler.CodeEnum;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import com.jindam.base.code.handler.CodeEnum;
 
 @Getter
 @AllArgsConstructor
 public enum BannerDisplayPositionCode implements CodeEnum {
     // 배너 노출 위치 코드 : BDPT
 
-    BDPT001("메인"), //
-    BDPT002("공지"), //
+    BDPT001("메인", "DisplayPositionType.main"), //
+    BDPT002("공지", "DisplayPositionType.notice"), //
+    BDPT003("고객목록", "DisplayPositionType.customerList"), //
     ;
 
     private final String text;
+    private final String front;
 }

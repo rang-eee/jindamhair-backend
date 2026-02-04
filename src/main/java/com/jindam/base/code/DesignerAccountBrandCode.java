@@ -9,18 +9,19 @@ import lombok.Getter;
 public enum DesignerAccountBrandCode implements CodeEnum {
     // 디자이너 계정 브랜드 유형 코드 : DABT
 
-    DABT001("미확인"), //
-    DABT002("국민은행"), //
-    DABT003("신한은행"), //
-    DABT004("농협은행"), //
-    DABT005("기업은행"), //
-    DABT006("우리은행"), //
-    DABT007("씨티은행"), //
-    DABT008("하나은행"), //
-    DABT009("카카오뱅크"), //
-    DABT010("토스뱅크"), //
-    DABT011("케이뱅크"), //
+    DABT001("미확인", "DesignerAccountBrandType.unknown"), //
+    DABT002("국민은행", "DesignerAccountBrandType.kb"), //
+    DABT003("신한은행", "DesignerAccountBrandType.shinhan"), //
+    DABT004("농협은행", "DesignerAccountBrandType.nh"), //
+    DABT005("기업은행", "DesignerAccountBrandType.ibk"), //
+    DABT006("우리은행", "DesignerAccountBrandType.woori"), //
+    DABT007("씨티은행", "DesignerAccountBrandType.city"), //
+    DABT008("하나은행", "DesignerAccountBrandType.hana"), //
+    DABT009("카카오뱅크", "DesignerAccountBrandType.kakao"), //
+    DABT010("토스뱅크", "DesignerAccountBrandType.toss"), //
+    DABT011("케이뱅크", "DesignerAccountBrandType.k"), //
     ;
 
     private final String text;
+    private final String front;
 }
