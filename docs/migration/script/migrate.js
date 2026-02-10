@@ -44,6 +44,10 @@ const SUBCOLLECTIONS = {
   users: ["menus", "notificationCenters"],
 };
 
+function uniqueList(items) {
+  return Array.from(new Set(items));
+}
+
 // 테이블명 변환: fs_{lowercase}
 function topTableName(collectionName) {
   // chatRooms -> fs_chatrooms
@@ -242,8 +246,23 @@ async function migrateSubcollections(parentCollection, subNames, pageSize = 300)
   console.log(`=== SUB ${parentCollection} done. parents=${parentCount}, subdocs=${subCount} ===`);
 }
 
+async function truncateAllFsTables() {
+  const topTables = TOP_COLLECTIONS.map(topTableName);
+  const subTables = Object.entries(SUBCOLLECTIONS)
+    .flatMap(([parent, subs]) => subs.map((sub) => subTableName(parent, sub)));
+  const tables = uniqueList([...topTables, ...subTables]);
+
+  const sql = `TRUNCATE TABLE ${tables.join(", ")} RESTART IDENTITY CASCADE`;
+  console.log("\n=== TRUNCATE FS TABLES START ===");
+  await pool.query(sql);
+  console.log("=== TRUNCATE FS TABLES DONE ===");
+}
+
 async function main() {
   try {
+    // 0) 기존 데이터 전체 삭제 후 진행
+    await truncateAllFsTables();
+
     // 1) 최상위 전부
     for (const c of TOP_COLLECTIONS) {
       await migrateTopCollection(c, 500);

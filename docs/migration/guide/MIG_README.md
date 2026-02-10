@@ -67,3 +67,11 @@ export GOOGLE_APPLICATION_CREDENTIALS='/Users/bbamkeylee/dev/mig/jindamhair-serv
 - Node 이관 스크립트 실행
 - PostgreSQL 프로시저 실행
 - 데이터 검증
+
+### ▸ 실행 전 필수: 기존 데이터 전체 삭제
+모든 마이그레이션은 **기존 테이블 데이터를 전부 삭제(초기화)한 후** 진행한다.
+
+- `migrate.js` 실행 시 **모든 `fs_*` 테이블을 TRUNCATE** 후 적재한다.
+- `tb_*` 이관 프로시저 실행 전에는 **해당 `tb_*` 테이블을 TRUNCATE** 한다.
+
+> 주의: 운영 환경에서 실행 시 반드시 백업 후 진행

@@ -69,10 +69,7 @@
             AND tds.delete_at IS NOT NULL
             AND tds.delete_id IS NOT NULL
             AND tds.use_yn = 'Y'
-        <where>
-            AND tds.use_yn = 'Y'
             AND tds.uid = #{uid}
-        </where>
     </select>
 
     <insert id="insertListShop" parameterType="DesignerShopInsertRequestDto">
