@@ -42,7 +42,11 @@ $ npm i firebase-admin pg
 
 ### ▸ 이관 스크립트 작성
 - 파일명:
-  - `migrate.js`
+  - `migrate.js` (전체 통합)
+  - `migrate_top.js` (최상위 컬렉션 전용)
+  - `migrate_sub.js` (서브컬렉션 전용)
+
+> 할당량(쿼터) 초과 방지를 위해 **TOP/SUB 분리 실행**을 지원한다.
 
 ---
 
@@ -72,6 +76,8 @@ export GOOGLE_APPLICATION_CREDENTIALS='/Users/bbamkeylee/dev/mig/jindamhair-serv
 모든 마이그레이션은 **기존 테이블 데이터를 전부 삭제(초기화)한 후** 진행한다.
 
 - `migrate.js` 실행 시 **모든 `fs_*` 테이블을 TRUNCATE** 후 적재한다.
+- `migrate_top.js` 실행 시 **TOP `fs_*` 테이블만 TRUNCATE** 후 적재한다.
+- `migrate_sub.js` 실행 시 **SUB `fs_*` 테이블만 TRUNCATE** 후 적재한다.
 - `tb_*` 이관 프로시저 실행 전에는 **해당 `tb_*` 테이블을 TRUNCATE** 한다.
 
 > 주의: 운영 환경에서 실행 시 반드시 백업 후 진행

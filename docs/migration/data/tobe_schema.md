@@ -85,14 +85,11 @@
 | `user_name` | `text` | NULL |  |  | 사용자 명 |
 | `user_nickname` | `text` | NULL |  |  | 사용자 닉네임 |
 | `user_status_code` | `varchar(30)` | NULL |  |  | 사용자 상태 코드. USST |
-| `user_gender_code` | `varchar(30)` | NULL |  |  | 사용자 성별 코드. USGD |
-| `user_agg_code` | `varchar(30)` | NULL |  |  | 사용자 연령대 코드. USAG |
 | `user_type_code` | `varchar(30)` | NULL |  |  | 사용자 유형 코드. USTP |
 | `user_brdt` | `text` | NULL |  |  | 사용자 생년월일 |
 | `user_join_type_code` | `varchar(30)` | NULL |  |  | 사용자 가입 유형 코드. UJTP |
 | `push_token` | `text` | NULL |  |  | 푸시 토큰 |
 | `last_login_at` | `timestamp` | NULL |  |  | 최종 로그인 일시 |
-| `bookmark_user_id_arr` | `_varchar` | NULL |  |  | 즐겨찾기 사용자 ID 배열 |
 | `interception_user_id_arr` | `_varchar` | NULL |  |  | 차단 사용자 ID 배열 |
 | `prvcplc_agree_yn` | `bpchar(1)` | NULL |  |  | 개인정보처리방침 동의 여부 |
 | `terms_agree_yn` | `bpchar(1)` | NULL |  |  | 서비스 이용약관 동의 여부 |
@@ -133,6 +130,23 @@
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
 
 ---
+
+### 2.1.1 `tb_user_bookmark` (사용자 즐겨찾기)
+
+| Column | Type | Null | Default | PK | Comment |
+|---|---|---:|---|---:|---|
+| `user_bookmark_id` | `text` | NOT NULL |  | ✅ | 사용자 즐겨찾기 ID |
+| `uid` | `text` | NULL |  |  | 사용자ID |
+| `bookmark_uid` | `text` | NULL |  |  | 즐겨찾기 사용자ID |
+| `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
+| `create_id` | `text` | NULL |  |  | 생성 ID |
+| `update_at` | `timestamp` | NULL |  |  | 수정 일시 |
+| `update_id` | `text` | NULL |  |  | 수정 ID |
+| `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
+| `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
+| `delete_id` | `text` | NULL |  |  | 삭제 ID |
+
+> 기존 `tb_user.bookmark_user_id_arr` 컬럼에서 분리됨
 
 ### 2.2 `tb_designer_off` (디자이너 휴무)
 
@@ -745,6 +759,7 @@
 |---|---|---|
 | `seq_tb_log_error_idx` | `tb_log_error.idx` | text PK지만 시퀀스 존재(정책 확인 필요) |
 | `seq_tb_file_file_id` | `tb_file.file_id` |  |
+| `seq_tb_user_bookmark_user_bookmark_id` | `tb_user_bookmark.user_bookmark_id` |  |
 | `seq_tb_designer_off_off_id` | `tb_designer_off.off_id` |  |
 | `seq_tb_desinger_treatment_designer_treatment_id` | `tb_desinger_treatment.designer_treatment_id` |  |
 | `seq_tb_desinger_treatment_add_designer_treatment_add_id` | `tb_desinger_treatment_add.designer_treatment_add_id` |  |

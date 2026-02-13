@@ -37,7 +37,7 @@ const TOP_COLLECTIONS = [
 // ✅ 너가 준 서브컬렉션 구조
 // parentCollection -> [subcollectionName...]
 const SUBCOLLECTIONS = {
-  appointments: ["menus"],
+  appointments: ["menus", "sign"],
   chatRooms: ["chatMessages"],
   offers: ["designers"],
   reservations: ["menus"],

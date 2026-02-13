@@ -170,3 +170,66 @@ $$;
 - TO-BE 데이터 모델 확정
 - 전체 프로시저 실행 순서 문서화
 - Validation / Count Check SQL 작성
+
+---
+
+## 10. 기준 스키마 프로시저 작업 여부
+
+### 10.1 AS-IS 스키마(컬렉션) 기준
+
+| 컬렉션 | 작업 여부 | 비고 |
+|---|---|---|
+| alerts | ✅ 완료 | 1:1 |
+| appointments | ✅ 완료 | 조인형 |
+| banners | ✅ 완료 | 1:1 |
+| chatRooms | ✅ 완료 | 조인형 |
+| configuration | ✅ 완료 | 1:1 |
+| dynamicLinks | ✅ 완료 | 1:1 |
+| notifications | ✅ 완료 | 1:1 |
+| offers | ✅ 완료 | 조인형 (tb_offer / tb_offer_treatment / tb_offer_designer 분리) |
+| payments | ✅ 완료 | 1:1 |
+| pushes | ✅ 완료 | 1:1 |
+| reservations | ✅ 완료 | 조인형 (tb_appointment / tb_appointment_treatment / tb_appointment_sign 포함) |
+| reviews | ✅ 완료 | 1:1 |
+| statistics | ✅ 완료 | 1:1 |
+| stores | ✅ 완료 | 1:1 |
+| treatmentClassfications | ✅ 완료 | 1:1 |
+| treatments | ✅ 완료 | 1:1 |
+| users | ✅ 완료 | 1:1 |
+| usersFavorites | ❌ 미진행 | 2차 대상 |
+
+### 10.2 TO-BE 스키마(테이블) 기준
+
+| 테이블 | 작업 여부 | 비고 |
+|---|---|---|
+| tb_log_error | 제외 | 마이그레이션 대상 아님 |
+| tb_file | ✅ 완료 | users.designerLicenseImageUrl / users.designerPhotos[] / users.imageUrl / users.menus.hairImageUrl[] |
+| tb_configuration | ✅ 완료 | 1:1 |
+| tb_treatment | ✅ 완료 | 1:1 |
+| tb_treatment_class | ✅ 완료 | 1:1 |
+| tb_deeplink | ✅ 완료 | 1:1 |
+| tb_shop | ✅ 완료 | 1:1 |
+| tb_appointment | ✅ 완료 | 1:1 (appointments + reservations) |
+| tb_appointment_treatment | ✅ 완료 | 조인형 (appointments.menus + reservations.menus) |
+| tb_appointment_sign | ✅ 완료 | 조인형 (appointments.sign) |
+| tb_payment | ✅ 완료 | 1:1 |
+| tb_user_push | ✅ 완료 | 1:1 |
+| tb_admin_notification | ✅ 완료 | 1:1 |
+| tb_notification | ✅ 완료 | 1:1 |
+| tb_chatroom | ✅ 완료 | 조인형 |
+| tb_chatroom_member | ✅ 완료 | 조인형 |
+| tb_chatroom_message | ✅ 완료 | 조인형 |
+| tb_banner | ✅ 완료 | 1:1 |
+| tb_review | ✅ 완료 | 1:1 |
+| tb_designer_review | ✅ 완료 | 조인형 |
+| tb_recommand | ✅ 완료 | 1:1 |
+| tb_offer | ✅ 완료 | 1:1 |
+| tb_offer_treatment | ✅ 완료 | 조인형 |
+| tb_offer_designer | ✅ 완료 | 조인형 |
+| tb_user_bookmark | ✅ 완료 | 조인형 |
+| tb_user | ✅ 완료 | 1:1 |
+| tb_designer_shop | ✅ 완료 | 조인형 |
+| tb_designer_off | ✅ 완료 | 조인형 |
+| tb_desinger_treatment | ✅ 완료 | 조인형 |
+| tb_desinger_treatment_add | ✅ 완료 | 조인형 |
+| tb_notification_center | ✅ 완료 | 조인형 |

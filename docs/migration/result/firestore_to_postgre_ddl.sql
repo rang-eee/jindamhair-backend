@@ -186,6 +186,15 @@ create table fs_appointments__menus (
   migrated_at timestamptz default now(),
   primary key (parent_doc_id, doc_id)
 );
+create table fs_appointments__sign (
+  parent_doc_id text not null,
+  doc_id text not null,
+  data jsonb not null,
+  created_at timestamptz,
+  updated_at timestamptz,
+  migrated_at timestamptz default now(),
+  primary key (parent_doc_id, doc_id)
+);
 create table fs_chatrooms__chatmessages (
   parent_doc_id text not null,
   doc_id text not null,
