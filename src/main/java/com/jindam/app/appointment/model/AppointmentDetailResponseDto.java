@@ -16,7 +16,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = " 응답 모델")
+@Schema(description = "예약 상세 응답 모델")
 public class AppointmentDetailResponseDto {
     @Schema(description = "예약 ID", example = "123")
     private String appointmentId;
@@ -361,5 +361,5 @@ public class AppointmentDetailResponseDto {
     private DesignerAccountBrandCode designerDesignerAccountBrandCode;
 
     @Schema(description = "예약 시술 목록", example = "")
-    List<AppointmentTreatmentInsertRequestDto> treatmentList;
+    List<DesignerTreatmentDetailResponseDto> treatmentList;
 }

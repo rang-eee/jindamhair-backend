@@ -2,6 +2,8 @@ package com.jindam.app.notification.contoller;
 
 import com.jindam.app.appointment.model.AppointmentDetailRequestDto;
 import com.jindam.app.appointment.model.AppointmentDetailResponseDto;
+import com.jindam.app.notification.model.NotificationCenterDetailRequestDto;
+import com.jindam.app.notification.model.NotificationCenterDetailResponseDto;
 import com.jindam.app.notification.service.NotificationService;
 import com.jindam.base.base.MasterController;
 import com.jindam.base.dto.ApiResultDto;
@@ -20,13 +22,13 @@ public class NotificationContorller extends MasterController {
 
     private final NotificationService notificationService;
 
-    @Operation(summary = "알림 조회", description = "알림데이터 조회합니다.")
-    @GetMapping("")
-    public ApiResultDto<AppointmentDetailResponseDto> selectNotification(AppointmentDetailRequestDto request) {
-        //        ApiResultDto<AppointmentDetailResponseDto> apiResultVo = new ApiResultDto<>();
-        //        AppointmentDetailResponseDto result;
-        //        result = appointmentService.selectAppointmentById(request);
-        //        apiResultVo.setData(result);
+    @Operation(summary = "알림 센터 목록 조회", description = "수신자 uid로 조회합니다.")
+    @GetMapping("/center")
+    public ApiResultDto<NotificationCenterDetailResponseDto> selectNotification(NotificationCenterDetailRequestDto request) {
+        ApiResultDto<NotificationCenterDetailResponseDto> apiResultVo = new ApiResultDto<>();
+        NotificationCenterDetailResponseDto result;
+        result = notificationService.selectNotificationCenterByUid(request);
+        apiResultVo.setData(result);
 
         return null;
 

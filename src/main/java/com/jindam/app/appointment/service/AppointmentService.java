@@ -34,7 +34,15 @@ public class AppointmentService extends PagingService {
 
     public AppointmentDetailResponseDto selectAppointmentById(AppointmentDetailRequestDto request) {
         AppointmentDetailResponseDto result;
+
+        //예약테이블 조회
         result = appointmentMapper.selectAppointmentById(request);
+
+        //예약시술테이블 조회
+        List<DesignerTreatmentDetailResponseDto> tList = appointmentMapper.selectAppointmentTreatmentByUid(request);
+
+        result.setTreatmentList(tList);
+
         return result;
     }
 
@@ -60,6 +68,7 @@ public class AppointmentService extends PagingService {
 
         int result = 0;
         result = appointmentMapper.insertAppointment(request);
+        //예약아이디로 예약시술테이블 인서트 로직 필요
 
         // 예약 마스터 등록 실패
         if (result == 0) {

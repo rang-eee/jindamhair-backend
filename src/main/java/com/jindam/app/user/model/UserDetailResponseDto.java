@@ -1,23 +1,16 @@
 package com.jindam.app.user.model;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.jindam.app.shop.model.DesingerShopDetailResponseDto;
-import com.jindam.base.code.DesignerApprStatusCode;
-import com.jindam.base.code.DesignerWorkStatusCode;
-import com.jindam.base.code.UserAggCode;
-import com.jindam.base.code.UserGenderCode;
-import com.jindam.base.code.UserJoinTypeCode;
-import com.jindam.base.code.UserStatusCode;
-import com.jindam.base.code.UserTypeCode;
-
+import com.jindam.base.code.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -188,7 +181,7 @@ public class UserDetailResponseDto {
 
     @Schema(description = "디자이너 대표 매장")
     private DesingerShopDetailResponseDto shopDetail;
-    
+
     // 추가 예정 {ReviewTypeCode.code : count,  ReviewTypeCode.code : count, ...}
     // @Schema(description = "후기") 
     // private ReviewResponseDto reviewList;

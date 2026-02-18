@@ -297,7 +297,7 @@
 
     <!--조회조건에 따른 디자이너 목록 전체 카운트 조회 -->
     <select id="selectAppointmentByCustIdCount" parameterType="AppointmentDetailRequestDto" resultType="int">
-        /**/
+        /*AppointmentMapper.selectAppointmentByCustIdCount*/
         SELECT
         count(*)
         FROM tb_appointment ta
@@ -311,12 +311,15 @@
     <sql id="selectAppointmentByCustIdFrag">
         <where>
             ta.delete_yn = 'N'
+            <if test="designerUid != null">
+                AND ta.designer_uid = #{designerUid}
+            </if>
             <if test='customerUid != null'>
                 AND ta.customer_uid = #{customerUid}
             </if>
             /*지난 시술내역 코드 분기처리필요*/
             <if test="appointmentStatusCode != null">
-                AND ta.appointment_status_code = #{appointmentStatusCode}
+                AND ta.appointment_status_code = #{appointmentStatusCode.name()}
             </if>
         </where>
     </sql>
@@ -332,6 +335,38 @@
                  inner join tb_designer_shop tds on tds.designer_shop_id  = ta.designer_shop_id and tds.use_yn = 'Y'
         <where>
             AND tu.user_email = #{userEmail}
+        </where>
+    </select>
+
+    <select id="selectAppointmentTreatmentByUid" parameterType="AppointmentDetailRequestDto" resultType="DesignerTreatmentDetailResponseDto">
+        /*AppointmentMapper.selectAppointmentTreatmentByUid*/
+        SELECT
+            tdt.appointment_treatment_id
+            tdt.designer_treatment_id
+            tdt.uid
+            tdt.treatment_name
+            tdt.basic_amount
+            tdt.discount_pt
+            tdt.discount_amount
+            tdt.hair_add_type_code
+            tdt.add_amount
+            tdt.total_amount
+            tdt.treatment_content
+            tdt.treatment_require_time
+            tdt.treatment_photo_file_id
+            tdt.treatment_gender_type_code
+            tdt.discount_yn
+            tdt.add_yn
+            tdt.open_yn
+            tdt.treatment_code_1
+            tdt.treatment_name_1
+            tdt.treatment_code_2
+            tdt.treatment_name_2
+            tdt.treatment_code_3
+            tdt.treatment_name_3
+        FROM tb_desinger_treatment tdt
+        <where>
+            AND tdt.uid = #{designerUid}
         </where>
     </select>
 
@@ -466,13 +501,16 @@
                 ,shop_addr = #{shopAddr}
             </if>
         </set>
+        <where>
+            appointment_id = #{appointmentId},
+        </where>
     </update>
 
     <update id="deleteAppointment" parameterType="AppointmentDeleteRequestDto">
         /*AppointmentMapper.deleteAppointment*/
-        UPDATE  tb_appointmenttb_appointment
+        UPDATE  tb_appointment
         <set>
-            cancel_reason_content =#{cancelReasonContent}
+            cancel_reason_content =#{cancelReasonContent},
             delete_yn = 'Y',
             delete_at =  #{workAt},
             delete_id = #{workId},
@@ -481,6 +519,7 @@
     </update>
 
     <insert id="insertDesignerTreatment" parameterType="DesignerTreatmentInsertRequestDto">
+        /*AppointmentMapper.insertDesignerTreatment*/
         INSERT INTO tb_desinger_treatment (
             designer_treatment_id
             ,uid
@@ -535,7 +574,8 @@
     </insert>
 
     <insert id="insertAppointmentTreatment" parameterType="AppointmentTreatmentInsertRequestDto">
-        INSERT INTO tb_appointment_treatment (
+        /*AppointmentMapper.insertAppointmentTreatment*/
+         INSERT INTO tb_appointment_treatment (
                                               appointment_treatment_id
                                              ,designer_treatment_id
                                              ,uid
@@ -587,15 +627,16 @@
     </insert>
 
     <insert id="insertAppointmentSign" parameterType="AppointmentSignInsertRequestDto">
+        /*AppointmentMapper.insertAppointmentSign*/
         INSERT INTO tb_appointment_sign (
-            appointment_sign_id
-            appointment_id
-            sign_offset_x
-            sign_offset_y
-            sign_size
-            sign_color
-            sort_order
-            create_at
+            appointment_sign_id,
+            appointment_id,
+            sign_offset_x,
+            sign_offset_y,
+            sign_size,
+            sign_color,
+            sort_order,
+            create_at,
             create_id
         ) VALUES (
              nextVal('seq_tb_appointment_sign_id'),

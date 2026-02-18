@@ -2,6 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jindam.app.notification.mapper.NotificationMapper">
 
+    <select id="selectNotificationCenterDetailByUid" parameterType="NotificationCenterDetailRequestDto" resultType="NotificationCenterDetailResponseDto">
+        SELECT
+            tnc.notification_center_id,
+            tnc.notification_topic,
+            tnc.event_click,
+            tnc.notification_type_code,
+            tnc.notification_title,
+            tnc.notification_content,
+            tnc.receiver_uid,
+            tnc.appointment_id,
+            tnc.appointment_at,
+            tnc.designer_name,
+            tnc.user_name,
+            tnc.create_at,
+            tnc.create_id
+        FROM tb_notification_center tnc
+        <where>
+            AND tnc.receiver_uid = #{receiverUid}
+        </where>
+    </select>
+
     <insert id="insertNotification" parameterType="NotificationInsertRequestDto">
         INSERT INTO tb_notification (
              notification_id

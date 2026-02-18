@@ -22,7 +22,7 @@ public class AppointmentController extends MasterController {
 
     private final AppointmentService appointmentService;
 
-    @Operation(summary = "예약 목록 조회", description = "예약 ID 로 조회합니다.")
+    @Operation(summary = "예약 상세 조회", description = "예약 ID 로 조회합니다.")
     @GetMapping("")
     public ApiResultDto<AppointmentDetailResponseDto> selectAppointment(AppointmentDetailRequestDto request) {
         ApiResultDto<AppointmentDetailResponseDto> apiResultVo = new ApiResultDto<>();
@@ -45,23 +45,12 @@ public class AppointmentController extends MasterController {
         return apiResultVo;
     }
 
-    @Operation(summary = "디자이너 예약 관리 목록 조회", description = "디자이너ID로 조회합니다. 페이징을 조회합니다.")
+    @Operation(summary = "디자이너 예약 관리 목록 조회", description = "디자이너ID로 조회합니다. 페이징을 지원합니다.")
     @GetMapping("/designer")
     public ApiResultDto<PagingResponseDto<AppointmentDetailResponseDto>> selectAppointmentByDesignerId(AppointmentDetailRequestDto request) {
         ApiResultDto<PagingResponseDto<AppointmentDetailResponseDto>> apiResultVo = new ApiResultDto<>();
         PagingResponseDto<AppointmentDetailResponseDto> result;
         result = appointmentService.selectAppointmentByDesignerIdPaging(request);
-        apiResultVo.setData(result);
-
-        return apiResultVo;
-    }
-
-    @Operation(summary = "이메일 기반 예약 내역 목록 조회", description = "주니 테스트로 생성된  api.")
-    @GetMapping("/email")
-    public ApiResultDto<List<AppointmentDetailResponseDto>> selectAppointmentByEmail(AppointmentEmailRequestDto request) {
-        ApiResultDto<List<AppointmentDetailResponseDto>> apiResultVo = new ApiResultDto<>();
-        List<AppointmentDetailResponseDto> result;
-        result = appointmentService.selectAppointmentByEmail(request);
         apiResultVo.setData(result);
 
         return apiResultVo;
@@ -83,13 +72,11 @@ public class AppointmentController extends MasterController {
     @Operation(summary = "예약 변경 처리", description = "예약 건을 변경합니다. (알림포함)")
     @PatchMapping("")
     public void updateAppointment(AppointmentUpdateRequestDto request) {
-        //        ApiResultDto<AppointmentDetailResponseDto> apiResultVo = new ApiResultDto<>();
-        //        AppointmentDetailResponseDto result;
+        //ApiResultDto<AppointmentDetailResponseDto> apiResultVo = new ApiResultDto<>();
+        //AppointmentDetailResponseDto result;
         appointmentService.updateAppointment(request);
 
     }
-
-    //@Operation(summary = "예약 수정 처리", description = "예약 데이터를 수정합니다.")
 
     @Operation(summary = "예약 확정 처리", description = "예약 건을 완료상태로 변경합니다.")
     @PatchMapping("/confirm")
@@ -97,7 +84,7 @@ public class AppointmentController extends MasterController {
         appointmentService.confirmAppointment(request);
     }
 
-    @Operation(summary = "예약 삭제 요청 처리", description = "예약 건을 삭제합니다.")
+    @Operation(summary = "예약 취소 요청 처리", description = "예약 건을 취소합니다.")
     @DeleteMapping("")
     public void deleteAppointment(AppointmentDeleteRequestDto request) {
         //        ApiResultDto<AppointmentDetailResponseDto> apiResultVo = new ApiResultDto<>();
@@ -111,4 +98,14 @@ public class AppointmentController extends MasterController {
         appointmentService.insertAppointmentSign(request);
     }
 
+    @Operation(summary = "이메일 기반 예약 내역 목록 조회", description = "주니 테스트로 생성된  api. (사용안함)")
+    @GetMapping("/email")
+    public ApiResultDto<List<AppointmentDetailResponseDto>> selectAppointmentByEmail(AppointmentEmailRequestDto request) {
+        ApiResultDto<List<AppointmentDetailResponseDto>> apiResultVo = new ApiResultDto<>();
+        List<AppointmentDetailResponseDto> result;
+        result = appointmentService.selectAppointmentByEmail(request);
+        apiResultVo.setData(result);
+
+        return apiResultVo;
+    }
 }

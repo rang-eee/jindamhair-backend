@@ -12,7 +12,7 @@ Database : PostgreSql
 
 
 - git config 변경
-	- git config user.name "COLON 이범규"
+	- git config user.name "COLON 이승규"
 	- git config user.email "colon.dev.rang@gmail.com"
 
 
