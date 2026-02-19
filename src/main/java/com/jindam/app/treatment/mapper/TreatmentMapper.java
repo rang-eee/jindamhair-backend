@@ -1,14 +1,35 @@
 package com.jindam.app.treatment.mapper;
 
-/**
- * ExampleMapper 인터페이스
- *
- * <p>
- * 데이터베이스와 상호작용하는 MyBatis Mapper로, Example 관련 CRUD 및 페이징 처리를 위한 메서드를 정의합니다.
- * </p>
- */
+import com.jindam.app.treatment.model.DesignerTreatmentAddInsertRequestDto;
+import com.jindam.app.treatment.model.DesignerTreatmentDetailRequestDto;
+import com.jindam.app.treatment.model.DesignerTreatmentDetailResponseDto;
+import com.jindam.app.treatment.model.DesignerTreatmentUpdateRequestDto;
+
+import java.util.List;
+
 public interface TreatmentMapper {
+
     /**
-     * @return 현재 앱 빌드 버전 데이터
+     * 디자이너 시술 메뉴를 추가합니다.
+     *
+     * @param request 추가할 시술 메뉴 정보
+     * @return 영향을 받은 행의 수
      */
+    int insertDesignerTreatment(DesignerTreatmentAddInsertRequestDto request);
+
+    /**
+     * 디자이너 시술 메뉴를 수정합니다. (삭제 포함)
+     *
+     * @param request 수정할 시술 메뉴 정보
+     * @return 영향을 받은 행의 수
+     */
+    int updateDesignerTreatment(DesignerTreatmentUpdateRequestDto request);
+
+    /**
+     * 특정 디자이너의 시술 메뉴 목록을 조회합니다.
+     *
+     * @param request 디자이너 ID
+     * @return 시술 메뉴 목록
+     */
+    List<DesignerTreatmentDetailResponseDto> selectDesignerTreatmentList(DesignerTreatmentDetailRequestDto request);
 }

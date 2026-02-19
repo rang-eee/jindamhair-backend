@@ -14,8 +14,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "디자이너 시술 수정 요청 모델")
-public class DesignerTreatmentUpdateRequestDto {
+@Schema(description = "디자이너 시술 상세 응답 모델")
+public class DesignerTreatmentDetailResponseDto {
 
     @Schema(description = "디자이너 시술 ID", example = "123")
     private String designerTreatmentId;
