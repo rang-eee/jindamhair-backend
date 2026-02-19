@@ -232,6 +232,17 @@ create table fs_users__menus (
 );
 
 
+create table fs_users__stores (
+  parent_doc_id text not null,
+  doc_id text not null,
+  data jsonb not null,
+  created_at timestamptz,
+  updated_at timestamptz,
+  migrated_at timestamptz default now(),
+  primary key (parent_doc_id, doc_id)
+);
+
+
 create table fs_users__notificationcenters (
   parent_doc_id text not null,
   doc_id text not null,

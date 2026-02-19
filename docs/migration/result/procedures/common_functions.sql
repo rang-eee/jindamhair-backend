@@ -141,3 +141,54 @@ begin
 end;
 $$;
 
+-- 시퀀스 일괄 초기화 (RESTART WITH 1)
+create or replace function jindamhair.reset_migration_sequences_to_1()
+returns void
+language plpgsql
+as $$
+declare
+  seq_list text[] := array[
+    'seq_tb_admin_notification_admin_notification_id',
+    'seq_tb_appointment_appointment_id',
+    'seq_tb_appointment_sign_appointment_sign_id',
+    'seq_tb_appointment_style_hair_style_id',
+    'seq_tb_appointment_treatment_appointment_treatment_id',
+    'seq_tb_banner_banner_id',
+    'seq_tb_chatroom_chatroom_id',
+    'seq_tb_chatroom_member_chatroom_member_id',
+    'seq_tb_chatroom_message_chat_message_id',
+    'seq_tb_code_group_code_group_id',
+    'seq_tb_code_item_code_item_id',
+    'seq_tb_deeplink_deeplink_id',
+    'seq_tb_designer_off_off_id',
+    'seq_tb_designer_review_designer_review_id',
+    'seq_tb_designer_shop_designer_shop_id',
+    'seq_tb_desinger_style_add_designer_style_add_id',
+    'seq_tb_desinger_style_hair_style_id',
+    'seq_tb_desinger_treatment_add_designer_treatment_add_id',
+    'seq_tb_desinger_treatment_designer_treatment_id',
+    'seq_tb_file_file_id',
+    'seq_tb_log_error_idx',
+    'seq_tb_notification_center_notification_center_id',
+    'seq_tb_notification_notification_id',
+    'seq_tb_offer_designer_offer_designer_id',
+    'seq_tb_offer_offer_id',
+    'seq_tb_offer_treatment_offer_treatment_id',
+    'seq_tb_payment_payment_id',
+    'seq_tb_recommand_recommand_id',
+    'seq_tb_review_review_id',
+    'seq_tb_shop_shop_id',
+    'seq_tb_treatment_class_treatment_class_id',
+    'seq_tb_treatment_treatment_class_id',
+    'seq_tb_treatment_treatment_id',
+    'seq_tb_user_bookmark_user_bookmark_id',
+    'seq_tb_user_push_user_push_id'
+  ];
+  seq_name text;
+begin
+  foreach seq_name in array seq_list loop
+    execute format('alter sequence if exists jindamhair.%I restart with 1', seq_name);
+  end loop;
+end;
+$$;
+

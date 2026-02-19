@@ -19,7 +19,7 @@ const SUBCOLLECTIONS = {
 	chatRooms: ["chatMessages"],
 	offers: ["designers"],
 	reservations: ["menus"],
-	users: ["menus", "notificationCenters"],
+	users: ["menus", "notificationCenters", "stores"],
 };
 
 function uniqueList(items) {

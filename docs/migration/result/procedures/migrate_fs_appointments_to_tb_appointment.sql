@@ -41,17 +41,11 @@ BEGIN
     nextval('seq_tb_appointment_appointment_id')::text,
     COALESCE(cu.uid, data->>'userUid'),
     COALESCE(du.uid, data->>'designerUid'),
-    COALESCE(ds.designer_shop_id,
-      CASE
-        WHEN COALESCE(data->>'designerUid','') <> '' AND COALESCE(data->>'storeId','') <> ''
-          THEN (data->>'designerUid') || '_' || (data->>'storeId')
-        ELSE NULL
-      END
-    ),
+    ds.designer_shop_id,
     LEFT(data->>'appointmentStatusType', 200),
     LEFT(data->>'beginMethodType', 200),
     CASE WHEN (data->>'price') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (data->>'price')::numeric ELSE NULL END,
-    NULL,
+    CASE WHEN (data->>'price') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (data->>'price')::numeric ELSE NULL END,
     fn_safe_timestamp(data->>'startAt'),
     fn_safe_timestamp(data->>'endAt'),
     LEFT(data->>'paymentMethodType', 200),
@@ -78,11 +72,15 @@ BEGIN
   LEFT JOIN jindamhair.tb_user du
     ON du.migration_id = a.data->>'designerUid'
   LEFT JOIN jindamhair.tb_designer_shop ds
-    ON ds.migration_id = CASE
-      WHEN COALESCE(a.data->>'designerUid','') <> '' AND COALESCE(a.data->>'storeId','') <> ''
-        THEN (a.data->>'designerUid') || '_' || (a.data->>'storeId')
-      ELSE NULL
-    END
+    ON ds.migration_id = COALESCE(
+      a.data->>'designerShopId',
+      a.data->>'designerShopID',
+      CASE
+        WHEN COALESCE(a.data->>'designerUid','') <> '' AND COALESCE(a.data->>'storeId','') <> ''
+          THEN (a.data->>'designerUid') || '_' || (a.data->>'storeId')
+        ELSE NULL
+      END
+    )
   LEFT JOIN jindamhair.tb_review r
     ON r.migration_id = a.data->>'reviewId'
   ON CONFLICT (appointment_id) DO NOTHING;

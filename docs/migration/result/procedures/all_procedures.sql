@@ -144,6 +144,57 @@ begin
 end;
 $$;
 
+-- 시퀀스 일괄 초기화 (RESTART WITH 1)
+create or replace function jindamhair.reset_migration_sequences_to_1()
+returns void
+language plpgsql
+as $$
+declare
+  seq_list text[] := array[
+    'seq_tb_admin_notification_admin_notification_id',
+    'seq_tb_appointment_appointment_id',
+    'seq_tb_appointment_sign_appointment_sign_id',
+    'seq_tb_appointment_style_hair_style_id',
+    'seq_tb_appointment_treatment_appointment_treatment_id',
+    'seq_tb_banner_banner_id',
+    'seq_tb_chatroom_chatroom_id',
+    'seq_tb_chatroom_member_chatroom_member_id',
+    'seq_tb_chatroom_message_chat_message_id',
+    'seq_tb_code_group_code_group_id',
+    'seq_tb_code_item_code_item_id',
+    'seq_tb_deeplink_deeplink_id',
+    'seq_tb_designer_off_off_id',
+    'seq_tb_designer_review_designer_review_id',
+    'seq_tb_designer_shop_designer_shop_id',
+    'seq_tb_desinger_style_add_designer_style_add_id',
+    'seq_tb_desinger_style_hair_style_id',
+    'seq_tb_desinger_treatment_add_designer_treatment_add_id',
+    'seq_tb_desinger_treatment_designer_treatment_id',
+    'seq_tb_file_file_id',
+    'seq_tb_log_error_idx',
+    'seq_tb_notification_center_notification_center_id',
+    'seq_tb_notification_notification_id',
+    'seq_tb_offer_designer_offer_designer_id',
+    'seq_tb_offer_offer_id',
+    'seq_tb_offer_treatment_offer_treatment_id',
+    'seq_tb_payment_payment_id',
+    'seq_tb_recommand_recommand_id',
+    'seq_tb_review_review_id',
+    'seq_tb_shop_shop_id',
+    'seq_tb_treatment_class_treatment_class_id',
+    'seq_tb_treatment_treatment_class_id',
+    'seq_tb_treatment_treatment_id',
+    'seq_tb_user_bookmark_user_bookmark_id',
+    'seq_tb_user_push_user_push_id'
+  ];
+  seq_name text;
+begin
+  foreach seq_name in array seq_list loop
+    execute format('alter sequence if exists jindamhair.%I restart with 1', seq_name);
+  end loop;
+end;
+$$;
+
 
 
 -- =====================================================
@@ -382,17 +433,11 @@ BEGIN
     nextval('seq_tb_appointment_appointment_id')::text,
     COALESCE(cu.uid, data->>'userUid'),
     COALESCE(du.uid, data->>'designerUid'),
-    COALESCE(ds.designer_shop_id,
-      CASE
-        WHEN COALESCE(data->>'designerUid','') <> '' AND COALESCE(data->>'storeId','') <> ''
-          THEN (data->>'designerUid') || '_' || (data->>'storeId')
-        ELSE NULL
-      END
-    ),
+    ds.designer_shop_id,
     LEFT(data->>'appointmentStatusType', 200),
     LEFT(data->>'beginMethodType', 200),
     CASE WHEN (data->>'price') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (data->>'price')::numeric ELSE NULL END,
-    NULL,
+    CASE WHEN (data->>'price') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (data->>'price')::numeric ELSE NULL END,
     fn_safe_timestamp(data->>'startAt'),
     fn_safe_timestamp(data->>'endAt'),
     LEFT(data->>'paymentMethodType', 200),
@@ -419,11 +464,15 @@ BEGIN
   LEFT JOIN jindamhair.tb_user du
     ON du.migration_id = a.data->>'designerUid'
   LEFT JOIN jindamhair.tb_designer_shop ds
-    ON ds.migration_id = CASE
-      WHEN COALESCE(a.data->>'designerUid','') <> '' AND COALESCE(a.data->>'storeId','') <> ''
-        THEN (a.data->>'designerUid') || '_' || (a.data->>'storeId')
-      ELSE NULL
-    END
+    ON ds.migration_id = COALESCE(
+      a.data->>'designerShopId',
+      a.data->>'designerShopID',
+      CASE
+        WHEN COALESCE(a.data->>'designerUid','') <> '' AND COALESCE(a.data->>'storeId','') <> ''
+          THEN (a.data->>'designerUid') || '_' || (a.data->>'storeId')
+        ELSE NULL
+      END
+    )
   LEFT JOIN jindamhair.tb_review r
     ON r.migration_id = a.data->>'reviewId'
   ON CONFLICT (appointment_id) DO NOTHING;
@@ -630,9 +679,9 @@ BEGIN
     chatroom_name,
     last_read_at,
     normalized.chatroom_id || '_' || normalized.uid,
-    COALESCE(created_at, now()),
+    COALESCE(combined.created_at, now()),
     'migration',
-    updated_at,
+    combined.updated_at,
     'migration',
     'N'
   FROM normalized
@@ -1228,14 +1277,7 @@ BEGIN
     nextval('seq_tb_appointment_appointment_id')::text,
     COALESCE(cu.uid, data->>'userUid'),
     COALESCE(du.uid, data->>'designerUid'),
-    COALESCE(ds.designer_shop_id,
-      CASE
-        WHEN COALESCE(data->>'designerUid','') <> ''
-          AND COALESCE(data->>'storeId', data->'designerModel'->>'storeId','') <> ''
-          THEN (data->>'designerUid') || '_' || COALESCE(data->>'storeId', data->'designerModel'->>'storeId')
-        ELSE NULL
-      END
-    ),
+    ds.designer_shop_id,
     LEFT(data->>'reservationStatus', 200),
     LEFT(data->>'reservationType', 200),
     CASE WHEN (data->>'price') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (data->>'price')::numeric ELSE NULL END,
@@ -1266,12 +1308,16 @@ BEGIN
   LEFT JOIN jindamhair.tb_user du
     ON du.migration_id = r.data->>'designerUid'
   LEFT JOIN jindamhair.tb_designer_shop ds
-    ON ds.migration_id = CASE
-      WHEN COALESCE(r.data->>'designerUid','') <> ''
-        AND COALESCE(r.data->>'storeId', r.data->'designerModel'->>'storeId','') <> ''
-        THEN (r.data->>'designerUid') || '_' || COALESCE(r.data->>'storeId', r.data->'designerModel'->>'storeId')
-      ELSE NULL
-    END
+    ON ds.migration_id = COALESCE(
+      r.data->>'designerShopId',
+      r.data->>'designerShopID',
+      CASE
+        WHEN COALESCE(r.data->>'designerUid','') <> ''
+          AND COALESCE(r.data->>'storeId', r.data->'designerModel'->>'storeId','') <> ''
+          THEN (r.data->>'designerUid') || '_' || COALESCE(r.data->>'storeId', r.data->'designerModel'->>'storeId')
+        ELSE NULL
+      END
+    )
   ON CONFLICT (appointment_id) DO NOTHING;
   PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_appointment');
 END;
@@ -1845,42 +1891,44 @@ BEGIN
   ),
   primary_shop AS (
     SELECT
-      COALESCE(data->>'uid', data->>'id', doc_id) AS uid,
-      data->>'storeId' AS shop_id,
-      data->>'storeName' AS shop_name,
-      data->>'storeAddress' AS shop_addr,
+      b.doc_id AS owner_doc_id,
+      COALESCE(b.data->>'uid', b.data->>'id', b.doc_id) AS uid,
+      b.data->>'storeId' AS shop_id,
+      b.data->>'storeName' AS shop_name,
+      b.data->>'storeAddress' AS shop_addr,
       NULL::text AS shop_addr_detail,
-      data->>'storePhoneNum' AS shop_contact,
+      b.data->>'storePhoneNum' AS shop_contact,
       NULL::text AS position_lngt,
       NULL::text AS position_latt,
       NULL::text AS zipcode,
       'Y'::bpchar AS representative_yn,
       NULL::text AS shop_regist_type_code,
       'Y'::bpchar AS use_yn,
-      created_at,
-      updated_at
-    FROM base
-    WHERE COALESCE(data->>'storeId','') <> ''
-  ),
-  extra_shops AS (
-    SELECT
-      COALESCE(b.data->>'uid', b.data->>'id', b.doc_id) AS uid,
-      COALESCE(s.value->>'id', s.value->>'storeId') AS shop_id,
-      COALESCE(s.value->>'title', s.value->>'name', s.value->>'storeName') AS shop_name,
-      COALESCE(s.value->>'address', s.value->>'storeAddress') AS shop_addr,
-      s.value->>'addressDetail' AS shop_addr_detail,
-      COALESCE(s.value->>'contactNumber', s.value->>'phoneNum', s.value->>'storePhoneNum') AS shop_contact,
-      s.value->>'gpsX' AS position_lngt,
-      s.value->>'gpsY' AS position_latt,
-      s.value->>'postCode' AS zipcode,
-      CASE WHEN fn_safe_boolean(s.value->>'isRepresentative') THEN 'Y' ELSE 'N' END AS representative_yn,
-      s.value->>'storeAddType' AS shop_regist_type_code,
-      'Y'::bpchar AS use_yn,
       b.created_at,
       b.updated_at
     FROM base b
-    JOIN LATERAL jsonb_array_elements(b.data->'stores') AS s(value)
-      ON jsonb_typeof(b.data->'stores') = 'array'
+    WHERE COALESCE(b.data->>'storeId','') <> ''
+  ),
+  extra_shops AS (
+    SELECT
+      b.doc_id AS owner_doc_id,
+      COALESCE(b.data->>'uid', b.data->>'id', b.doc_id) AS uid,
+      COALESCE(uss.data->>'id', uss.data->>'storeId', uss.doc_id) AS shop_id,
+      COALESCE(uss.data->>'title', uss.data->>'name', uss.data->>'storeName') AS shop_name,
+      COALESCE(uss.data->>'address', uss.data->>'storeAddress') AS shop_addr,
+      uss.data->>'addressDetail' AS shop_addr_detail,
+      COALESCE(uss.data->>'contactNumber', uss.data->>'phoneNum', uss.data->>'storePhoneNum') AS shop_contact,
+      uss.data->>'gpsX' AS position_lngt,
+      uss.data->>'gpsY' AS position_latt,
+      uss.data->>'postCode' AS zipcode,
+      CASE WHEN fn_safe_boolean(uss.data->>'isRepresentative') THEN 'Y' ELSE 'N' END AS representative_yn,
+      uss.data->>'storeAddType' AS shop_regist_type_code,
+      'Y'::bpchar AS use_yn,
+      COALESCE(uss.created_at, b.created_at) AS created_at,
+      COALESCE(uss.updated_at, b.updated_at) AS updated_at
+    FROM base b
+    JOIN fs_users__stores uss
+      ON uss.parent_doc_id = b.doc_id
   ),
   combined AS (
     SELECT * FROM primary_shop
@@ -1912,17 +1960,20 @@ BEGIN
   SELECT
     nextval('seq_tb_designer_shop_designer_shop_id')::text AS designer_shop_id,
     COALESCE(u.uid, combined.uid),
-    COALESCE(s.shop_id, combined.shop_id),
-    shop_regist_type_code,
+    s.shop_id,
+    CASE
+      WHEN s.shop_id IS NULL THEN 'StoreAddType.add'
+      ELSE 'StoreAddType.basic'
+    END,
     representative_yn,
-    combined.shop_name,
+    COALESCE(s.shop_name, uss.data->>'title', combined.shop_name),
     NULL,
-    combined.shop_addr,
-    combined.shop_addr_detail,
-    combined.shop_contact,
-    combined.position_lngt,
-    combined.position_latt,
-    combined.zipcode,
+    COALESCE(s.shop_addr, uss.data->>'address', combined.shop_addr),
+    COALESCE(s.shop_addr_detail, uss.data->>'addressDetail', combined.shop_addr_detail),
+    COALESCE(s.shop_contact, uss.data->>'contactNumber', uss.data->>'phoneNum', combined.shop_contact),
+    COALESCE(s.position_lngt, uss.data->>'gpsX', combined.position_lngt),
+    COALESCE(s.position_latt, uss.data->>'gpsY', combined.position_latt),
+    COALESCE(s.zipcode, uss.data->>'postCode', combined.zipcode),
     combined.use_yn,
     combined.uid || '_' || combined.shop_id,
     COALESCE(created_at, now()),
@@ -1935,6 +1986,9 @@ BEGIN
     ON u.migration_id = combined.uid
   LEFT JOIN jindamhair.tb_shop s
     ON s.migration_id = combined.shop_id
+  LEFT JOIN fs_users__stores uss
+    ON uss.parent_doc_id = combined.owner_doc_id
+   AND COALESCE(uss.data->>'id', uss.data->>'storeId', uss.doc_id) = combined.shop_id
   WHERE COALESCE(combined.uid,'') <> ''
     AND COALESCE(combined.shop_id,'') <> ''
   ON CONFLICT (designer_shop_id) DO NOTHING;
@@ -2225,3 +2279,5 @@ BEGIN
   PERFORM jindamhair.normalize_blank_array_to_null('jindamhair', 'tb_user');
 END;
 $$;
+
+
