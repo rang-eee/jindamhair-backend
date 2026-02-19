@@ -30,6 +30,7 @@ BEGIN
     designer_contact,
     shop_name,
     shop_addr,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -37,24 +38,26 @@ BEGIN
     delete_yn
   )
   SELECT
-    COALESCE(data->>'id', doc_id),
-    data->>'userUid',
-    data->>'designerUid',
-    CASE
-      WHEN COALESCE(data->>'designerUid','') <> '' AND COALESCE(data->>'storeId','') <> ''
-        THEN (data->>'designerUid') || '_' || (data->>'storeId')
-      ELSE NULL
-    END,
-    data->>'appointmentStatusType',
-    data->>'beginMethodType',
+    nextval('seq_tb_appointment_appointment_id')::text,
+    COALESCE(cu.uid, data->>'userUid'),
+    COALESCE(du.uid, data->>'designerUid'),
+    COALESCE(ds.designer_shop_id,
+      CASE
+        WHEN COALESCE(data->>'designerUid','') <> '' AND COALESCE(data->>'storeId','') <> ''
+          THEN (data->>'designerUid') || '_' || (data->>'storeId')
+        ELSE NULL
+      END
+    ),
+    LEFT(data->>'appointmentStatusType', 200),
+    LEFT(data->>'beginMethodType', 200),
     CASE WHEN (data->>'price') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (data->>'price')::numeric ELSE NULL END,
     NULL,
     fn_safe_timestamp(data->>'startAt'),
     fn_safe_timestamp(data->>'endAt'),
-    data->>'paymentMethodType',
+    LEFT(data->>'paymentMethodType', 200),
     data->>'hairTitle',
     data->>'cancelReason',
-    data->>'reviewId',
+    COALESCE(r.review_id, data->>'reviewId'),
     data->>'userName',
     data->>'userName',
     data->>'userPhoneNum',
@@ -63,12 +66,26 @@ BEGIN
     data->'designerModel'->>'phoneNum',
     data->>'storeName',
     data->'designerModel'->>'storeAddress',
+    COALESCE(data->>'id', doc_id),
     COALESCE(fn_safe_timestamp(data->>'createAt'), created_at, now()),
     'migration',
     COALESCE(fn_safe_timestamp(data->>'updateAt'), updated_at),
     'migration',
     'N'
-  FROM fs_appointments
+  FROM fs_appointments a
+  LEFT JOIN jindamhair.tb_user cu
+    ON cu.migration_id = a.data->>'userUid'
+  LEFT JOIN jindamhair.tb_user du
+    ON du.migration_id = a.data->>'designerUid'
+  LEFT JOIN jindamhair.tb_designer_shop ds
+    ON ds.migration_id = CASE
+      WHEN COALESCE(a.data->>'designerUid','') <> '' AND COALESCE(a.data->>'storeId','') <> ''
+        THEN (a.data->>'designerUid') || '_' || (a.data->>'storeId')
+      ELSE NULL
+    END
+  LEFT JOIN jindamhair.tb_review r
+    ON r.migration_id = a.data->>'reviewId'
   ON CONFLICT (appointment_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_appointment');
 END;
 $$;

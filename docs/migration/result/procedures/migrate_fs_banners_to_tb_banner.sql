@@ -21,6 +21,7 @@ BEGIN
     banner_display_status_code,
     banner_display_time_code,
     banner_icon_code,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -28,7 +29,7 @@ BEGIN
     delete_yn
   )
   SELECT
-    COALESCE(data->>'id', doc_id),
+    nextval('seq_tb_banner_banner_id')::text,
     data->>'title',
     data->>'content',
     (data->>'layerHeight')::numeric,
@@ -41,6 +42,7 @@ BEGIN
     data->>'displayType',
     data->>'displayTimeType',
     data->>'iconType',
+    COALESCE(data->>'id', doc_id),
     COALESCE(fn_safe_timestamp(data->>'createAt'), created_at, now()),
     'migration',
     COALESCE(fn_safe_timestamp(data->>'updateAt'), updated_at),
@@ -48,5 +50,6 @@ BEGIN
     'N'
   FROM fs_banners
   ON CONFLICT (banner_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_banner');
 END;
 $$;

@@ -713,6 +713,9 @@
 | `userType` | String |
 | `userTypeName` | String | null |
 
+> 마이그레이션 메모: `users.favoriteIds[]` → `tb_user_bookmark.bookmark_target_user_id`,
+> 대상 사용자(`users`)의 `genderType/ageType/userType` → `user_gender_code/user_agg_code/user_type_code`.
+
 
 ## Collection: usersFavorites
 

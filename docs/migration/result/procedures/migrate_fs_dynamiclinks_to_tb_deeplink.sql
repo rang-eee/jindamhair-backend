@@ -12,6 +12,7 @@ BEGIN
     deeplink_key,
     deeplink_email,
     deeplink_url,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -19,10 +20,11 @@ BEGIN
     delete_yn
   )
   SELECT
-    COALESCE(data->>'id', doc_id),
+      nextval('seq_tb_deeplink_deeplink_id')::text,
     data->>'linkKey',
     data->>'email',
     data->>'link',
+    COALESCE(data->>'id', doc_id),
     COALESCE((data->>'createAt')::timestamp, created_at, now()),
     'migration',
     COALESCE((data->>'updateAt')::timestamp, updated_at),
@@ -30,5 +32,6 @@ BEGIN
     'N'
   FROM fs_dynamiclinks
   ON CONFLICT (deeplink_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_deeplink');
 END;
 $$;

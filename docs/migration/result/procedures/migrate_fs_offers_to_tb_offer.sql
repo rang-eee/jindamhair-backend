@@ -18,6 +18,7 @@ BEGIN
     offer_position_latt,
     offer_position_lngt,
     offer_memo_content,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -25,9 +26,9 @@ BEGIN
     delete_yn
   )
   SELECT
-    COALESCE(data->>'id', doc_id),
+    nextval('seq_tb_offer_offer_id')::text,
     data->>'offerStatusType',
-    data->>'offerUid',
+    COALESCE(u.uid, data->>'offerUid'),
     fn_safe_timestamp(data->>'offerAt'),
     CASE WHEN (data->>'price') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (data->>'price')::numeric ELSE NULL END,
     data->>'offerLocationAddress',
@@ -35,12 +36,16 @@ BEGIN
     CASE WHEN (data->>'offerLocationLatitude') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (data->>'offerLocationLatitude')::numeric ELSE NULL END,
     CASE WHEN (data->>'offerLocationLongitude') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (data->>'offerLocationLongitude')::numeric ELSE NULL END,
     data->>'offerMemo',
+    COALESCE(data->>'id', doc_id),
     COALESCE(fn_safe_timestamp(data->>'createAt'), created_at, now()),
     'migration',
     COALESCE(fn_safe_timestamp(data->>'updateAt'), updated_at),
     'migration',
     'N'
-  FROM fs_offers
+  FROM fs_offers o
+  LEFT JOIN jindamhair.tb_user u
+    ON u.migration_id = o.data->>'offerUid'
   ON CONFLICT (offer_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_offer');
 END;
 $$;

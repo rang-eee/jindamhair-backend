@@ -18,6 +18,7 @@ BEGIN
     position_latt,
     zipcode,
     use_yn,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -25,7 +26,7 @@ BEGIN
     delete_yn
   )
   SELECT
-    COALESCE(data->>'id', doc_id),
+      nextval('seq_tb_shop_shop_id')::text,
     data->>'title',
     data->>'description',
     data->>'address',
@@ -34,13 +35,23 @@ BEGIN
     data->>'gpsX',
     data->>'gpsY',
     data->>'postCode',
-    'Y',
+    CASE
+      WHEN data->>'storeStatusType' = 'StoreStatusType.active' THEN 'Y'
+      WHEN data->>'storeStatusType' = 'StoreStatusType.unused' THEN 'N'
+      WHEN data->>'storeStatusType' = 'StoreStatusType.delete' THEN 'N'
+      ELSE 'Y'
+    END,
+    COALESCE(data->>'id', doc_id),
     COALESCE(fn_safe_timestamp(data->>'createAt'), created_at, now()),
     'migration',
     updated_at,
     'migration',
-    'N'
+    CASE
+      WHEN data->>'storeStatusType' = 'StoreStatusType.delete' THEN 'Y'
+      ELSE 'N'
+    END
   FROM fs_stores
   ON CONFLICT (shop_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_shop');
 END;
 $$;

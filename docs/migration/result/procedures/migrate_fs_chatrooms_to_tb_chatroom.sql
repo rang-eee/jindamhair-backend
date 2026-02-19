@@ -9,6 +9,7 @@ BEGIN
 
   INSERT INTO jindamhair.tb_chatroom (
     chatroom_id,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -16,7 +17,8 @@ BEGIN
     delete_yn
   )
   SELECT
-    COALESCE(data->>'id', doc_id),
+      nextval('seq_tb_chatroom_chatroom_id')::text,
+    doc_id,
     COALESCE(fn_safe_timestamp(data->>'createAt'), created_at, now()),
     'migration',
     COALESCE(fn_safe_timestamp(data->>'updateAt'), updated_at),
@@ -24,5 +26,6 @@ BEGIN
     'N'
   FROM fs_chatrooms
   ON CONFLICT (chatroom_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_chatroom');
 END;
 $$;

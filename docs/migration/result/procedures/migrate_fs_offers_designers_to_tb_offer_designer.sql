@@ -11,6 +11,7 @@ BEGIN
     offer_designer_id,
     offer_id,
     offer_agree_status_code,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -18,15 +19,19 @@ BEGIN
     delete_yn
   )
   SELECT
-    parent_doc_id || '_' || doc_id AS offer_designer_id,
-    parent_doc_id AS offer_id,
+    nextval('seq_tb_offer_designer_offer_designer_id')::text AS offer_designer_id,
+    COALESCE(o.offer_id, parent_doc_id) AS offer_id,
     data->>'status',
+    COALESCE(data->>'id', doc_id),
     COALESCE(fn_safe_timestamp(data->>'createAt'), now()),
     'migration',
     NULL,
     'migration',
     'N'
-  FROM fs_offers__designers
+  FROM fs_offers__designers d
+  LEFT JOIN jindamhair.tb_offer o
+    ON o.migration_id = d.parent_doc_id
   ON CONFLICT (offer_designer_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_offer_designer');
 END;
 $$;

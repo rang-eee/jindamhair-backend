@@ -18,6 +18,7 @@ BEGIN
     send_complete_at,
     push_type_code,
     push_link_val,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -25,9 +26,9 @@ BEGIN
     delete_yn
   )
   SELECT
-    COALESCE(data->>'id', doc_id),
+    nextval('seq_tb_user_push_user_push_id')::text,
     NULL,
-    data->>'receiveId',
+    COALESCE(u.uid, data->>'receiveId'),
     data->>'title',
     data->>'message',
     fn_safe_timestamp(data->>'sendAt'),
@@ -35,12 +36,16 @@ BEGIN
     fn_safe_timestamp(data->>'sendedAt'),
     NULL,
     data->>'eventWhenClick',
+    COALESCE(data->>'id', doc_id),
     COALESCE(fn_safe_timestamp(data->>'createAt'), created_at, now()),
     'migration',
     updated_at,
     'migration',
     'N'
-  FROM fs_pushes
+  FROM fs_pushes p
+  LEFT JOIN jindamhair.tb_user u
+    ON u.migration_id = p.data->>'receiveId'
   ON CONFLICT (user_push_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_user_push');
 END;
 $$;

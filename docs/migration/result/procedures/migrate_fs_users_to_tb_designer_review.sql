@@ -11,6 +11,7 @@ BEGIN
     designer_review_id,
     review_type_code,
     review_count,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -18,9 +19,10 @@ BEGIN
     delete_yn
   )
   SELECT
-    uid || '_' || review_type_code AS designer_review_id,
+    nextval('seq_tb_designer_review_designer_review_id')::text AS designer_review_id,
     review_type_code,
     review_count,
+    uid || '_' || review_type_code,
     COALESCE(fn_safe_timestamp(user_create_at), created_at, now()),
     'migration',
     updated_at,
@@ -44,5 +46,6 @@ BEGIN
   WHERE uid IS NOT NULL AND uid <> ''
     AND review_type_code IS NOT NULL AND review_type_code <> ''
   ON CONFLICT (designer_review_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_designer_review');
 END;
 $$;

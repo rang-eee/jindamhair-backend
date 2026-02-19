@@ -62,6 +62,7 @@ BEGIN
     uid,
     chatroom_name,
     last_read_at,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -69,17 +70,23 @@ BEGIN
     delete_yn
   )
   SELECT DISTINCT
-    chatroom_id || '_' || uid AS chatroom_member_id,
-    chatroom_id,
-    uid,
+    nextval('seq_tb_chatroom_member_chatroom_member_id')::text AS chatroom_member_id,
+    COALESCE(c.chatroom_id, normalized.chatroom_id),
+    COALESCE(u.uid, normalized.uid),
     chatroom_name,
     last_read_at,
+    normalized.chatroom_id || '_' || normalized.uid,
     COALESCE(created_at, now()),
     'migration',
     updated_at,
     'migration',
     'N'
   FROM normalized
+  LEFT JOIN jindamhair.tb_chatroom c
+    ON c.migration_id = normalized.chatroom_id
+  LEFT JOIN jindamhair.tb_user u
+    ON u.migration_id = normalized.uid
   ON CONFLICT (chatroom_member_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_chatroom_member');
 END;
 $$;

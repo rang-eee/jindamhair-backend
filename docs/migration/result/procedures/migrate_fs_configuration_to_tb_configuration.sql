@@ -12,6 +12,7 @@ BEGIN
     aos_permission_minimum_build_number,
     ios_last_ver,
     ios_permission_minimum_build_number,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -25,6 +26,7 @@ BEGIN
     COALESCE(data->>'aosAllowMinmumBuildNumber', data->>'allow_minmum_build_number', data->>'allowMinmumBuildNumber'),
     COALESCE(data->>'iosLastestVersion', data->>'lastest_version', data->>'lastestVersion'),
     COALESCE(data->>'iosAllowMinmumBuildNumber', data->>'allow_minmum_build_number', data->>'allowMinmumBuildNumber'),
+    COALESCE(data->>'id', doc_id),
     now(),
     'migration',
     NULL,
@@ -36,5 +38,6 @@ BEGIN
   WHERE NOT EXISTS (SELECT 1 FROM jindamhair.tb_configuration)
   ORDER BY created_at DESC NULLS LAST
   LIMIT 1;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_configuration');
 END;
 $$;

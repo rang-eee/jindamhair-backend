@@ -13,6 +13,7 @@ BEGIN
     payment_key,
     order_id,
     payment_amount,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -20,17 +21,15 @@ BEGIN
     delete_yn
   )
   SELECT
-    COALESCE(data->>'id', doc_id),
+      nextval('seq_tb_payment_payment_id')::text,
     data->>'paymentType',
     data->>'paymentKey',
-    CASE
-      WHEN (data->>'orderId') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (data->>'orderId')::numeric
-      ELSE NULL
-    END,
+    data->>'orderId',
     CASE
       WHEN (data->>'amount') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (data->>'amount')::numeric
       ELSE NULL
     END,
+    COALESCE(data->>'id', doc_id),
     COALESCE(fn_safe_timestamp(data->>'createAt'), created_at, now()),
     'migration',
     updated_at,
@@ -38,5 +37,6 @@ BEGIN
     'N'
   FROM fs_payments
   ON CONFLICT (payment_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_payment');
 END;
 $$;

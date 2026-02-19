@@ -70,6 +70,7 @@ BEGIN
     position_latt,
     zipcode,
     use_yn,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -77,28 +78,34 @@ BEGIN
     delete_yn
   )
   SELECT
-    uid || '_' || shop_id AS designer_shop_id,
-    uid,
-    shop_id,
+    nextval('seq_tb_designer_shop_designer_shop_id')::text AS designer_shop_id,
+    COALESCE(u.uid, combined.uid),
+    COALESCE(s.shop_id, combined.shop_id),
     shop_regist_type_code,
     representative_yn,
-    shop_name,
+    combined.shop_name,
     NULL,
-    shop_addr,
-    shop_addr_detail,
-    shop_contact,
-    position_lngt,
-    position_latt,
-    zipcode,
-    use_yn,
+    combined.shop_addr,
+    combined.shop_addr_detail,
+    combined.shop_contact,
+    combined.position_lngt,
+    combined.position_latt,
+    combined.zipcode,
+    combined.use_yn,
+    combined.uid || '_' || combined.shop_id,
     COALESCE(created_at, now()),
     'migration',
     updated_at,
     'migration',
     'N'
   FROM combined
-  WHERE COALESCE(uid,'') <> ''
-    AND COALESCE(shop_id,'') <> ''
+  LEFT JOIN jindamhair.tb_user u
+    ON u.migration_id = combined.uid
+  LEFT JOIN jindamhair.tb_shop s
+    ON s.migration_id = combined.shop_id
+  WHERE COALESCE(combined.uid,'') <> ''
+    AND COALESCE(combined.shop_id,'') <> ''
   ON CONFLICT (designer_shop_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_designer_shop');
 END;
 $$;

@@ -16,6 +16,7 @@ BEGIN
     chat_message_content,
     delete_member_uid_arr,
     appointment_id,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -23,9 +24,9 @@ BEGIN
     delete_yn
   )
   SELECT
-    COALESCE(data->>'id', doc_id),
-    parent_doc_id,
-    data->>'authorId',
+    nextval('seq_tb_chatroom_message_chat_message_id')::text,
+    COALESCE(c.chatroom_id, parent_doc_id),
+    COALESCE(u.uid, data->>'authorId'),
     data->>'messageType',
     data->>'messageTextType',
     data->>'message',
@@ -34,13 +35,21 @@ BEGIN
         ARRAY(SELECT jsonb_array_elements_text(data->'deleteMemberIds'))
       ELSE NULL
     END,
-    data->>'appointmentId',
+    COALESCE(a.appointment_id, data->>'appointmentId'),
+    COALESCE(data->>'id', doc_id),
     COALESCE(fn_safe_timestamp(data->>'createAt'), created_at, now()),
     'migration',
     updated_at,
     'migration',
     'N'
-  FROM fs_chatrooms__chatmessages
+  FROM fs_chatrooms__chatmessages m
+  LEFT JOIN jindamhair.tb_chatroom c
+    ON c.migration_id = m.parent_doc_id
+  LEFT JOIN jindamhair.tb_user u
+    ON u.migration_id = m.data->>'authorId'
+  LEFT JOIN jindamhair.tb_appointment a
+    ON a.migration_id = m.data->>'appointmentId'
   ON CONFLICT (chat_message_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_chatroom_message');
 END;
 $$;

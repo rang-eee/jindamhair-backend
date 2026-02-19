@@ -50,6 +50,7 @@ BEGIN
     offer_id,
     treatment_level,
     treatment_code,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -57,17 +58,21 @@ BEGIN
     delete_yn
   )
   SELECT
-    offer_id || '_' || treatment_level::text || '_' || treatment_code AS offer_treatment_id,
-    offer_id,
+    nextval('seq_tb_offer_treatment_offer_treatment_id')::text AS offer_treatment_id,
+    COALESCE(o.offer_id, all_lv.offer_id),
     treatment_level,
     treatment_code,
+    all_lv.offer_id || '_' || treatment_level::text || '_' || treatment_code,
     now(),
     'migration',
     NULL,
     'migration',
     'N'
   FROM all_lv
-  WHERE COALESCE(offer_id,'') <> '' AND COALESCE(treatment_code,'') <> ''
+  LEFT JOIN jindamhair.tb_offer o
+    ON o.migration_id = all_lv.offer_id
+  WHERE COALESCE(all_lv.offer_id,'') <> '' AND COALESCE(treatment_code,'') <> ''
   ON CONFLICT (offer_treatment_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_offer_treatment');
 END;
 $$;

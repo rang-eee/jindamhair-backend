@@ -31,6 +31,7 @@ BEGIN
     treatment_name_2,
     treatment_code_3,
     treatment_name_3,
+    migration_id,
     create_at,
     create_id,
     update_at,
@@ -38,9 +39,9 @@ BEGIN
     delete_yn
   )
   SELECT
-    COALESCE(m.data->>'id', m.doc_id),
-    m.data->>'designerId',
-    a.data->>'userUid',
+    nextval('seq_tb_appointment_treatment_appointment_treatment_id')::text,
+    COALESCE(dt.designer_treatment_id, m.data->>'designerId'),
+    COALESCE(u.uid, a.data->>'userUid'),
     m.data->>'title',
     CASE WHEN (m.data->>'price') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (m.data->>'price')::numeric ELSE NULL END,
     CASE WHEN (m.data->>'percent') ~ '^[0-9]+(\\.[0-9]+)?$' THEN (m.data->>'percent')::numeric ELSE NULL END,
@@ -64,6 +65,7 @@ BEGIN
     m.data->>'levelTitle2',
     m.data->>'levelCode3',
     m.data->>'levelTitle3',
+    COALESCE(m.data->>'id', m.doc_id),
     COALESCE(fn_safe_timestamp(m.data->>'createAt'), m.created_at, now()),
     'migration',
     m.updated_at,
@@ -72,6 +74,11 @@ BEGIN
   FROM fs_appointments__menus m
   LEFT JOIN fs_appointments a
     ON a.doc_id = m.parent_doc_id
+  LEFT JOIN jindamhair.tb_desinger_treatment dt
+    ON dt.migration_id = m.data->>'designerId'
+  LEFT JOIN jindamhair.tb_user u
+    ON u.migration_id = a.data->>'userUid'
   ON CONFLICT (appointment_treatment_id) DO NOTHING;
+  PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_appointment_treatment');
 END;
 $$;

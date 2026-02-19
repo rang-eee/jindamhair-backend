@@ -9,6 +9,7 @@
 - 대부분 테이블에 아래 공통 컬럼이 존재
   - `create_at timestamp NOT NULL DEFAULT now()`
   - `create_id text NULL`
+  - `migration_id text NULL`
   - `update_at timestamp NULL`
   - `update_id text NULL`
   - `delete_yn bpchar(1) NOT NULL DEFAULT 'N'`
@@ -20,6 +21,24 @@
 ---
 
 ## 1) 로그/파일/설정
+
+### 1.0 `a_test_table_q` (테스트)
+
+| Column | Type | Null | Default | PK | Comment |
+|---|---|---:|---|---:|---|
+| `user_id` | `text` | NOT NULL |  | ✅ | 사용자 ID |
+| `user_name` | `text` | NULL |  |  | 사용자 명 |
+| `age` | `numeric` | NULL |  |  | 나이 |
+| `use_yn` | `bpchar(1)` | NOT NULL | `'Y'` |  | 사용 여부 |
+| `create_id` | `text` | NULL |  |  | 생성 ID |
+| `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
+| `update_id` | `text` | NULL |  |  | 수정 ID |
+| `update_at` | `timestamp` | NULL |  |  | 수정 일시 |
+| `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
+| `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
+
+---
 
 ### 1.1 `tb_log_error` (에러 로그)
 
@@ -38,7 +57,7 @@
 |---|---|---:|---|---:|---|
 | `file_id` | `text` | NOT NULL |  | ✅ | 파일 ID |
 | `sort_order` | `numeric` | NULL |  |  | 정렬 순서 |
-| `file_type_code` | `varchar(30)` | NULL |  |  | 파일 유형 코드. FLTP |
+| `file_type_code` | `varchar(200)` | NULL |  |  | 파일 유형 코드. FLTP |
 | `org_file_name` | `text` | NULL |  |  | 원본 파일 명 |
 | `convert_file_name` | `text` | NULL |  |  | 변환 파일 명 |
 | `file_path` | `text` | NULL |  |  | 파일 경로 |
@@ -50,6 +69,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -68,6 +88,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 > 주의: 제공 DDL에는 PK 제약이 없음(설계상 단일 row 테이블일 가능성)
 
@@ -84,13 +105,13 @@
 | `user_contact` | `text` | NULL |  |  | 사용자 연락처 |
 | `user_name` | `text` | NULL |  |  | 사용자 명 |
 | `user_nickname` | `text` | NULL |  |  | 사용자 닉네임 |
-| `user_status_code` | `varchar(30)` | NULL |  |  | 사용자 상태 코드. USST |
-| `user_type_code` | `varchar(30)` | NULL |  |  | 사용자 유형 코드. USTP |
+| `user_status_code` | `varchar(200)` | NULL |  |  | 사용자 상태 코드. USST |
+| `user_type_code` | `varchar(200)` | NULL |  |  | 사용자 유형 코드. USTP |
 | `user_brdt` | `text` | NULL |  |  | 사용자 생년월일 |
-| `user_join_type_code` | `varchar(30)` | NULL |  |  | 사용자 가입 유형 코드. UJTP |
+| `user_join_type_code` | `varchar(200)` | NULL |  |  | 사용자 가입 유형 코드. UJTP |
 | `push_token` | `text` | NULL |  |  | 푸시 토큰 |
 | `last_login_at` | `timestamp` | NULL |  |  | 최종 로그인 일시 |
-| `interception_user_id_arr` | `_varchar` | NULL |  |  | 차단 사용자 ID 배열 |
+| `interception_user_id_arr` | `text` | NULL |  |  | 차단 사용자 ID 배열 |
 | `prvcplc_agree_yn` | `bpchar(1)` | NULL |  |  | 개인정보처리방침 동의 여부 |
 | `terms_agree_yn` | `bpchar(1)` | NULL |  |  | 서비스 이용약관 동의 여부 |
 | `all_notification_reception_yn` | `bpchar(1)` | NULL |  |  | 전체 알림 수신 여부 |
@@ -110,17 +131,19 @@
 | `position_lngt` | `text` | NULL |  |  | 위치 경도 |
 | `position_distance` | `text` | NULL |  |  | 위치 거리 |
 | `profile_photo_file_id` | `text` | NULL |  |  | 프로필 사진 파일 ID |
-| `designer_appr_status_code` | `varchar(30)` | NULL |  |  | 디자이너 승인 상태 코드. DAST |
+| `designer_appr_status_code` | `varchar(200)` | NULL |  |  | 디자이너 승인 상태 코드. DAST |
 | `designer_introduce_content` | `text` | NULL |  |  | 디자이너 소개 내용 |
 | `designer_tag_arr` | `_varchar` | NULL |  |  | 디자이너 태그 배열 |
-| `designer_work_status_code` | `varchar(30)` | NULL |  |  | 디자이너 근무 상태 코드. DWST |
+| `designer_work_status_code` | `varchar(200)` | NULL |  |  | 디자이너 근무 상태 코드. DWST |
 | `designer_open_day_arr` | `_varchar` | NULL |  |  | 디자이너 오픈 요일 배열 |
 | `designer_open_time_arr` | `_varchar` | NULL |  |  | 디자이너 오픈 시간 배열 |
 | `designer_close_time_arr` | `_varchar` | NULL |  |  | 디자이너 오프 시간 배열 |
+| `designer_off_date_arr` | `_varchar` | NULL |  |  | 디자이너 휴무 날짜 배열 |
 | `designer_appointment_automatic_confirm_yn` | `bpchar(1)` | NULL |  |  | 디자이너 예약 자동 확정 여부 |
 | `designer_applink_url` | `text` | NULL |  |  | 디자이너 앱링크 URL |
 | `designer_detail_photo_file_id` | `text` | NULL |  |  | 디자이너 세부 사진 파일 ID |
-| `designer_account_brand_code` | `varchar(30)` | NULL |  |  | 디자이너 계좌 브랜드 코드. DABT |
+| `designer_account_brand_code` | `varchar(200)` | NULL |  |  | 디자이너 계좌 브랜드 코드. DABT |
+| `designer_license_photo_file_id` | `text` | NULL |  |  | 디자이너 면허증 사진 파일 ID |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
 | `create_id` | `text` | NULL |  |  | 생성 ID |
 | `update_at` | `timestamp` | NULL |  |  | 수정 일시 |
@@ -128,6 +151,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -136,8 +160,11 @@
 | Column | Type | Null | Default | PK | Comment |
 |---|---|---:|---|---:|---|
 | `user_bookmark_id` | `text` | NOT NULL |  | ✅ | 사용자 즐겨찾기 ID |
-| `uid` | `text` | NULL |  |  | 사용자ID |
-| `bookmark_uid` | `text` | NULL |  |  | 즐겨찾기 사용자ID |
+| `uid` | `text` | NOT NULL |  |  | 사용자ID |
+| `bookmark_target_user_id` | `text` | NOT NULL |  |  | 즐겨찾기 대상 사용자 ID |
+| `user_gender_code` | `varchar(200)` | NULL |  |  | 사용자 성별 코드. USGD |
+| `user_agg_code` | `varchar(200)` | NULL |  |  | 사용자 연령대 코드. USAG |
+| `user_type_code` | `varchar(200)` | NULL |  |  | 사용자 유형 코드. USTP |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
 | `create_id` | `text` | NULL |  |  | 생성 ID |
 | `update_at` | `timestamp` | NULL |  |  | 수정 일시 |
@@ -145,6 +172,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 > 기존 `tb_user.bookmark_user_id_arr` 컬럼에서 분리됨
 
@@ -162,6 +190,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -179,16 +208,16 @@
 | `treatment_content` | `numeric` | NULL |  |  | 시술 내용 |
 | `treatment_require_time` | `numeric` | NULL |  |  | 시술 소요 시간 |
 | `treatment_photo_file_id` | `text` | NULL |  |  | 시술 사진 파일 ID |
-| `treatment_gender_type_code` | `varchar(30)` | NULL |  |  | 시술 성별 유형 코드. TGTP |
+| `treatment_gender_type_code` | `varchar(200)` | NULL |  |  | 시술 성별 유형 코드. TGTP |
 | `discount_yn` | `bpchar(1)` | NULL |  |  | 할인 여부 |
 | `add_yn` | `bpchar(1)` | NULL |  |  | 추가 여부 |
 | `open_yn` | `bpchar(1)` | NULL |  |  | 오픈 여부 |
 | `sort_order` | `numeric` | NULL |  |  | 정렬 순서 |
-| `treatment_code_1` | `varchar(30)` | NULL |  |  | 시술 코드 1 |
+| `treatment_code_1` | `varchar(200)` | NULL |  |  | 시술 코드 1 |
 | `treatment_name_1` | `text` | NULL |  |  | 시술 명 1 |
-| `treatment_code_2` | `varchar(30)` | NULL |  |  | 시술 코드 2 |
+| `treatment_code_2` | `varchar(200)` | NULL |  |  | 시술 코드 2 |
 | `treatment_name_2` | `text` | NULL |  |  | 시술 명 2 |
-| `treatment_code_3` | `varchar(30)` | NULL |  |  | 시술 코드 3 |
+| `treatment_code_3` | `varchar(200)` | NULL |  |  | 시술 코드 3 |
 | `treatment_name_3` | `text` | NULL |  |  | 시술 명 3 |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
 | `create_id` | `text` | NULL |  |  | 생성 ID |
@@ -197,6 +226,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -206,7 +236,7 @@
 |---|---|---:|---|---:|---|
 | `designer_treatment_add_id` | `text` | NOT NULL |  | ✅ | 디자이너 시술 추가 ID |
 | `designer_treatment_id` | `text` | NULL |  |  | 디자이너 시술 ID |
-| `hair_add_type_code` | `varchar(30)` | NULL |  |  | 헤어 추가 유형 코드. HATP |
+| `hair_add_type_code` | `varchar(200)` | NULL |  |  | 헤어 추가 유형 코드. HATP |
 | `add_amount` | `numeric` | NULL |  |  | 추가 금액 |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
 | `create_id` | `text` | NULL |  |  | 생성 ID |
@@ -215,6 +245,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -225,7 +256,7 @@
 | Column | Type | Null | Default | PK | Comment |
 |---|---|---:|---|---:|---|
 | `treatment_id` | `text` | NOT NULL |  | ✅ | 시술 ID |
-| `treatment_code` | `varchar(30)` | NULL |  |  | 시술 코드 |
+| `treatment_code` | `varchar(200)` | NULL |  |  | 시술 코드 |
 | `treatment_name` | `text` | NULL |  |  | 시술 명 |
 | `treatment_level` | `numeric` | NULL |  |  | 시술 레벨 |
 | `sort_order` | `numeric` | NULL |  |  | 정렬 순서 |
@@ -238,6 +269,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -249,14 +281,14 @@
 | Column | Type | Null | Default | PK | Comment |
 |---|---|---:|---|---:|---|
 | `treatment_class_id` | `text` | NOT NULL |  | ✅ | 시술 분류 ID |
-| `treatment_code` | `varchar(30)` | NULL |  |  | 시술 코드 |
+| `treatment_code` | `varchar(200)` | NULL |  |  | 시술 코드 |
 | `treatment_name` | `text` | NULL |  |  | 시술 명 |
 | `treatment_level` | `numeric` | NULL |  |  | 시술 레벨 |
-| `treatment_code_1` | `varchar(30)` | NULL |  |  | 시술 코드 1 |
+| `treatment_code_1` | `varchar(200)` | NULL |  |  | 시술 코드 1 |
 | `treatment_name_1` | `text` | NULL |  |  | 시술 명 1 |
-| `treatment_code_2` | `varchar(30)` | NULL |  |  | 시술 코드 2 |
+| `treatment_code_2` | `varchar(200)` | NULL |  |  | 시술 코드 2 |
 | `treatment_name_2` | `text` | NULL |  |  | 시술 명 2 |
-| `treatment_code_3` | `varchar(30)` | NULL |  |  | 시술 코드 3 |
+| `treatment_code_3` | `varchar(200)` | NULL |  |  | 시술 코드 3 |
 | `treatment_name_3` | `text` | NULL |  |  | 시술 명 3 |
 | `sort_order` | `numeric` | NULL |  |  | 정렬 순서 |
 | `use_yn` | `bpchar(1)` | NOT NULL | `'Y'` |  | 사용 여부 |
@@ -267,6 +299,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -287,6 +320,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -311,6 +345,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -321,7 +356,7 @@
 | `designer_shop_id` | `text` | NOT NULL |  | ✅ | 디자이너 헤어샵 ID |
 | `uid` | `text` | NULL |  |  | 사용자ID |
 | `shop_id` | `text` | NULL |  |  | 헤어샵 ID |
-| `shop_regist_type_code` | `varchar(30)` | NULL |  |  | 헤어샵 등록 유형 코드. SRTP |
+| `shop_regist_type_code` | `varchar(200)` | NULL |  |  | 헤어샵 등록 유형 코드. SRTP |
 | `representative_yn` | `bpchar(1)` | NULL |  |  | 대표 여부 |
 | `shop_name` | `text` | NULL |  |  | 헤어샵 명. 추가 매장용 컬럼 |
 | `shop_description` | `text` | NULL |  |  | 헤어샵 설명. 추가 매장용 컬럼 |
@@ -339,6 +374,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -352,13 +388,13 @@
 | `customer_uid` | `text` | NULL |  |  | 고객 사용자ID |
 | `designer_uid` | `text` | NULL |  |  | 디자이너 사용자ID |
 | `designer_shop_id` | `text` | NULL |  |  | 디자이너 헤어샵 ID |
-| `appointment_status_code` | `varchar(30)` | NULL |  |  | 예약 상태 코드. APST |
-| `appointment_start_type_code` | `varchar(30)` | NULL |  |  | 예약 시작 유형 코드. APSR |
+| `appointment_status_code` | `varchar(200)` | NULL |  |  | 예약 상태 코드. APST |
+| `appointment_start_type_code` | `varchar(200)` | NULL |  |  | 예약 시작 유형 코드. APSR |
 | `total_amount` | `numeric` | NULL |  |  | 총 금액 |
 | `appointment_amount` | `numeric` | NULL |  |  | 예약 금액 |
 | `treatment_start_at` | `timestamp` | NULL |  |  | 시술 시작 일시 |
 | `treatment_end_at` | `timestamp` | NULL |  |  | 시술 종료 일시 |
-| `payment_method_code` | `varchar(30)` | NULL |  |  | 결제 방법 코드. PMMT |
+| `payment_method_code` | `varchar(200)` | NULL |  |  | 결제 방법 코드. PMMT |
 | `appointment_content` | `text` | NULL |  |  | 예약 내용 |
 | `cancel_reason_content` | `text` | NULL |  |  | 취소 사유 내용 |
 | `review_id` | `text` | NULL |  |  | 후기 ID |
@@ -377,6 +413,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -391,21 +428,21 @@
 | `basic_amount` | `numeric` | NULL |  |  | 기본 금액 |
 | `discount_pt` | `numeric` | NULL |  |  | 할인 백분율 |
 | `discount_amount` | `numeric` | NULL |  |  | 할인 금액 |
-| `hair_add_type_code` | `varchar(30)` | NULL |  |  | 헤어 추가 유형 코드 |
+| `hair_add_type_code` | `varchar(200)` | NULL |  |  | 헤어 추가 유형 코드 |
 | `add_amount` | `numeric` | NULL |  |  | 추가 금액 |
 | `total_amount` | `numeric` | NULL |  |  | 총 금액 |
 | `treatment_content` | `numeric` | NULL |  |  | 시술 내용 |
 | `treatment_require_time` | `numeric` | NULL |  |  | 시술 소요 시간 |
 | `treatment_photo_file_id` | `text` | NULL |  |  | 시술 사진 파일 ID |
-| `treatment_gender_type_code` | `varchar(30)` | NULL |  |  | 시술 성별 유형 코드. TGTP |
+| `treatment_gender_type_code` | `varchar(200)` | NULL |  |  | 시술 성별 유형 코드. TGTP |
 | `discount_yn` | `bpchar(1)` | NULL |  |  | 할인 여부 |
 | `add_yn` | `bpchar(1)` | NULL |  |  | 추가 여부 |
 | `open_yn` | `bpchar(1)` | NULL |  |  | 오픈 여부 |
-| `treatment_code_1` | `varchar(30)` | NULL |  |  | 시술 코드 1 |
+| `treatment_code_1` | `varchar(200)` | NULL |  |  | 시술 코드 1 |
 | `treatment_name_1` | `text` | NULL |  |  | 시술 명 1 |
-| `treatment_code_2` | `varchar(30)` | NULL |  |  | 시술 코드 2 |
+| `treatment_code_2` | `varchar(200)` | NULL |  |  | 시술 코드 2 |
 | `treatment_name_2` | `text` | NULL |  |  | 시술 명 2 |
-| `treatment_code_3` | `varchar(30)` | NULL |  |  | 시술 코드 3 |
+| `treatment_code_3` | `varchar(200)` | NULL |  |  | 시술 코드 3 |
 | `treatment_name_3` | `text` | NULL |  |  | 시술 명 3 |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
 | `create_id` | `text` | NULL |  |  | 생성 ID |
@@ -414,6 +451,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -435,6 +473,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -452,6 +491,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -471,6 +511,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -481,8 +522,8 @@
 | `chat_message_id` | `text` | NOT NULL |  | ✅ | 채팅 메시지 ID |
 | `chatroom_id` | `text` | NULL |  |  | 채팅방 ID |
 | `write_uid` | `text` | NULL |  |  | 작성 사용자ID |
-| `chat_message_type_code` | `varchar(30)` | NULL |  |  | 채팅 메시지 유형 코드. CMTP |
-| `chat_message_content_type_code` | `varchar(30)` | NULL |  |  | 채팅 메시지 내용 유형 코드. CMCT |
+| `chat_message_type_code` | `varchar(200)` | NULL |  |  | 채팅 메시지 유형 코드. CMTP |
+| `chat_message_content_type_code` | `varchar(200)` | NULL |  |  | 채팅 메시지 내용 유형 코드. CMCT |
 | `chat_message_content` | `text` | NULL |  |  | 채팅 메시지 내용 |
 | `delete_member_uid_arr` | `_varchar` | NULL |  |  | 삭제 멤버 사용자ID 배열 |
 | `appointment_id` | `text` | NULL |  |  | 예약 ID. 후기 입력을 위한 컬럼 |
@@ -493,6 +534,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -510,7 +552,7 @@
 | `send_at` | `timestamp` | NULL |  |  | 송신 일시 |
 | `send_yn` | `bpchar(1)` | NULL |  |  | 송신 여부 |
 | `send_complete_at` | `timestamp` | NULL |  |  | 송신 완료 일시 |
-| `push_type_code` | `varchar(30)` | NULL |  |  | 푸시 유형 코드. PSTP |
+| `push_type_code` | `varchar(200)` | NULL |  |  | 푸시 유형 코드. PSTP |
 | `push_link_val` | `text` | NULL |  |  | 푸시 연계 값 |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
 | `create_id` | `text` | NULL |  |  | 생성 ID |
@@ -519,6 +561,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -527,10 +570,10 @@
 | Column | Type | Null | Default | PK | Comment |
 |---|---|---:|---|---:|---|
 | `admin_notification_id` | `text` | NOT NULL |  | ✅ | 관리자 알림 ID |
-| `notification_sender_type_code` | `varchar(30)` | NULL |  |  | 알림 송신자 유형 코드. NTST |
-| `notification_receiver_type_code` | `varchar(30)` | NULL |  |  | 알림 수신자 유형 코드. NTRT |
-| `notification_send_method_code` | `varchar(30)` | NULL |  |  | 알림 송신 방법 코드. NTSM |
-| `notification_send_period_type_code` | `varchar(30)` | NULL |  |  | 알림 송신 기간 유형 코드. NSPT |
+| `notification_sender_type_code` | `varchar(200)` | NULL |  |  | 알림 송신자 유형 코드. NTST |
+| `notification_receiver_type_code` | `varchar(200)` | NULL |  |  | 알림 수신자 유형 코드. NTRT |
+| `notification_send_method_code` | `varchar(200)` | NULL |  |  | 알림 송신 방법 코드. NTSM |
+| `notification_send_period_type_code` | `varchar(200)` | NULL |  |  | 알림 송신 기간 유형 코드. NSPT |
 | `notification_title` | `text` | NULL |  |  | 알림 제목 |
 | `notification_content` | `text` | NULL |  |  | 알림 내용 |
 | `send_at` | `timestamp` | NULL |  |  | 송신 일시 |
@@ -543,6 +586,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -563,6 +607,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -573,7 +618,7 @@
 | `notification_center_id` | `text` | NOT NULL |  | ✅ | 알림 센터 ID |
 | `notification_topic` | `text` | NULL |  |  | 알림 토픽 |
 | `event_click` | `text` | NULL |  |  | 이벤트 클릭 |
-| `notification_type_code` | `varchar(30)` | NULL |  |  | 알림 유형 코드. NTTP |
+| `notification_type_code` | `varchar(200)` | NULL |  |  | 알림 유형 코드. NTTP |
 | `notification_title` | `text` | NULL |  |  | 알림 제목 |
 | `notification_content` | `text` | NULL |  |  | 알림 내용 |
 | `receiver_uid` | `text` | NULL |  |  | 수신자 사용자ID |
@@ -588,6 +633,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -604,12 +650,12 @@
 | `display_start_at` | `timestamp` | NULL |  |  | 노출 시작 일시 |
 | `display_end_at` | `timestamp` | NULL |  |  | 노출 종료 일시 |
 | `sort_order` | `numeric` | NULL |  |  | 정렬 순서 |
-| `banner_type_code` | `varchar(30)` | NULL |  |  | 배너 유형 코드. BNTP |
-| `banner_display_position_code` | `varchar(30)` | NULL |  |  | 배너 노출 위치 코드. BDPT |
-| `banner_display_target_code` | `varchar(30)` | NULL |  |  | 배너 노출 대상 코드. BDTG |
-| `banner_display_status_code` | `varchar(30)` | NULL |  |  | 배너 노출 상태 코드. BDST |
-| `banner_display_time_code` | `varchar(30)` | NULL |  |  | 배너 노출 시간 코드. BDTM |
-| `banner_icon_code` | `varchar(30)` | NULL |  |  | 배너 아이콘 코드. BNIC |
+| `banner_type_code` | `varchar(200)` | NULL |  |  | 배너 유형 코드. BNTP |
+| `banner_display_position_code` | `varchar(200)` | NULL |  |  | 배너 노출 위치 코드. BDPT |
+| `banner_display_target_code` | `varchar(200)` | NULL |  |  | 배너 노출 대상 코드. BDTG |
+| `banner_display_status_code` | `varchar(200)` | NULL |  |  | 배너 노출 상태 코드. BDST |
+| `banner_display_time_code` | `varchar(200)` | NULL |  |  | 배너 노출 시간 코드. BDTM |
+| `banner_icon_code` | `varchar(200)` | NULL |  |  | 배너 아이콘 코드. BNIC |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
 | `create_id` | `text` | NULL |  |  | 생성 ID |
 | `update_at` | `timestamp` | NULL |  |  | 수정 일시 |
@@ -617,6 +663,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -625,7 +672,7 @@
 | Column | Type | Null | Default | PK | Comment |
 |---|---|---:|---|---:|---|
 | `offer_id` | `text` | NOT NULL |  | ✅ | 제안 ID |
-| `offer_status_code` | `varchar(30)` | NULL |  |  | 제안 상태 코드. OFST |
+| `offer_status_code` | `varchar(200)` | NULL |  |  | 제안 상태 코드. OFST |
 | `offer_uid` | `text` | NULL |  |  | 제안 사용자ID |
 | `offer_at` | `timestamp` | NULL |  |  | 제안 일시 |
 | `offer_amount` | `numeric` | NULL |  |  | 제안 금액 |
@@ -640,6 +687,7 @@
 | `update_id` | `text` | NULL |  |  | 수정 ID |
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 > 제공 DDL에는 `delete_id` 컬럼이 누락되어 있음(필요 시 정책에 맞춰 추가 검토)
 
@@ -652,7 +700,7 @@
 | `offer_treatment_id` | `text` | NOT NULL |  | ✅ | 제안 시술 ID |
 | `offer_id` | `text` | NULL |  |  | 제안 ID |
 | `treatment_level` | `numeric` | NULL |  |  | 시술 레벨 |
-| `treatment_code` | `varchar(30)` | NULL |  |  | 시술 코드 |
+| `treatment_code` | `varchar(200)` | NULL |  |  | 시술 코드 |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
 | `create_id` | `text` | NULL |  |  | 생성 ID |
 | `update_at` | `timestamp` | NULL |  |  | 수정 일시 |
@@ -660,6 +708,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -669,13 +718,14 @@
 |---|---|---:|---|---:|---|
 | `offer_designer_id` | `text` | NOT NULL |  | ✅ | 제안 디자이너 ID |
 | `offer_id` | `text` | NULL |  |  | 제안 ID |
-| `offer_agree_status_code` | `varchar(30)` | NULL |  |  | 제안 수락 상태 코드. OAST |
+| `offer_agree_status_code` | `varchar(200)` | NULL |  |  | 제안 수락 상태 코드. OAST |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
 | `create_id` | `text` | NULL |  |  | 생성 ID |
 | `update_at` | `timestamp` | NULL |  |  | 수정 일시 |
 | `update_id` | `text` | NULL |  |  | 수정 ID |
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 > 제공 DDL에는 `delete_id` 컬럼이 누락되어 있음(필요 시 정책에 맞춰 추가 검토)
 
@@ -696,6 +746,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -704,7 +755,7 @@
 | Column | Type | Null | Default | PK | Comment |
 |---|---|---:|---|---:|---|
 | `designer_review_id` | `text` | NOT NULL |  | ✅ | 디자이너 후기 ID |
-| `review_type_code` | `varchar(30)` | NULL |  |  | 후기 유형 코드. RVTP |
+| `review_type_code` | `varchar(200)` | NULL |  |  | 후기 유형 코드. RVTP |
 | `review_count` | `numeric` | NULL |  |  | 후기 수 |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
 | `create_id` | `text` | NULL |  |  | 생성 ID |
@@ -713,6 +764,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -723,7 +775,7 @@
 | `payment_id` | `text` | NOT NULL |  | ✅ | 결제 ID |
 | `payment_type_val` | `text` | NULL |  |  | 결제 유형 값 |
 | `payment_key` | `text` | NULL |  |  | 결제 키 |
-| `order_id` | `numeric` | NULL |  |  | 주문 ID |
+| `order_id` | `text` | NULL |  |  | 주문 ID |
 | `payment_amount` | `numeric` | NULL |  |  | 결제 금액 |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
 | `create_id` | `text` | NULL |  |  | 생성 ID |
@@ -732,6 +784,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
@@ -750,6 +803,7 @@
 | `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
 | `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
 | `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
 
 ---
 
