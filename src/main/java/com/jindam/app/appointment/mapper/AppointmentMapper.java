@@ -30,7 +30,7 @@ public interface AppointmentMapper {
 
     List<AppointmentDetailResponseDto> selectAppointmentByEmail(AppointmentEmailRequestDto request);
 
-    List<DesignerTreatmentDetailResponseDto> selectAppointmentTreatmentByUid(AppointmentDetailRequestDto requset);
+    List<AppointmentTreatmentDetailResponseDto> selectAppointmentTreatmentByUid(AppointmentDetailRequestDto requset);
 
     int insertAppointment(AppointmentInsertRequestDto request);
 

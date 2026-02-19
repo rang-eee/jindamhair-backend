@@ -1,26 +1,15 @@
 package com.jindam.app.user.controller;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.jindam.app.user.model.UserDeleteRequestDto;
-import com.jindam.app.user.model.UserDetailRequestDto;
-import com.jindam.app.user.model.UserDetailResponseDto;
-import com.jindam.app.user.model.UserInsertRequestDto;
-import com.jindam.app.user.model.UserUpdateRequestDto;
+import com.jindam.app.user.model.*;
 import com.jindam.app.user.service.UserService;
 import com.jindam.base.base.MasterController;
 import com.jindam.base.dto.ApiResultDto;
 import com.jindam.base.dto.PagingResponseDto;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "사용자 관련 요청")
 @RequiredArgsConstructor
@@ -57,13 +46,25 @@ public class UserController extends MasterController {
         return apiResultVo;
     }
 
-    @Operation(summary = "사용자 정보 수정", description = "사용자 상세정보를 수정합니다.")
+    @Operation(summary = "사용자 정보 수정", description = "사용자 상세정보를 수정합니다")
     @PatchMapping("")
     public ApiResultDto<UserDetailResponseDto> updateUserByUid(UserUpdateRequestDto request) {
         ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();
         UserDetailResponseDto result;
 
         result = userService.updateUser(request);
+        apiResultVo.setData(result);
+
+        return apiResultVo;
+    }
+
+    @Operation(summary = "디자이너 프로필 수정 처리", description = "디자이너 프로필을 수정합니다. (빈값은 null로 들어갑니다.)")
+    @PutMapping("/designer/profile")
+    public ApiResultDto<UserDetailResponseDto> updateDesignerProfile(UserUpdateRequestDto request) {
+        ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();
+        UserDetailResponseDto result;
+
+        result = userService.updateDesignerProfile(request);
         apiResultVo.setData(result);
 
         return apiResultVo;
@@ -104,6 +105,22 @@ public class UserController extends MasterController {
         apiResultVo.setData(result);
 
         return apiResultVo;
+    }
 
+    @Operation(summary = "유저 즐겨찾기 목록 조회", description = "페이징을 지원합니다.")
+    @GetMapping("/favorite")
+    public ApiResultDto<PagingResponseDto<UserFavoriteDetailResponseDto>> selectAppointmentByCustId(UserFavoriteDetailRequestDto request) {
+        ApiResultDto<PagingResponseDto<UserFavoriteDetailResponseDto>> apiResultVo = new ApiResultDto<>();
+        PagingResponseDto<UserFavoriteDetailResponseDto> result;
+        result = userService.selectUserFavoriteByUidPaging(request);
+        apiResultVo.setData(result);
+
+        return apiResultVo;
+    }
+
+    @Operation(summary = "유저 즐겨찾기 변경 요청", description = "유저 즐겨찾기 추가 및 취소 합니다.")
+    @PatchMapping("/favorite")
+    public void updateFavoriteUser(UserFavoriteUpdateRequestDto request) {
+        userService.updateFavoriteUser(request);
     }
 }

@@ -39,7 +39,7 @@ public class AppointmentService extends PagingService {
         result = appointmentMapper.selectAppointmentById(request);
 
         //예약시술테이블 조회
-        List<DesignerTreatmentDetailResponseDto> tList = appointmentMapper.selectAppointmentTreatmentByUid(request);
+        List<AppointmentTreatmentDetailResponseDto> tList = appointmentMapper.selectAppointmentTreatmentByUid(request);
 
         result.setTreatmentList(tList);
 

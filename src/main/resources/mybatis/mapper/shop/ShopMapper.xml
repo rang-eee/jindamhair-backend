@@ -92,7 +92,7 @@
              ,create_id
             )
             VALUES (
-                    #{designerShopId}
+                    nextval("seq_tb_designer_shop_designer_shop_id")
                    ,#{uid}
                    ,#{shopId}
                    ,#{shopRegistTypeCode.name()}

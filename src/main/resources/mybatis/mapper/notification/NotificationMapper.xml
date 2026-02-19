@@ -34,7 +34,7 @@
             ,create_at
             ,create_id
         ) VALUES (
-                  nextval('seq_tb_notification'),
+                  nextval('seq_tb_notification_notification_id'),
                   #{receiverUid},
                   #{notificationTitle},
                   #{notificationContent},
@@ -61,7 +61,7 @@
            ,create_at
            ,create_id
         ) VALUES (
-            nextval('seq_tb_notification_center'),
+            nextval('seq_tb_notification_center_notification_center_id'),
             #{notificationTopic},
             #{eventClick},
             #{notificationTypeCode},
@@ -92,7 +92,7 @@
             ,create_at
             ,create_id
         ) VALUES (
-            nextVal('seq_tb_user_push'),
+            nextVal('seq_tb_user_push_user_push_id'),
             #{senderUid},
             #{receiverUid},
             #{pushTitle},

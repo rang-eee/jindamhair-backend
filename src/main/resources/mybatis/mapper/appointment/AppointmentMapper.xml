@@ -40,14 +40,14 @@
             ,tu.user_name   as customer_user_name
             ,tu.user_nickname   as customer_user_nickname
             ,tu.user_status_code    as customer_user_status_code
-            ,tu.user_gender_code    as customer_user_gender_code
-            ,tu.user_agg_code   as customer_user_agg_code
+--             ,tu.user_gender_code    as customer_user_gender_code
+--             ,tu.user_agg_code   as customer_user_agg_code
             ,tu.user_type_code  as customer_user_type_code
             ,tu.user_brdt   as customer_user_brdt
             ,tu.user_join_type_code as customer_user_join_type_code
             ,tu.push_token  as customer_push_token
             ,tu.last_login_at   as customer_last_login_at
-            ,tu.bookmark_user_id_arr    as customer_bookmark_user_id_arr
+--             ,tu.bookmark_user_id_arr    as customer_bookmark_user_id_arr
             ,tu.interception_user_id_arr    as customer_interception_user_id_arr
             ,tu.prvcplc_agree_yn    as customer_prvcplc_agree_yn
             ,tu.terms_agree_yn  as customer_terms_agree_yn
@@ -83,14 +83,14 @@
             ,tud.user_name  as designer_user_name
             ,tud.user_nickname  as designer_user_nickname
             ,tud.user_status_code   as designer_user_status_code
-            ,tud.user_gender_code   as designer_user_gender_code
-            ,tud.user_agg_code  as designer_user_agg_code
+--             ,tud.user_gender_code   as designer_user_gender_code
+--             ,tud.user_agg_code  as designer_user_agg_code
             ,tud.user_type_code     as designer_user_type_code
             ,tud.user_brdt  as designer_user_brdt
             ,tud.user_join_type_code    as designer_user_join_type_code
             ,tud.push_token     as designer_push_token
             ,tud.last_login_at  as designer_last_login_at
-            ,tud.bookmark_user_id_arr   as designer_bookmark_user_id_arr
+--             ,tud.bookmark_user_id_arr   as designer_bookmark_user_id_arr
             ,tud.interception_user_id_arr   as designer_interception_user_id_arr
             ,tud.prvcplc_agree_yn   as designer_prvcplc_agree_yn
             ,tud.terms_agree_yn     as designer_terms_agree_yn
@@ -181,14 +181,14 @@
         ,tu.user_name   as customer_user_name
         ,tu.user_nickname   as customer_user_nickname
         ,tu.user_status_code    as customer_user_status_code
-        ,tu.user_gender_code    as customer_user_gender_code
-        ,tu.user_agg_code   as customer_user_agg_code
+--         ,tu.user_gender_code    as customer_user_gender_code
+--         ,tu.user_agg_code   as customer_user_agg_code
         ,tu.user_type_code  as customer_user_type_code
         ,tu.user_brdt   as customer_user_brdt
         ,tu.user_join_type_code as customer_user_join_type_code
         ,tu.push_token  as customer_push_token
         ,tu.last_login_at   as customer_last_login_at
-        ,tu.bookmark_user_id_arr    as customer_bookmark_user_id_arr
+--         ,tu.bookmark_user_id_arr    as customer_bookmark_user_id_arr
         ,tu.interception_user_id_arr    as customer_interception_user_id_arr
         ,tu.prvcplc_agree_yn    as customer_prvcplc_agree_yn
         ,tu.terms_agree_yn  as customer_terms_agree_yn
@@ -224,14 +224,14 @@
         ,tud.user_name  as designer_user_name
         ,tud.user_nickname  as designer_user_nickname
         ,tud.user_status_code   as designer_user_status_code
-        ,tud.user_gender_code   as designer_user_gender_code
-        ,tud.user_agg_code  as designer_user_agg_code
+--         ,tud.user_gender_code   as designer_user_gender_code
+--         ,tud.user_agg_code  as designer_user_agg_code
         ,tud.user_type_code     as designer_user_type_code
         ,tud.user_brdt  as designer_user_brdt
         ,tud.user_join_type_code    as designer_user_join_type_code
         ,tud.push_token     as designer_push_token
         ,tud.last_login_at  as designer_last_login_at
-        ,tud.bookmark_user_id_arr   as designer_bookmark_user_id_arr
+--         ,tud.bookmark_user_id_arr   as designer_bookmark_user_id_arr
         ,tud.interception_user_id_arr   as designer_interception_user_id_arr
         ,tud.prvcplc_agree_yn   as designer_prvcplc_agree_yn
         ,tud.terms_agree_yn     as designer_terms_agree_yn

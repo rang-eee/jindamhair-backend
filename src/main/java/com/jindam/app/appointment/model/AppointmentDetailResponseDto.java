@@ -361,5 +361,5 @@ public class AppointmentDetailResponseDto {
     private DesignerAccountBrandCode designerDesignerAccountBrandCode;
 
     @Schema(description = "예약 시술 목록", example = "")
-    List<DesignerTreatmentDetailResponseDto> treatmentList;
+    List<AppointmentTreatmentDetailResponseDto> treatmentList;
 }

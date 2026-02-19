@@ -34,14 +34,14 @@ public class UserService extends PagingService {
 
         // 매장 조회
         DesignerShopInsertRequestDto req = DesignerShopInsertRequestDto.builder()
-            .uid(result.getUid())
-            .build();
+                .uid(result.getUid())
+                .build();
         List<DesingerShopDetailResponseDto> shopList = shopMapper.selectListShopById(req);
 
         DesingerShopDetailResponseDto repShop = shopList.stream()
-            .filter(s -> "Y".equals(s.getRepresentativeYn()))
-            .findFirst()
-            .orElse(null); // 없으면 null
+                .filter(s -> "Y".equals(s.getRepresentativeYn()))
+                .findFirst()
+                .orElse(null); // 없으면 null
         result.setShopDetail(repShop);
 
         return result;
@@ -96,6 +96,19 @@ public class UserService extends PagingService {
 
     }
 
+    public UserDetailResponseDto updateDesignerProfile(UserUpdateRequestDto request) {
+
+        int result = userMapper.updateDesignerProfile(request);
+
+        if (result == 0) { // 유정 수정 처리 실패
+            throw new UserException(UserException.Reason.INVALID_ID);
+        }
+        UserDetailRequestDto detailRequestDto = UserDetailRequestDto.from(request);
+        UserDetailResponseDto success = userMapper.selectOneUserByUid(detailRequestDto);
+        return success;
+
+    }
+
     public UserDetailResponseDto deleteUser(UserDeleteRequestDto request) {
         int result = userMapper.deleteUser(request);
 
@@ -130,6 +143,47 @@ public class UserService extends PagingService {
     public PagingResponseDto<UserDetailResponseDto> selectListDesignerPaging(UserDetailRequestDto request) {
 
         PagingResponseDto<UserDetailResponseDto> pagingResult = findData(userMapper, "selectListDesignerPaging", request);
+
+        return pagingResult;
+    }
+
+    /**
+     * 즐겨찾기
+     *
+     */
+    public int updateFavoriteUser(UserFavoriteUpdateRequestDto request) {
+        int result = 0;
+
+        UserFavoriteDetailRequestDto checkDto = UserFavoriteDetailRequestDto.builder()
+                .uid(request.getUid())
+                .bookmarkTargetUserId(request.getBookmarkTargetUserId())
+                .build();
+
+        UserFavoriteDetailResponseDto checkResult;
+        checkResult = userMapper.selectUserFavoriteCheck(checkDto);
+        if (checkResult != null) {
+            //없으면 인서트
+            int insertResult;
+            insertResult = userMapper.insertFavoriteUser(request);
+            if (insertResult >= 0) {
+                throw new UserException(UserException.Reason.INVALID_ID);
+            }
+            result = 1;
+
+        } else {
+            result = userMapper.updateFavoriteUser(request);
+
+            if (result <= 0) {
+                throw new UserException(UserException.Reason.INVALID_ID);
+            }
+        }
+
+        return result;
+    }
+
+    public PagingResponseDto<UserFavoriteDetailResponseDto> selectUserFavoriteByUidPaging(UserFavoriteDetailRequestDto request) {
+
+        PagingResponseDto<UserFavoriteDetailResponseDto> pagingResult = findData(userMapper, "selectUserFavoriteByUidPaging", request);
 
         return pagingResult;
     }

@@ -28,6 +28,9 @@ public interface UserMapper {
     /* 유저 업데이트 */
     int updateUser(UserUpdateRequestDto request);
 
+    /* 디자이너 프로필 업데이트 (PUT) */
+    int updateDesignerProfile(UserUpdateRequestDto request);
+
     /* 유저 딜리트 (사용여부 N 으로 업데이트)*/
     int deleteUser(UserDeleteRequestDto request);
 
@@ -48,4 +51,24 @@ public interface UserMapper {
      * 디자이너 목록 카운트 조회
      */
     int selectListDesignerPagingCount(UserDetailRequestDto request);
+
+    /**
+     * 디자이너 즐겨찾기
+     */
+    UserFavoriteDetailResponseDto selectUserFavoriteCheck(UserFavoriteDetailRequestDto request);
+
+    int updateFavoriteUser(UserFavoriteUpdateRequestDto request);
+
+    int insertFavoriteUser(UserFavoriteUpdateRequestDto request);
+
+    /**
+     * 목록 페이징 처리 후 조회
+     */
+    List<UserFavoriteDetailResponseDto> selectUserFavoriteByUidPaging(UserFavoriteDetailRequestDto request);
+
+    /**
+     * 목록 카운트 조회
+     */
+    int selectUserFavoriteByUidPagingCount(UserFavoriteDetailRequestDto request);
+
 }
