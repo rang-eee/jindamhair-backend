@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jindam.app.example.mapper.ExampleMapper">
+    <select id="selectDesignerTreatmentList" parameterType="DesignerTreatmentDetailRequestDto" resultType="DesignerTreatmentDetailResponseDto">
+        SELECT
+            tdt.designer_treatment_id,
+            tdt.uid,
+            tdt.treatment_name,
+            tdt.basic_amount,
+            tdt.discount_pt,
+            tdt.discount_amount,
+            tdt.total_amount,
+            tdt.treatment_content,
+            tdt.treatment_require_time,
+            tdt.treatment_photo_file_id,
+            tdt.treatment_gender_type_code,
+            tdt.discount_yn,
+            tdt.add_yn,
+            tdt.open_yn,
+            tdt.sort_order,
+            tdt.treatment_code_1,
+            tdt.treatment_name_1,
+            tdt.treatment_code_2,
+            tdt.treatment_name_2,
+            tdt.treatment_code_3,
+            tdt.treatment_name_3,
+            tdt.create_at,
+            tdt.create_id,
+            tdt.update_at,
+            tdt.update_id,
+        FROM tb_desinger_treatment tdt
+        <where>
+            AND tdt.uid = #{uid}
+        </where>
+    </select>
+
+    <select id="selectDesignerTreatmentAddList" parameterType= "DesignerTreatmentDetailRequestDto" resultType="DesignerTreatmentAddDetailResponseDto">
+        SELECT
+            tdta.designer_treatment_add_id,
+            tdta.designer_treatment_id,
+            tdta.hair_add_type_code,
+            tdta.add_amount,
+            tdta.create_at,
+            tdta.create_id,
+            tdta.update_at,
+            tdta.update_id,
+        FROM  tb_desinger_treatment_add tdta
+        <where>
+            AND tdta.designer_treatment_id = #{designerTreatmentId}
+        </where>
+    </select>
+
+</mapper>

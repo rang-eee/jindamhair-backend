@@ -1,9 +1,6 @@
 package com.jindam.app.treatment.mapper;
 
-import com.jindam.app.treatment.model.DesignerTreatmentAddInsertRequestDto;
-import com.jindam.app.treatment.model.DesignerTreatmentDetailRequestDto;
-import com.jindam.app.treatment.model.DesignerTreatmentDetailResponseDto;
-import com.jindam.app.treatment.model.DesignerTreatmentUpdateRequestDto;
+import com.jindam.app.treatment.model.*;
 
 import java.util.List;
 
@@ -32,4 +29,12 @@ public interface TreatmentMapper {
      * @return 시술 메뉴 목록
      */
     List<DesignerTreatmentDetailResponseDto> selectDesignerTreatmentList(DesignerTreatmentDetailRequestDto request);
+
+    /**
+     * 디자이너 시술 추가 조회
+     *
+     * @param request
+     * @return
+     */
+    List<DesignerTreatmentAddDetailResponseDto> selectDesignerTreatmentAddList(DesignerTreatmentDetailRequestDto request);
 }

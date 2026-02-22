@@ -325,19 +325,6 @@
     </sql>
 
 
-    <select id="selectAppointmentByEmail" parameterType="AppointmentEmailRequestDto" resultType="AppointmentDetailResponseDto">
-        /*AppointmentMapper.selectAppointmentByEmail*/
-        SELECT
-             ta.appointment_id
-        FROM tb_appointment ta
-                 inner join tb_user tu on tu.uid = ta.customer_uid
-                 inner join tb_user tud on tud.uid = ta.designer_uid
-                 inner join tb_designer_shop tds on tds.designer_shop_id  = ta.designer_shop_id and tds.use_yn = 'Y'
-        <where>
-            AND tu.user_email = #{userEmail}
-        </where>
-    </select>
-
     <select id="selectAppointmentTreatmentByUid" parameterType="AppointmentDetailRequestDto" resultType="DesignerTreatmentDetailResponseDto">
         /*AppointmentMapper.selectAppointmentTreatmentByUid*/
         SELECT
