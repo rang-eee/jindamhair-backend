@@ -50,4 +50,15 @@
         </where>
     </select>
 
+    <update id="">
+
+    </update>
+    <delete id="deleteDesignerTreatmentAddList" parameterType="DesignerTreatmentUpdateRequestDto">
+        DELETE FROM tb_desinger_treatment_add tdta
+        <where>
+            AND tdta.designer_treatment_id = #{designerTreatmentId}
+        </where>
+
+    </delete>
+
 </mapper>

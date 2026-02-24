@@ -37,4 +37,10 @@ public interface TreatmentMapper {
      * @return
      */
     List<DesignerTreatmentAddDetailResponseDto> selectDesignerTreatmentAddList(DesignerTreatmentDetailRequestDto request);
+
+    int insertDesignerTreatmentAddList(DesignerTreatmentAddInsertRequestDto request);
+
+    int updateDesignerTreatmentAddList(DesignerTreatmentAddUpdateRequestDto request);
+
+    int deleteDesignerTreatmentAddList(DesignerTreatmentUpdateRequestDto request);
 }

@@ -1,10 +1,7 @@
 package com.jindam.app.treatment.service;
 
 import com.jindam.app.treatment.mapper.TreatmentMapper;
-import com.jindam.app.treatment.model.DesignerTreatmentAddDetailResponseDto;
-import com.jindam.app.treatment.model.DesignerTreatmentDetailRequestDto;
-import com.jindam.app.treatment.model.DesignerTreatmentDetailResponseDto;
-import com.jindam.app.treatment.model.DesignerTreatmentUpdateRequestDto;
+import com.jindam.app.treatment.model.*;
 import com.jindam.base.base.PagingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +23,41 @@ public class TreatmentService extends PagingService {
      *
      * @param request 수정할 메뉴 정보
      */
-    public void updateDesignerTreatment(DesignerTreatmentUpdateRequestDto request) {
-        treatmentMapper.updateDesignerTreatment(request);
+    public int updateDesignerTreatment(DesignerTreatmentUpdateRequestDto request) {
+        int result = 0;
+        String addYn = request.getAddYn();
+
+        if (addYn.equals("Y")) {
+            List<DesignerTreatmentAddDetailResponseDto> aList = request.getTreatmentAddList();
+
+            if (aList == null || aList.isEmpty()) {
+                for (DesignerTreatmentAddDetailResponseDto b : aList) {
+                    DesignerTreatmentAddInsertRequestDto insertDto = DesignerTreatmentAddInsertRequestDto.builder()
+                            .designerTreatmentId(b.getDesignerTreatmentId())
+                            .hairAddTypeCode(b.getHairAddTypeCode())
+                            .addAmount(b.getAddAmount())
+                            .build();
+                    result = treatmentMapper.insertDesignerTreatmentAddList(insertDto);
+                }
+
+            }
+
+            for (DesignerTreatmentAddDetailResponseDto b : aList) {
+                DesignerTreatmentAddUpdateRequestDto updateDto = DesignerTreatmentAddUpdateRequestDto.builder()
+                        .designerTreatmentAddId(b.getDesignerTreatmentAddId())
+                        .designerTreatmentId(b.getDesignerTreatmentId())
+                        .hairAddTypeCode(b.getHairAddTypeCode())
+                        .addAmount(b.getAddAmount())
+                        .build();
+
+                result = treatmentMapper.updateDesignerTreatmentAddList(updateDto);
+            }
+        } else if (addYn.equals("N")) {// N이면 삭제
+            result = treatmentMapper.deleteDesignerTreatmentAddList(request);
+        }
+
+        result = treatmentMapper.updateDesignerTreatment(request);
+        return result;
     }
 
     /**

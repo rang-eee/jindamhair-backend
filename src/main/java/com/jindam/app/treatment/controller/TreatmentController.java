@@ -33,16 +33,25 @@ public class TreatmentController extends MasterController {
         return result;
     }
 
-    @Operation(summary = "디자이너 시술 상세 조회", description = "시술 추가리스트를 조회합니다.")
+    @Operation(summary = "디자이너 시술 상세 조회", description = "시술 추가리스트를 조회합니다. 추가여부 N 일시 null 반환")
     @GetMapping("/detail")
     public List<DesignerTreatmentAddDetailResponseDto> selectDesignerTreatmentAddList(DesignerTreatmentDetailRequestDto request) {
-        List<DesignerTreatmentAddDetailResponseDto> result = treatmentService.selectDesignerTreatmentAddList(request);
+        List<DesignerTreatmentAddDetailResponseDto> result;
+        String addYn = request.getAddYn();
+        if (addYn.equals("Y")) {
+            result = treatmentService.selectDesignerTreatmentAddList(request);
+        } else {
+            result = null;
+        }
         return result;
     }
 
     @Operation(summary = "디자이너 시술 수정 요청", description = "디자이너 아이디로 수정요청 합니다.(삭제 요청 포함)")
     @PatchMapping("/")
-    public void updateDesignerTreatment(DesignerTreatmentUpdateRequestDto request) {
+    public int updateDesignerTreatment(DesignerTreatmentUpdateRequestDto request) {
+        int result;
+        result = treatmentService.updateDesignerTreatment(request);
 
+        return result;
     }
 }
