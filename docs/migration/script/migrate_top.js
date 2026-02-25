@@ -31,7 +31,6 @@ const TOP_COLLECTIONS = [
 	"treatmentClassfications",
 	"treatments",
 	"users",
-	"usersFavorites",
 ];
 
 function uniqueList(items) {

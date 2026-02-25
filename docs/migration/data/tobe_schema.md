@@ -397,7 +397,6 @@
 | `payment_method_code` | `varchar(200)` | NULL |  |  | 결제 방법 코드. PMMT |
 | `appointment_content` | `text` | NULL |  |  | 예약 내용 |
 | `cancel_reason_content` | `text` | NULL |  |  | 취소 사유 내용 |
-| `review_id` | `text` | NULL |  |  | 후기 ID |
 | `customer_name` | `text` | NULL |  |  | 고객 명. 이력성 데이터 |
 | `customer_nickname` | `text` | NULL |  |  | 고객 닉네임. 이력성 데이터 |
 | `customer_contact` | `text` | NULL |  |  | 고객 연락처. 이력성 데이터 |
@@ -433,11 +432,9 @@
 | `total_amount` | `numeric` | NULL |  |  | 총 금액 |
 | `treatment_content` | `numeric` | NULL |  |  | 시술 내용 |
 | `treatment_require_time` | `numeric` | NULL |  |  | 시술 소요 시간 |
-| `treatment_photo_file_id` | `text` | NULL |  |  | 시술 사진 파일 ID |
 | `treatment_gender_type_code` | `varchar(200)` | NULL |  |  | 시술 성별 유형 코드. TGTP |
 | `discount_yn` | `bpchar(1)` | NULL |  |  | 할인 여부 |
 | `add_yn` | `bpchar(1)` | NULL |  |  | 추가 여부 |
-| `open_yn` | `bpchar(1)` | NULL |  |  | 오픈 여부 |
 | `treatment_code_1` | `varchar(200)` | NULL |  |  | 시술 코드 1 |
 | `treatment_name_1` | `text` | NULL |  |  | 시술 명 1 |
 | `treatment_code_2` | `varchar(200)` | NULL |  |  | 시술 코드 2 |
@@ -460,7 +457,41 @@
 | Column | Type | Null | Default | PK | Comment |
 |---|---|---:|---|---:|---|
 | `appointment_sign_id` | `text` | NOT NULL |  | ✅ | 예약 서명 ID |
-| `appointment_id` | `text` | NULL |  |  | 예약 ID |
+| `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
+| `create_id` | `text` | NULL |  |  | 생성 ID |
+| `update_at` | `timestamp` | NULL |  |  | 수정 일시 |
+| `update_id` | `text` | NULL |  |  | 수정 ID |
+| `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
+| `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
+| `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
+
+---
+
+### 5.4 `tb_appointment_sign_line` (예약 서명 선)
+
+| Column | Type | Null | Default | PK | Comment |
+|---|---|---:|---|---:|---|
+| `appointment_sign_line_id` | `text` | NOT NULL |  | ✅ | 예약 서명 선 ID |
+| `appointment_sign_id` | `text` | NULL |  |  | 예약 서명 ID |
+| `sort_order` | `numeric` | NULL |  |  | 정렬 순서 |
+| `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
+| `create_id` | `text` | NULL |  |  | 생성 ID |
+| `update_at` | `timestamp` | NULL |  |  | 수정 일시 |
+| `update_id` | `text` | NULL |  |  | 수정 ID |
+| `delete_yn` | `bpchar(1)` | NOT NULL | `'N'` |  | 삭제 여부 |
+| `delete_at` | `timestamp` | NULL |  |  | 삭제 일시 |
+| `delete_id` | `text` | NULL |  |  | 삭제 ID |
+| `migration_id` | `text` | NULL |  |  | 데이터마이그레이션 ID |
+
+---
+
+### 5.5 `tb_appointment_sign_point` (예약 서명 점)
+
+| Column | Type | Null | Default | PK | Comment |
+|---|---|---:|---|---:|---|
+| `appointment_sign_point_id` | `text` | NOT NULL |  | ✅ | 예약 서명 점 ID |
+| `appointment_sign_line_id` | `text` | NULL |  |  | 예약 서명 선 ID |
 | `sign_offset_x` | `text` | NULL |  |  | 서명 오프셋 X |
 | `sign_offset_y` | `text` | NULL |  |  | 서명 오프셋 Y |
 | `sign_size` | `text` | NULL |  |  | 서명 사이즈 |
@@ -626,6 +657,7 @@
 | `appointment_at` | `timestamp` | NULL |  |  | 예약 일시 |
 | `designer_name` | `text` | NULL |  |  | 디자이너 명 |
 | `user_name` | `text` | NULL |  |  | 사용자 명 |
+| `notification_read_yn` | `bpchar(1)` | NULL |  |  | 알림 읽음 여부 |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |
 | `create_id` | `text` | NULL |  |  | 생성 ID |
 | `update_at` | `timestamp` | NULL |  |  | 수정 일시 |
@@ -807,6 +839,44 @@
 
 ---
 
+## 8.9 코드 컬럼 요약 (_code 포함)
+
+- `file_type_code`
+- `user_status_code`
+- `user_type_code`
+- `user_join_type_code`
+- `designer_appr_status_code`
+- `designer_work_status_code`
+- `designer_account_brand_code`
+- `user_gender_code`
+- `user_agg_code`
+- `treatment_gender_type_code`
+- `hair_add_type_code`
+- `shop_regist_type_code`
+- `appointment_status_code`
+- `appointment_start_type_code`
+- `payment_method_code`
+- `chat_message_type_code`
+- `chat_message_content_type_code`
+- `push_type_code`
+- `notification_sender_type_code`
+- `notification_receiver_type_code`
+- `notification_send_method_code`
+- `notification_send_period_type_code`
+- `notification_type_code`
+- `banner_type_code`
+- `banner_display_position_code`
+- `banner_display_target_code`
+- `banner_display_status_code`
+- `banner_display_time_code`
+- `banner_icon_code`
+- `offer_status_code`
+- `offer_agree_status_code`
+- `review_type_code_arr`
+- `review_type_code`
+
+---
+
 ## 9) 시퀀스 목록 (DDL 제공분)
 
 | Sequence | Target (추정) | Notes |
@@ -849,4 +919,15 @@
 - `tb_treatment_class`: DDL 내 테이블명/드랍 대상 오탈자
 - `tb_offer`, `tb_offer_designer`: `delete_id` 컬럼 누락(다른 테이블 관례와 불일치)
 - 시퀀스가 text PK에 걸려 있는 케이스(정책 확인 필요)
+
+
+## 11) 파일 이관
+
+*tb_user
+profile_photo_file_id : users컬렉션 imageUrl 단일
+designer_detail_photo_file_id : users컬렉션 designerPhotos 배열
+designer_license_photo_file_id : designerLicenseImageUrl 단일
+
+*tb_desinger_treatment
+treatment_photo_file_id -> users.menus컬렉션 hairImageUrl 배열
 

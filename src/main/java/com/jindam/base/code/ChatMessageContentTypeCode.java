@@ -11,8 +11,8 @@ import lombok.Getter;
 public enum ChatMessageContentTypeCode implements CodeEnum {
     // 채팅 메시지 내용 유형 코드 : CMCT
 
-    CMCT001("기본", "MessageTextType.basic"), //
-    CMCT002("후기", "MessageTextType.review"), //
+    basic("기본", "MessageTextType.basic"), //
+    review("후기", "MessageTextType.review"), //
     ;
 
     private final String text;

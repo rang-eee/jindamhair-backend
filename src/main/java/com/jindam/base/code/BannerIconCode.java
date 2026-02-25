@@ -10,12 +10,12 @@ import lombok.Getter;
 public enum BannerIconCode implements CodeEnum {
     // 배너 아이콘 코드 : BNIC
 
-    BNIC001("없음", "IconType.none"), //
-    BNIC002("공지사항", "IconType.notice"), //
-    BNIC003("이벤트", "IconType.event"), //
-    BNIC004("할인", "IconType.discount"), //
-    BNIC005("일정", "IconType.calendar"), //
-    BNIC006("가격 태그", "IconType.tag"), //
+    none("없음", "IconType.none"), //
+    notice("공지사항", "IconType.notice"), //
+    event("이벤트", "IconType.event"), //
+    discount("할인", "IconType.discount"), //
+    calendar("일정", "IconType.calendar"), //
+    tag("가격 태그", "IconType.tag"), //
     ;
 
     private final String text;

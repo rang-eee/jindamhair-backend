@@ -11,13 +11,13 @@ import lombok.Getter;
 public enum UserStatusCode implements CodeEnum {
     // 사용자 상태 코드 : USST
 
-    USST001("미확인", "UserStatusType.unknown"), //
-    USST002("임시 가입", "UserStatusType.temp"), //
-    USST003("가입 완료", "UserStatusType.active"), //
-    USST004("휴면", "UserStatusType.dormant"), //
-    USST005("탈회", "UserStatusType.withdrawn"), //
-    USST006("블랙리스트", "UserStatusType.blacklisted"), //
-    USST007("관리자 삭제", "UserStatusType.removed"), //
+    unknown("미확인", "UserStatusType.unknown"), //
+    temp("임시 가입", "UserStatusType.temp"), //
+    active("가입 완료", "UserStatusType.active"), //
+    dormant("휴면", "UserStatusType.dormant"), //
+    withdrawn("탈회", "UserStatusType.withdrawn"), //
+    blacklisted("블랙리스트", "UserStatusType.blacklisted"), //
+    removed("관리자 삭제", "UserStatusType.removed"), //
     ;
 
     private final String text;

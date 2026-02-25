@@ -10,9 +10,9 @@ import lombok.Getter;
 public enum TextAlignTypeCode implements CodeEnum {
 	// 텍스트 정렬 유형 코드 : TATP
 
-	TATP001("중앙", "TextAlignType.center"), //
-	TATP002("왼쪽", "TextAlignType.left"), //
-	TATP003("오른쪽", "TextAlignType.right"), //
+	center("중앙", "TextAlignType.center"), //
+	left("왼쪽", "TextAlignType.left"), //
+	right("오른쪽", "TextAlignType.right"), //
 	;
 
 	private final String text;

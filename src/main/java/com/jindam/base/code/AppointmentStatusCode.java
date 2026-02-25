@@ -10,15 +10,15 @@ import lombok.Getter;
 public enum AppointmentStatusCode implements CodeEnum {
     // 예약 상태 코드 : APST
 
-    APST001("시간선택", "AppointmentStatusType.selectTime"), //
-    APST002("결제방법선택", "AppointmentStatusType.selectPayment"), //
-    APST003("예약불가", "AppointmentStatusType.disabled"), //
-    APST004("예약요청", "AppointmentStatusType.requested"), //
-    APST005("예약완료", "AppointmentStatusType.completed"), //
-    APST006("시술중", "AppointmentStatusType.getting"), //
-    APST007("시술완료", "AppointmentStatusType.finished"), //
-    APST008("예약취소", "AppointmentStatusType.canceled"), //
-    APST009("후기작성완료", "AppointmentStatusType.reviewed"), //
+    selectTime("시간선택", "AppointmentStatusType.selectTime"), //
+    selectPayment("결제방법선택", "AppointmentStatusType.selectPayment"), //
+    disabled("예약불가", "AppointmentStatusType.disabled"), //
+    requested("예약요청", "AppointmentStatusType.requested"), //
+    completed("예약완료", "AppointmentStatusType.completed"), //
+    getting("시술중", "AppointmentStatusType.getting"), //
+    finished("시술완료", "AppointmentStatusType.finished"), //
+    canceled("예약취소", "AppointmentStatusType.canceled"), //
+    reviewed("후기작성완료", "AppointmentStatusType.reviewed"), //
     ;
 
     private final String text;

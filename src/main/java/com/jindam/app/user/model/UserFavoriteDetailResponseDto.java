@@ -1,9 +1,11 @@
 package com.jindam.app.user.model;
 
+import java.time.LocalDateTime;
+
 import com.jindam.base.code.UserAggCode;
 import com.jindam.base.code.UserGenderCode;
 import com.jindam.base.code.UserTypeCode;
-import com.jindam.base.dto.PagingResponseDto;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,15 +13,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "사용자 즐겨찾기 생성 요청 모델")
-public class UserFavoriteDetailResponseDto extends PagingResponseDto {
+public class UserFavoriteDetailResponseDto {
 
     @Schema(description = "사용자 즐겨찾기 ID", example = "")
     private String userBookmarkId;

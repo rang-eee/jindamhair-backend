@@ -10,8 +10,8 @@ import lombok.Getter;
 public enum MembershipTypeCode implements CodeEnum {
 	// 멤버십 유형 코드 : MBTP
 
-	MBTP001("일반", "MembershipType.normal"), //
-	MBTP002("프리미엄", "MembershipType.premium"), //
+	normal("일반", "MembershipType.normal"), //
+	premium("프리미엄", "MembershipType.premium"), //
 	;
 
 	private final String text;

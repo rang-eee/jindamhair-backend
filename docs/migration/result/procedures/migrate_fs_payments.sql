@@ -1,10 +1,11 @@
--- migrate_fs_payments_to_tb_payment.sql
--- Firestore fs_payments -> tb_payment 이관 프로시저
+-- migrate_fs_payments.sql
+-- Firestore fs_payments -> tb_payment 이관 프로시저 (업무 통합)
 
 CREATE OR REPLACE PROCEDURE migrate_fs_payments_to_tb_payment()
 LANGUAGE plpgsql
 AS $$
 BEGIN
+  EXECUTE 'alter sequence if exists jindamhair.seq_tb_payment_payment_id restart with 1';
   TRUNCATE TABLE jindamhair.tb_payment RESTART IDENTITY CASCADE;
 
   INSERT INTO jindamhair.tb_payment (

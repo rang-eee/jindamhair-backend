@@ -10,8 +10,8 @@ import lombok.Getter;
 public enum BannerTypeCode implements CodeEnum {
     // 배너 유형 코드 : BNTP
 
-    BNTP001("배너", "BannerType.banner"), //
-    BNTP002("레이어팝업", "BannerType.layer"), //
+    banner("배너", "BannerType.banner"), //
+    layer("레이어팝업", "BannerType.layer"), //
     ;
 
     private final String text;

@@ -11,8 +11,8 @@ import lombok.Getter;
 public enum UserTypeCode implements CodeEnum {
     // 사용자 유형 코드 : USTP
 
-    USTP001("고객", "UserType.customer"), //
-    USTP002("디자이너", "UserType.designer"), //
+    customer("고객", "UserType.customer"), //
+    designer("디자이너", "UserType.designer"), //
     ;
 
     private final String text;

@@ -10,8 +10,8 @@ import com.jindam.base.code.handler.CodeEnum;
 public enum ShopRegistTypeCode implements CodeEnum {
     // 헤어샵 등록 유형 코드 : SRTP
 
-    SRTP001("관리자 등록", "StoreAddType.basic"), //
-    SRTP002("디자이너 등록", "StoreAddType.add"), //
+    basic("관리자 등록", "StoreAddType.basic"), //
+    add("디자이너 등록", "StoreAddType.add"), //
     ;
 
     private final String text;

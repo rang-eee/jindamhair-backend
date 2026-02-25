@@ -2,14 +2,14 @@
 -- 공통 함수 정의 (Migration 공용)
 -- 필요 시 선택적으로 실행
 
--- 문자열 Timestamp를 안전하게 timestamp로 변환
+-- 문자열 Timestamp를 안전하게 timestamp로 변환 (UTC+9 기준)
 CREATE OR REPLACE FUNCTION fn_safe_timestamp(val text)
 RETURNS timestamp AS $$
 BEGIN
   IF val IS NULL OR trim(val) = '' THEN
     RETURN NULL;
   END IF;
-  RETURN val::timestamp;
+  RETURN (val::timestamptz AT TIME ZONE 'Asia/Seoul')::timestamp;
 EXCEPTION WHEN OTHERS THEN
   RETURN NULL;
 END;

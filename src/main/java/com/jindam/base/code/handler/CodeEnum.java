@@ -6,6 +6,16 @@ public interface CodeEnum {
     String getFront();
 
     default String getCode() {
-        return ((Enum<?>) this).name();
+        String front = getFront();
+        if (front == null || front.trim()
+            .isEmpty()) {
+            return ((Enum<?>) this).name();
+        }
+        String trimmed = front.trim();
+        int lastDot = trimmed.lastIndexOf('.');
+        if (lastDot >= 0 && lastDot < trimmed.length() - 1) {
+            return trimmed.substring(lastDot + 1);
+        }
+        return trimmed;
     }
 }

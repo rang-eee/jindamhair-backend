@@ -10,8 +10,8 @@ import lombok.Getter;
 public enum StoreAddTypeCode implements CodeEnum {
 	// 매장 등록 유형 코드 : SATP
 
-	SATP001("기본 매장", "StoreAddType.basic"), //
-	SATP002("추가 매장", "StoreAddType.add"), //
+	basic("기본 매장", "StoreAddType.basic"), //
+	add("추가 매장", "StoreAddType.add"), //
 	;
 
 	private final String text;

@@ -1,10 +1,11 @@
--- migrate_fs_statistics_to_tb_recommand.sql
--- Firestore fs_statistics -> tb_recommand 이관 프로시저
+-- migrate_fs_statistics.sql
+-- Firestore fs_statistics -> tb_recommand 이관 프로시저 (업무 통합)
 
 CREATE OR REPLACE PROCEDURE migrate_fs_statistics_to_tb_recommand()
 LANGUAGE plpgsql
 AS $$
 BEGIN
+  EXECUTE 'alter sequence if exists jindamhair.seq_tb_recommand_recommand_id restart with 1';
   TRUNCATE TABLE jindamhair.tb_recommand RESTART IDENTITY CASCADE;
 
   INSERT INTO jindamhair.tb_recommand (
@@ -39,5 +40,6 @@ BEGIN
     ON u.migration_id = s.data->>'designerUid'
   ON CONFLICT (recommand_id) DO NOTHING;
   PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_recommand');
+  PERFORM jindamhair.normalize_blank_array_to_null('jindamhair', 'tb_recommand');
 END;
 $$;

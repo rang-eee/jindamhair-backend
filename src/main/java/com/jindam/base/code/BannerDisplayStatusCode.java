@@ -11,8 +11,8 @@ import lombok.Getter;
 public enum BannerDisplayStatusCode implements CodeEnum {
     // 배너 노출 상태 코드 : BDST
 
-    BDST001("노출", "DisplayType.visible"), //
-    BDST002("미노출", "DisplayType.hidden"), //
+    visible("노출", "DisplayType.visible"), //
+    hidden("미노출", "DisplayType.hidden"), //
     ;
 
     private final String text;

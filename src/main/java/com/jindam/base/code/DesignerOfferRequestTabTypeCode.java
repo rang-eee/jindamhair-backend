@@ -10,9 +10,9 @@ import lombok.Getter;
 public enum DesignerOfferRequestTabTypeCode implements CodeEnum {
 	// 디자이너 제안 요청 탭 유형 코드 : DORT
 
-	DORT001("미확인", "DesignerOfferRequestTabType.unknown"), //
-	DORT002("요청", "DesignerOfferRequestTabType.requested"), //
-	DORT003("완료", "DesignerOfferRequestTabType.completed"), //
+	unknown("미확인", "DesignerOfferRequestTabType.unknown"), //
+	requested("요청", "DesignerOfferRequestTabType.requested"), //
+	completed("완료", "DesignerOfferRequestTabType.completed"), //
 	;
 
 	private final String text;

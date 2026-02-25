@@ -11,12 +11,12 @@ import lombok.Getter;
 public enum ChatMessageTypeCode implements CodeEnum {
     // 채팅 메시지 유형 코드 : CMTP
 
-    CMTP001("텍스트", "MessageType.text"), //
-    CMTP002("이미지", "MessageType.image"), //
-    CMTP003("동영상", "MessageType.video"), //
-    CMTP004("파일", "MessageType.file"), //
-    CMTP005("음원", "MessageType.sound"), //
-    CMTP006("이모티콘", "MessageType.emoji"), //
+    txt("텍스트", "MessageType.text"), //
+    image("이미지", "MessageType.image"), //
+    video("동영상", "MessageType.video"), //
+    file("파일", "MessageType.file"), //
+    sound("음원", "MessageType.sound"), //
+    emoji("이모티콘", "MessageType.emoji"), //
     ;
 
     private final String text;

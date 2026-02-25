@@ -1,10 +1,11 @@
--- migrate_fs_stores_to_tb_shop.sql
--- Firestore fs_stores -> tb_shop 이관 프로시저
+-- migrate_fs_stores.sql
+-- Firestore fs_stores -> tb_shop 이관 프로시저 (업무 통합)
 
 CREATE OR REPLACE PROCEDURE migrate_fs_stores_to_tb_shop()
 LANGUAGE plpgsql
 AS $$
 BEGIN
+  EXECUTE 'alter sequence if exists jindamhair.seq_tb_shop_shop_id restart with 1';
   TRUNCATE TABLE jindamhair.tb_shop RESTART IDENTITY CASCADE;
 
   INSERT INTO jindamhair.tb_shop (

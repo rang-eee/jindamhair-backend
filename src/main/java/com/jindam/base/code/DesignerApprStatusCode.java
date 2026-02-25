@@ -11,10 +11,10 @@ import lombok.Getter;
 public enum DesignerApprStatusCode implements CodeEnum {
     // 디자이너 승인 상태 코드 : DAST
 
-    DAST001("미인증", "DesignerAuthStatusType.preAuth"), //
-    DAST002("승인", "DesignerAuthStatusType.authComplete"), //
-    DAST003("거절", "DesignerAuthStatusType.authReject"), //
-    DAST004("대기", "DesignerAuthStatusType.authWait"), //
+    preAuth("미인증", "DesignerAuthStatusType.preAuth"), //
+    authComplete("승인", "DesignerAuthStatusType.authComplete"), //
+    authReject("거절", "DesignerAuthStatusType.authReject"), //
+    authWait("대기", "DesignerAuthStatusType.authWait"), //
     ;
 
     private final String text;

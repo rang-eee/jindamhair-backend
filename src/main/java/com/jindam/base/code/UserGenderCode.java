@@ -11,8 +11,8 @@ import lombok.Getter;
 public enum UserGenderCode implements CodeEnum {
     // 사용자 성별 코드 : USGD
 
-    USGD001("여성", "GenderType.female"), //
-    USGD002("남성", "GenderType.male"), //
+    female("여성", "GenderType.female"), //
+    male("남성", "GenderType.male"), //
     ;
 
     private final String text;

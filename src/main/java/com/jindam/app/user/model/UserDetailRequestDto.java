@@ -1,16 +1,17 @@
 package com.jindam.app.user.model;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 import com.jindam.base.code.UserJoinTypeCode;
 import com.jindam.base.dto.PagingRequestDto;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -29,7 +30,7 @@ public class UserDetailRequestDto extends PagingRequestDto {
     @Schema(description = "유저 닉네임", example = "binggre")
     private String userNickname;
 
-    @Schema(description = "사용자 가입 유형 코드", example = "UJTP001")
+    @Schema(description = "사용자 가입 유형 코드", example = "email")
     private UserJoinTypeCode userJoinTypeCode;
 
     @Schema(description = "추천 디자이너 이메일", example = "test@email.com")
@@ -37,7 +38,7 @@ public class UserDetailRequestDto extends PagingRequestDto {
 
     @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime createAt;
-    
+
     /**
      * UserInsertRequestDto를 UserDetailRequestDto로 변환합니다.
      */
@@ -47,10 +48,10 @@ public class UserDetailRequestDto extends PagingRequestDto {
         Objects.requireNonNull(dto.getUid(), "UserInsertRequestDto의 uid는 null일 수 없습니다.");
 
         return UserDetailRequestDto.builder()
-                .uid(dto.getUid())
-                .userEmail(dto.getUserEmail())
-                .userJoinTypeCode(dto.getUserJoinTypeCode())
-                .build();
+            .uid(dto.getUid())
+            .userEmail(dto.getUserEmail())
+            .userJoinTypeCode(dto.getUserJoinTypeCode())
+            .build();
     }
 
     /**
@@ -62,10 +63,10 @@ public class UserDetailRequestDto extends PagingRequestDto {
         Objects.requireNonNull(dto.getUid(), "UserUpdateRequestDto uid는 null일 수 없습니다.");
 
         return UserDetailRequestDto.builder()
-                .uid(dto.getUid())
-                .userEmail(dto.getUserEmail())
-                .userJoinTypeCode(dto.getUserJoinTypeCode())
-                .build();
+            .uid(dto.getUid())
+            .userEmail(dto.getUserEmail())
+            .userJoinTypeCode(dto.getUserJoinTypeCode())
+            .build();
     }
 
     /**
@@ -77,10 +78,10 @@ public class UserDetailRequestDto extends PagingRequestDto {
         Objects.requireNonNull(dto.getUid(), "UserDeleteRequestDto uid는 null일 수 없습니다.");
 
         return UserDetailRequestDto.builder()
-                .uid(dto.getUid())
-                .userEmail(dto.getUserEmail())
-                .userJoinTypeCode(dto.getUserJoinTypeCode())
-                .build();
+            .uid(dto.getUid())
+            .userEmail(dto.getUserEmail())
+            .userJoinTypeCode(dto.getUserJoinTypeCode())
+            .build();
     }
 
 }

@@ -11,14 +11,14 @@ import lombok.Getter;
 public enum UserAggCode implements CodeEnum {
     // 사용자 연령대 코드 : USAG
 
-    USAG001("미확인", "AgeType.unknown"), //
-    USAG002("10대 이하", "AgeType.teenUnder"), //
-    USAG003("10대", "AgeType.teen"), //
-    USAG004("20대", "AgeType.twenty"), //
-    USAG005("30대", "AgeType.thirty"), //
-    USAG006("40대", "AgeType.forty"), //
-    USAG007("50대", "AgeType.fifty"), //
-    USAG008("60대 이상", "AgeType.sixtyUpper"), //
+    unknown("미확인", "AgeType.unknown"), //
+    teenUnder("10대 이하", "AgeType.teenUnder"), //
+    teen("10대", "AgeType.teen"), //
+    twenty("20대", "AgeType.twenty"), //
+    thirty("30대", "AgeType.thirty"), //
+    forty("40대", "AgeType.forty"), //
+    fifty("50대", "AgeType.fifty"), //
+    sixtyUpper("60대 이상", "AgeType.sixtyUpper"), //
     ;
 
     private final String text;

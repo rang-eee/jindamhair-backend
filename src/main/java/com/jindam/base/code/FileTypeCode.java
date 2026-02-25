@@ -10,10 +10,10 @@ import com.jindam.base.code.handler.CodeEnum;
 public enum FileTypeCode implements CodeEnum {
     // 파일 유형 코드 : FLTP
 
-    FLTP001("이미지", "FileType.image"), //
-    FLTP002("동영상", "FileType.movie"), //
-    FLTP003("PDF", "FileType.pdf"), //
-    FLTP004("텍스트", "FileType.text"), //
+    image("이미지", "FileType.image"), //
+    movie("동영상", "FileType.movie"), //
+    pdf("PDF", "FileType.pdf"), //
+    txt("텍스트", "FileType.text"), //
     ;
 
     private final String text;

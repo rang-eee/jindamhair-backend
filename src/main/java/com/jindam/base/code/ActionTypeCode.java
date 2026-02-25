@@ -10,10 +10,10 @@ import lombok.Getter;
 public enum ActionTypeCode implements CodeEnum {
 	// 액션 유형 코드 : ACTP
 
-	ACTP001("데이터 처리 없음", "ActionType.none"), //
-	ACTP002("등록", "ActionType.regist"), //
-	ACTP003("수정", "ActionType.modify"), //
-	ACTP004("삭제", "ActionType.remove"), //
+	none("데이터 처리 없음", "ActionType.none"), //
+	regist("등록", "ActionType.regist"), //
+	modify("수정", "ActionType.modify"), //
+	remove("삭제", "ActionType.remove"), //
 	;
 
 	private final String text;

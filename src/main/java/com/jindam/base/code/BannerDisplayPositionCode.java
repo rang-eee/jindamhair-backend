@@ -11,9 +11,9 @@ import lombok.Getter;
 public enum BannerDisplayPositionCode implements CodeEnum {
     // 배너 노출 위치 코드 : BDPT
 
-    BDPT001("메인", "DisplayPositionType.main"), //
-    BDPT002("공지", "DisplayPositionType.notice"), //
-    BDPT003("고객목록", "DisplayPositionType.customerList"), //
+    main("메인", "DisplayPositionType.main"), //
+    notice("공지", "DisplayPositionType.notice"), //
+    customerList("고객목록", "DisplayPositionType.customerList"), //
     ;
 
     private final String text;

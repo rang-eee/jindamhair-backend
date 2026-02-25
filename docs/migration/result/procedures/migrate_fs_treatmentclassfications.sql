@@ -1,10 +1,11 @@
--- migrate_fs_treatmentclassfications_to_tb_treatment_class.sql
--- Firestore fs_treatmentclassfications -> tb_treatment_class 이관 프로시저
+-- migrate_fs_treatmentclassfications.sql
+-- Firestore fs_treatmentclassfications -> tb_treatment_class 이관 프로시저 (업무 통합)
 
 CREATE OR REPLACE PROCEDURE migrate_fs_treatmentclassfications_to_tb_treatment_class()
 LANGUAGE plpgsql
 AS $$
 BEGIN
+  EXECUTE 'alter sequence if exists jindamhair.seq_tb_treatment_treatment_class_id restart with 1';
   TRUNCATE TABLE jindamhair.tb_treatment_class RESTART IDENTITY CASCADE;
 
   INSERT INTO jindamhair.tb_treatment_class (

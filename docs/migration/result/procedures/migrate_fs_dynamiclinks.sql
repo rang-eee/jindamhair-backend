@@ -1,10 +1,11 @@
--- migrate_fs_dynamiclinks_to_tb_deeplink.sql
--- Firestore fs_dynamiclinks -> tb_deeplink 이관 프로시저
+-- migrate_fs_dynamiclinks.sql
+-- Firestore fs_dynamiclinks -> tb_deeplink 이관 프로시저 (업무 통합)
 
 CREATE OR REPLACE PROCEDURE migrate_fs_dynamiclinks_to_tb_deeplink()
 LANGUAGE plpgsql
 AS $$
 BEGIN
+  EXECUTE 'alter sequence if exists jindamhair.seq_tb_deeplink_deeplink_id restart with 1';
   TRUNCATE TABLE jindamhair.tb_deeplink RESTART IDENTITY CASCADE;
 
   INSERT INTO jindamhair.tb_deeplink (
@@ -25,9 +26,9 @@ BEGIN
     data->>'email',
     data->>'link',
     COALESCE(data->>'id', doc_id),
-    COALESCE((data->>'createAt')::timestamp, created_at, now()),
+    COALESCE(fn_safe_timestamp(data->>'createAt'), created_at, now()),
     'migration',
-    COALESCE((data->>'updateAt')::timestamp, updated_at),
+    COALESCE(fn_safe_timestamp(data->>'updateAt'), updated_at),
     'migration',
     'N'
   FROM fs_dynamiclinks

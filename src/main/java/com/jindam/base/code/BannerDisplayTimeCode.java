@@ -11,8 +11,8 @@ import lombok.Getter;
 public enum BannerDisplayTimeCode implements CodeEnum {
     // 배너 노출 시간 코드 : BDTM
 
-    BDTM001("항상", "DisplayTimeType.always"), //
-    BDTM002("시간 조건", "DisplayTimeType.date"), //
+    always("항상", "DisplayTimeType.always"), //
+    date("시간 조건", "DisplayTimeType.date"), //
     ;
 
     private final String text;

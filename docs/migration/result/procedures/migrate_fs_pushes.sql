@@ -1,10 +1,11 @@
--- migrate_fs_pushes_to_tb_user_push.sql
--- Firestore fs_pushes -> tb_user_push 이관 프로시저
+-- migrate_fs_pushes.sql
+-- Firestore fs_pushes -> tb_user_push 이관 프로시저 (업무 통합)
 
 CREATE OR REPLACE PROCEDURE migrate_fs_pushes_to_tb_user_push()
 LANGUAGE plpgsql
 AS $$
 BEGIN
+  EXECUTE 'alter sequence if exists jindamhair.seq_tb_user_push_user_push_id restart with 1';
   TRUNCATE TABLE jindamhair.tb_user_push RESTART IDENTITY CASCADE;
 
   INSERT INTO jindamhair.tb_user_push (
@@ -27,7 +28,12 @@ BEGIN
   )
   SELECT
     nextval('seq_tb_user_push_user_push_id')::text,
-    NULL,
+    CASE
+      WHEN TRIM(COALESCE(data->>'pushType','')) IN ('PushType.chat', 'chat', '채팅', 'PSTP001') THEN 'chat'
+      WHEN TRIM(COALESCE(data->>'pushType','')) IN ('PushType.appointment', 'appointment', '예약', 'PSTP002') THEN 'appointment'
+      WHEN TRIM(COALESCE(data->>'pushType','')) IN ('PushType.recommand', 'PushType.recommend', 'recommand', 'recommend', '추천', 'PSTP003') THEN 'recommand'
+      ELSE data->>'pushType'
+    END,
     COALESCE(u.uid, data->>'receiveId'),
     data->>'title',
     data->>'message',

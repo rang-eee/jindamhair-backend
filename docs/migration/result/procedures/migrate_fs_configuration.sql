@@ -1,5 +1,5 @@
--- migrate_fs_configuration_to_tb_configuration.sql
--- Firestore fs_configuration -> tb_configuration 이관 프로시저
+-- migrate_fs_configuration.sql
+-- Firestore fs_configuration -> tb_configuration 이관 프로시저 (업무 통합)
 
 CREATE OR REPLACE PROCEDURE migrate_fs_configuration_to_tb_configuration()
 LANGUAGE plpgsql
