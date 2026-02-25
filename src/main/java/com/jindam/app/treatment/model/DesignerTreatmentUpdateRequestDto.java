@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Getter
 @Setter
 @SuperBuilder
@@ -82,5 +84,7 @@ public class DesignerTreatmentUpdateRequestDto {
 
     @Schema(description = "시술 명 3", example = "123")
     private String treatmentName3;
-
+    
+    @Schema(description = "시술 추가 리스트")
+    private List<DesignerTreatmentAddDetailResponseDto> treatmentAddList;
 }

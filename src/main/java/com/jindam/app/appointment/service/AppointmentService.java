@@ -75,10 +75,6 @@ public class AppointmentService extends PagingService {
         return pagingResult;
     }
 
-    public List<AppointmentDetailResponseDto> selectAppointmentByEmail(AppointmentEmailRequestDto request) {
-        return appointmentMapper.selectAppointmentByEmail(request);
-    }
-
     public AppointmentDetailResponseDto insertAppointment(AppointmentInsertRequestDto request) {
 
         int result = 0;

@@ -27,9 +27,7 @@ public interface AppointmentMapper {
     int selectAppointmentByCustIdCount(AppointmentDetailRequestDto request);
 
     int selectAppointmentByDesignerIdCount(AppointmentDetailRequestDto request);
-
-    List<AppointmentDetailResponseDto> selectAppointmentByEmail(AppointmentEmailRequestDto request);
-
+    
     List<AppointmentTreatmentDetailResponseDto> selectAppointmentTreatmentByUid(AppointmentDetailRequestDto requset);
 
     int insertAppointment(AppointmentInsertRequestDto request);

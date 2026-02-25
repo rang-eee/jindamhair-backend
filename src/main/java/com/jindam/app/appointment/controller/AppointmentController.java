@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Tag(name = "예약 관련 요청")
 @RequiredArgsConstructor
 @RestController
@@ -98,14 +96,4 @@ public class AppointmentController extends MasterController {
         appointmentService.insertAppointmentSign(request);
     }
 
-    @Operation(summary = "이메일 기반 예약 내역 목록 조회", description = "주니 테스트로 생성된  api. (사용안함)")
-    @GetMapping("/email")
-    public ApiResultDto<List<AppointmentDetailResponseDto>> selectAppointmentByEmail(AppointmentEmailRequestDto request) {
-        ApiResultDto<List<AppointmentDetailResponseDto>> apiResultVo = new ApiResultDto<>();
-        List<AppointmentDetailResponseDto> result;
-        result = appointmentService.selectAppointmentByEmail(request);
-        apiResultVo.setData(result);
-
-        return apiResultVo;
-    }
 }
