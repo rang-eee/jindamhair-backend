@@ -1,25 +1,35 @@
 package com.jindam.app.user.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jindam.app.shop.mapper.ShopMapper;
 import com.jindam.app.shop.model.DesignerShopInsertRequestDto;
 import com.jindam.app.shop.model.DesingerShopDetailResponseDto;
 import com.jindam.app.user.exception.UserException;
 import com.jindam.app.user.exception.UserException.Reason;
 import com.jindam.app.user.mapper.UserMapper;
-import com.jindam.app.user.model.*;
+import com.jindam.app.user.model.UserDeleteRequestDto;
+import com.jindam.app.user.model.UserDetailRequestDto;
+import com.jindam.app.user.model.UserDetailResponseDto;
+import com.jindam.app.user.model.UserFavoriteDetailRequestDto;
+import com.jindam.app.user.model.UserFavoriteDetailResponseDto;
+import com.jindam.app.user.model.UserFavoriteUpdateRequestDto;
+import com.jindam.app.user.model.UserInsertRequestDto;
+import com.jindam.app.user.model.UserUpdateRequestDto;
 import com.jindam.base.base.PagingService;
 import com.jindam.base.dto.PagingResponseDto;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+// @Transactional(readOnly = true)
+@Transactional
 @Slf4j
 public class UserService extends PagingService {
     private final UserMapper userMapper;
@@ -34,14 +44,14 @@ public class UserService extends PagingService {
 
         // 매장 조회
         DesignerShopInsertRequestDto req = DesignerShopInsertRequestDto.builder()
-                .uid(result.getUid())
-                .build();
+            .uid(result.getUid())
+            .build();
         List<DesingerShopDetailResponseDto> shopList = shopMapper.selectListShopById(req);
 
         DesingerShopDetailResponseDto repShop = shopList.stream()
-                .filter(s -> "Y".equals(s.getRepresentativeYn()))
-                .findFirst()
-                .orElse(null); // 없으면 null
+            .filter(s -> "Y".equals(s.getRepresentativeYn()))
+            .findFirst()
+            .orElse(null); // 없으면 null
         result.setShopDetail(repShop);
 
         return result;
@@ -85,6 +95,7 @@ public class UserService extends PagingService {
 
     public UserDetailResponseDto updateUser(UserUpdateRequestDto request) {
 
+        request.setUpdateAt(LocalDateTime.now());
         int result = userMapper.updateUser(request);
 
         if (result == 0) { // 유정 수정 처리 실패
@@ -155,14 +166,14 @@ public class UserService extends PagingService {
         int result = 0;
 
         UserFavoriteDetailRequestDto checkDto = UserFavoriteDetailRequestDto.builder()
-                .uid(request.getUid())
-                .bookmarkTargetUserId(request.getBookmarkTargetUserId())
-                .build();
+            .uid(request.getUid())
+            .bookmarkTargetUserId(request.getBookmarkTargetUserId())
+            .build();
 
         UserFavoriteDetailResponseDto checkResult;
         checkResult = userMapper.selectUserFavoriteCheck(checkDto);
         if (checkResult != null) {
-            //없으면 인서트
+            // 없으면 인서트
             int insertResult;
             insertResult = userMapper.insertFavoriteUser(request);
             if (insertResult >= 0) {

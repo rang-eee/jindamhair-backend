@@ -23,7 +23,7 @@ public class SettingController extends MasterController {
     private final SettingService settingService;
 
     @Operation(summary = "조회 테스트", description = "앱 빌드 버전 조회")
-    @GetMapping("/")
+    @GetMapping("")
     public ApiResultDto<SettingResponseDto> selectConfiguration() {
         ApiResultDto<SettingResponseDto> apiResultVo = new ApiResultDto<>();
         SettingResponseDto result;

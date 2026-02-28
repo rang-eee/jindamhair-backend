@@ -12,14 +12,11 @@
              ,tu.user_name
              ,tu.user_nickname
              ,tu.user_status_code
-             ,tu.user_gender_code
-             ,tu.user_agg_code
              ,tu.user_type_code
              ,tu.user_brdt
              ,tu.user_join_type_code
              ,tu.push_token
              ,tu.last_login_at
-             ,tu.bookmark_user_id_arr
              ,tu.interception_user_id_arr
              ,tu.prvcplc_agree_yn
              ,tu.terms_agree_yn
@@ -78,8 +75,6 @@
                             , user_name
                             , user_nickname
                             , user_status_code
-                            , user_gender_code
-                            , user_agg_code
                             , user_type_code
                             , user_brdt
                             , user_join_type_code
@@ -91,8 +86,6 @@
                  , #{userName}
                  , #{userNickname}
                  , #{userStatusCode.name()}
-                 , #{userGenderCode.name()}
-                 , #{userAggCode.name()}
                  , #{userTypeCoUde}
                  , #{userBrdt}
                  , NOW()
@@ -121,12 +114,6 @@
             <if test="userStatusCode != null">
                 , user_status_code = #{userStatusCode.name()}
             </if>
-            <if test="userGenderCode != null">
-                , user_gender_code = #{userGenderCode.name()}
-            </if>
-            <if test="userAggCode != null">
-                , user_agg_code = #{userAggCode.name()}
-            </if>
             <if test="userTypeCode != null">
                 , user_type_code = #{userTypeCode.name()}
             </if>
@@ -141,9 +128,6 @@
             </if>
             <if test="lastLoginAt != null">
                 , last_login_at = #{lastLoginAt}
-            </if>
-            <if test="bookmarkUserIdArr != null and bookmarkUserIdArr.size() > 0">
-                , bookmark_user_id_arr IN <foreach collection="bookmarkUserIdArr" item="id" open="(" separator=", " close=")">#{id}</foreach>
             </if>
             <if test="interceptionUserIdArr != null and interceptionUserIdArr.size() > 0">
                 , interception_user_id_arr IN <foreach collection="interceptionUserIdArr" item="id" open="(" separator=", " close=")">#{id}</foreach>
@@ -225,7 +209,7 @@
             </if>
             <if test="designerApplinkUrl != null">
                 , designer_applink_url = #{designerApplinkUrl}
-            </if>
+        </if>
             <if test="designerDetailPhotoFileId != null">
                 , designer_detail_photo_file_id = #{designerDetailPhotoFileId}
             </if>
@@ -234,7 +218,7 @@
             </if>
         </set>
         <where>
-            AND uid = {uid}
+            AND uid = #{uid}
         </where>
     </update>
 
@@ -279,14 +263,11 @@
              ,tu.user_name
              ,tu.user_nickname
              ,tu.user_status_code
-             ,tu.user_gender_code
-             ,tu.user_agg_code
              ,tu.user_type_code
              ,tu.user_brdt
              ,tu.user_join_type_code
              ,tu.push_token
              ,tu.last_login_at
-             ,tu.bookmark_user_id_arr
              ,tu.interception_user_id_arr
              ,tu.prvcplc_agree_yn
              ,tu.terms_agree_yn
@@ -343,14 +324,10 @@
             ,tb.user_name                       --사용자 명
             ,tb.user_nickname                       --사용자 닉네임
             ,tb.user_status_code                        --사용자 상태 코드
-            ,tb.user_gender_code                        --사용자 성별 코드
---             ,tb.user_agg_code                       --사용자 연령대 코드
---             ,tb.user_type_code                      --사용자 유형 코드
             ,tb.user_brdt                       --사용자 생년월일
             ,tb.user_join_type_code                     --사용자 가입 유형 코드
             ,tb.push_token                      --푸시 토큰
             ,tb.last_login_at                       --최종 로그인 일시
---             ,tb.bookmark_user_id_arr                        --즐겨찾기 사용자 ID 배열
             ,tb.interception_user_id_arr                        --차단 사용자 ID 배열
             ,tb.prvcplc_agree_yn                        --개인정보처리방침 동의 여부
             ,tb.terms_agree_yn                      --서비스 이용약관 동의 여부
