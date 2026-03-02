@@ -83,8 +83,7 @@ public class LocaleConfig implements WebMvcConfigurer {
     /**
      * CodeEnum front 코드 문자열 → Java Enum 자동 변환 등록
      *
-     * 프론트엔드가 "BannerType.layer" 같은 front 코드를 쿼리 파라미터로 전송하면,
-     * Spring이 자동으로 BannerTypeCode.layer (Java Enum)로 변환합니다.
+     * 프론트엔드가 "BannerType.layer" 같은 front 코드를 쿼리 파라미터로 전송하면, <br? Spring이 자동으로 BannerTypeCode.layer (Java Enum)로 변환합니다.
      */
     @Override
     public void addFormatters(FormatterRegistry registry) {

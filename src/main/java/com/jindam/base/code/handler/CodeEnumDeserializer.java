@@ -12,16 +12,18 @@ import java.io.IOException;
 /**
  * 프론트엔드에서 전달하는 front 코드 문자열을 {@link CodeEnum} 구현 Enum으로 역직렬화하는 Jackson Deserializer.
  *
- * <p>{@code @RequestBody} JSON에서 CodeEnum 필드를 문자열로 받을 때 사용됩니다.</p>
+ * <p>
+ * {@code @RequestBody} JSON에서 CodeEnum 필드를 문자열로 받을 때 사용됩니다.
+ * </p>
  *
  * <h3>변환 우선순위</h3>
  * <ol>
- *   <li>{@link CodeEnum#getFront()} 매칭 (예: {@code "BannerType.layer"})</li>
- *   <li>{@link CodeEnum#getCode()} 매칭 (예: {@code "layer"})</li>
- *   <li>{@link Enum#name()} fallback (예: {@code "layer"})</li>
+ * <li>{@link CodeEnum#getFront()} 매칭 (예: {@code "BannerType.layer"})</li>
+ * <li>{@link CodeEnum#getCode()} 매칭 (예: {@code "layer"})</li>
+ * <li>{@link Enum#name()} fallback (예: {@code "layer"})</li>
  * </ol>
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class CodeEnumDeserializer extends JsonDeserializer<CodeEnum> implements ContextualDeserializer {
 
     private Class<? extends CodeEnum> enumType;
@@ -34,9 +36,9 @@ public class CodeEnumDeserializer extends JsonDeserializer<CodeEnum> implements 
     }
 
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property)
-            throws JsonMappingException {
-        Class<?> rawClass = ctxt.getContextualType().getRawClass();
+    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
+        Class<?> rawClass = ctxt.getContextualType()
+            .getRawClass();
         if (CodeEnum.class.isAssignableFrom(rawClass)) {
             return new CodeEnumDeserializer((Class<? extends CodeEnum>) rawClass);
         }

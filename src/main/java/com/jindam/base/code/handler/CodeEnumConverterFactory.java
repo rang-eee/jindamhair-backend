@@ -6,16 +6,19 @@ import org.springframework.core.convert.converter.ConverterFactory;
 /**
  * 프론트엔드에서 전달하는 front 코드 문자열을 백엔드 Enum으로 변환하는 ConverterFactory.
  *
- * <p>Spring {@code @RequestParam}, {@code @ModelAttribute} 등의 바인딩 시 자동 적용됩니다.</p>
+ * <p>
+ * Spring {@code @RequestParam}, {@code @ModelAttribute} 등의 바인딩 시 자동 적용됩니다.
+ * </p>
  *
  * <h3>변환 우선순위</h3>
  * <ol>
- *   <li>{@link CodeEnum#getFront()} 매칭 (예: {@code "BannerType.layer"} → {@code BannerTypeCode.layer})</li>
- *   <li>{@link CodeEnum#getCode()} 매칭 (예: {@code "layer"} → {@code BannerTypeCode.layer})</li>
- *   <li>{@link Enum#name()} fallback (예: {@code "layer"} → {@code BannerTypeCode.layer})</li>
+ * <li>{@link CodeEnum#getFront()} 매칭 (예: {@code "BannerType.layer"} → {@code BannerTypeCode.layer})</li>
+ * <li>{@link CodeEnum#getCode()} 매칭 (예: {@code "layer"} → {@code BannerTypeCode.layer})</li>
+ * <li>{@link Enum#name()} fallback (예: {@code "layer"} → {@code BannerTypeCode.layer})</li>
  * </ol>
  *
  * <h3>등록 방법</h3>
+ * 
  * <pre>
  * &#64;Override
  * public void addFormatters(FormatterRegistry registry) {
@@ -23,7 +26,7 @@ import org.springframework.core.convert.converter.ConverterFactory;
  * }
  * </pre>
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class CodeEnumConverterFactory implements ConverterFactory<String, Enum> {
 
     @Override
