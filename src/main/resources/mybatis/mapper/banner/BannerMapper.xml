@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jindam.app.banner.mapper.BannerMapper">
 
-    <select id="selectBanner" parameterType="BannerDetailRequestDto" resultType="BannerDetailResponseDto">
+    <select id="selectListBanner" parameterType="BannerDetailRequestDto" resultType="BannerDetailResponseDto">
         SELECT
              tb.banner_id
             ,tb.banner_title
@@ -20,8 +20,31 @@
         FROM tb_banner tb
         <where>
             AND tb.delete_yn = 'N'
+            <if test="bannerTypeCode != null">
+                AND tb.banner_type_code = #{bannerTypeCode}
+            </if>
+            <if test="bannerDisplayPositionCode != null">
+                AND tb.banner_display_position_code = #{bannerDisplayPositionCode}
+            </if>
+            <if test="bannerDisplayStatusCode != null">
+                AND tb.banner_display_status_code = #{bannerDisplayStatusCode}
+            </if>
+            <if test="bannerDisplayTargetCode != null">
+                AND tb.banner_display_target_code = #{bannerDisplayTargetCode}
+            </if>
+            <!-- 노출 시간 조건: always이거나, date인 경우 현재 시간이 시작~종료 범위 내 -->
+            <if test="bannerDisplayTimeCode != null">
+                AND (
+                    tb.banner_display_time_code = 'always'
+                    OR (
+                        tb.banner_display_time_code = 'date'
+                        AND tb.display_start_at &lt;= NOW()
+                        AND tb.display_end_at &gt;= NOW()
+                    )
+                )
+            </if>
         </where>
-        ORDER BY sort_order
+        ORDER BY tb.sort_order
     </select>
 
 </mapper>

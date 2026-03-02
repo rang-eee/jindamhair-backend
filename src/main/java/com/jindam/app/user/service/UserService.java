@@ -95,7 +95,8 @@ public class UserService extends PagingService {
 
     public UserDetailResponseDto updateUser(UserUpdateRequestDto request) {
 
-        request.setUpdateAt(LocalDateTime.now());
+        // request.setUpdateId(request.getUid());
+        // request.setUpdateAt(LocalDateTime.now());
         int result = userMapper.updateUser(request);
 
         if (result == 0) { // 유정 수정 처리 실패

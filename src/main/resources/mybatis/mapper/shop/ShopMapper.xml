@@ -95,7 +95,7 @@
                     nextval("seq_tb_designer_shop_designer_shop_id")
                    ,#{uid}
                    ,#{shopId}
-                   ,#{shopRegistTypeCode.name()}
+                   ,#{shopRegistTypeCode}
                    ,#{representativeYn}
                    ,#{shopName}
                    ,#{shopDescription}
@@ -124,7 +124,7 @@
                     ,shop_id = #{shopId}
                 </if>
                 <if test="shopRegistTypeCode != null">
-                    ,shop_regist_type_code = #{shopRegistTypeCode.name()}
+                    ,shop_regist_type_code = #{shopRegistTypeCode}
                 </if>
                 <if test="representativeYn != null">
                     ,representative_yn = #{representativeYn}

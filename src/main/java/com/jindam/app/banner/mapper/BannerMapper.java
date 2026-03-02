@@ -3,6 +3,8 @@ package com.jindam.app.banner.mapper;
 import com.jindam.app.banner.model.BannerDetailRequestDto;
 import com.jindam.app.banner.model.BannerDetailResponseDto;
 
+import java.util.List;
+
 /**
  * ExampleMapper 인터페이스
  *
@@ -11,5 +13,5 @@ import com.jindam.app.banner.model.BannerDetailResponseDto;
  * </p>
  */
 public interface BannerMapper {
-    BannerDetailResponseDto selectBanner(BannerDetailRequestDto request);
+    List<BannerDetailResponseDto> selectListBanner(BannerDetailRequestDto request);
 }

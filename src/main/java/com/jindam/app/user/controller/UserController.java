@@ -36,7 +36,7 @@ public class UserController extends MasterController {
 
     @Operation(summary = "사용자 정보 생성", description = "사용자 정보를 입력합니다.")
     @PostMapping("")
-    public ApiResultDto<UserDetailResponseDto> insertOneUser(UserInsertRequestDto request) {
+    public ApiResultDto<UserDetailResponseDto> insertOneUser(@RequestBody UserInsertRequestDto request) {
         ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();
         UserDetailResponseDto result;
 
@@ -48,7 +48,7 @@ public class UserController extends MasterController {
 
     @Operation(summary = "사용자 정보 수정", description = "사용자 상세정보를 수정합니다")
     @PatchMapping("")
-    public ApiResultDto<UserDetailResponseDto> updateUserByUid(UserUpdateRequestDto request) {
+    public ApiResultDto<UserDetailResponseDto> updateUserByUid(@RequestBody UserUpdateRequestDto request) {
         ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();
         UserDetailResponseDto result;
 
@@ -60,7 +60,7 @@ public class UserController extends MasterController {
 
     @Operation(summary = "디자이너 프로필 수정 처리", description = "디자이너 프로필을 수정합니다. (빈값은 null로 들어갑니다.)")
     @PutMapping("/designer/profile")
-    public ApiResultDto<UserDetailResponseDto> updateDesignerProfile(UserUpdateRequestDto request) {
+    public ApiResultDto<UserDetailResponseDto> updateDesignerProfile(@RequestBody UserUpdateRequestDto request) {
         ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();
         UserDetailResponseDto result;
 
@@ -120,7 +120,7 @@ public class UserController extends MasterController {
 
     @Operation(summary = "유저 즐겨찾기 변경 요청", description = "유저 즐겨찾기 추가 및 취소 합니다.")
     @PatchMapping("/favorite")
-    public void updateFavoriteUser(UserFavoriteUpdateRequestDto request) {
+    public void updateFavoriteUser(@RequestBody UserFavoriteUpdateRequestDto request) {
         userService.updateFavoriteUser(request);
     }
 }

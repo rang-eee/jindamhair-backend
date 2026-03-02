@@ -56,7 +56,7 @@ public class AppointmentController extends MasterController {
 
     @Operation(summary = "예약 생성 요청 처리", description = "예약 건을 생성합니다.")
     @PostMapping("")
-    public ApiResultDto<AppointmentDetailResponseDto> insertAppointment(AppointmentInsertRequestDto request) {
+    public ApiResultDto<AppointmentDetailResponseDto> insertAppointment(@RequestBody AppointmentInsertRequestDto request) {
         ApiResultDto<AppointmentDetailResponseDto> apiResultVo = new ApiResultDto<>();
         AppointmentDetailResponseDto result;
 
@@ -69,30 +69,30 @@ public class AppointmentController extends MasterController {
 
     @Operation(summary = "예약 변경 처리", description = "예약 건을 변경합니다. (알림포함)")
     @PatchMapping("")
-    public void updateAppointment(AppointmentUpdateRequestDto request) {
-        //ApiResultDto<AppointmentDetailResponseDto> apiResultVo = new ApiResultDto<>();
-        //AppointmentDetailResponseDto result;
+    public void updateAppointment(@RequestBody AppointmentUpdateRequestDto request) {
+        // ApiResultDto<AppointmentDetailResponseDto> apiResultVo = new ApiResultDto<>();
+        // AppointmentDetailResponseDto result;
         appointmentService.updateAppointment(request);
 
     }
 
     @Operation(summary = "예약 확정 처리", description = "예약 건을 완료상태로 변경합니다.")
     @PatchMapping("/confirm")
-    public void confirmAppointment(AppointmentInsertRequestDto request) {
+    public void confirmAppointment(@RequestBody AppointmentInsertRequestDto request) {
         appointmentService.confirmAppointment(request);
     }
 
     @Operation(summary = "예약 취소 요청 처리", description = "예약 건을 취소합니다.")
     @DeleteMapping("")
     public void deleteAppointment(AppointmentDeleteRequestDto request) {
-        //        ApiResultDto<AppointmentDetailResponseDto> apiResultVo = new ApiResultDto<>();
-        //        AppointmentDetailResponseDto result;
+        // ApiResultDto<AppointmentDetailResponseDto> apiResultVo = new ApiResultDto<>();
+        // AppointmentDetailResponseDto result;
         appointmentService.deleteAppointment(request);
     }
 
     @Operation(summary = "서명 완료 처리", description = "예약 아이디로 서명데이터를 생성합니다.")
     @PutMapping("/sign")
-    public void insertAppointmentSign(AppointmentSignInsertRequestDto request) {
+    public void insertAppointmentSign(@RequestBody AppointmentSignInsertRequestDto request) {
         appointmentService.insertAppointmentSign(request);
     }
 

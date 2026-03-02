@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -16,11 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class BannerService extends PagingService {
     private final BannerMapper bannerMapper;
 
-    public BannerDetailResponseDto selectBanner(BannerDetailRequestDto request) {
-        BannerDetailResponseDto result;
-        result = bannerMapper.selectBanner(request);
-
-        return result;
+    public List<BannerDetailResponseDto> selectListBanner(BannerDetailRequestDto request) {
+        return bannerMapper.selectListBanner(request);
     }
 
 }

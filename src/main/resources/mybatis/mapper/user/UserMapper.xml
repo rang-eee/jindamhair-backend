@@ -62,7 +62,7 @@
         <include refid="getSelectUser" />
         <where>
             AND tu.user_email = #{userEmail}
-            AND tu.user_join_type_code = #{userJoinTypeCode.name()}
+            AND tu.user_join_type_code = #{userJoinTypeCode}
         </where>
     </select>
 
@@ -85,7 +85,7 @@
                  , #{userContact}
                  , #{userName}
                  , #{userNickname}
-                 , #{userStatusCode.name()}
+                 , #{userStatusCode}
                  , #{userTypeCoUde}
                  , #{userBrdt}
                  , NOW()
@@ -97,8 +97,8 @@
         /* UserMapper.updateUser : 사용자 업데이트 */
         UPDATE tb_user
         <set>
-            update_at = #{updateAt}
-            , update_id = #{updateId}
+            update_at = NOW()
+            , update_id = #{uid}
             <if test="userEmail != null">
                 , user_email = #{userEmail}
             </if>
@@ -112,16 +112,16 @@
                 , user_nickname = #{userNickname}
             </if>
             <if test="userStatusCode != null">
-                , user_status_code = #{userStatusCode.name()}
+                , user_status_code = #{userStatusCode}
             </if>
             <if test="userTypeCode != null">
-                , user_type_code = #{userTypeCode.name()}
+                , user_type_code = #{userTypeCode}
             </if>
             <if test="userBrdt != null">
                 , user_brdt = #{userBrdt}
             </if>
             <if test="userJoinTypeCode != null">
-                , user_join_type_code = #{userJoinTypeCode.name()}
+                , user_join_type_code = #{userJoinTypeCode}
             </if>
             <if test="pushToken != null">
                 , push_token = #{pushToken}
@@ -184,7 +184,7 @@
                 , profile_photo_file_id = #{profilePhotoFileId}
             </if>
             <if test="designerApprStatusCode != null">
-                , designer_appr_status_code = #{designerApprStatusCode.name()}
+                , designer_appr_status_code = #{designerApprStatusCode}
             </if>
             <if test="designerIntroduceContent != null">
                 , designer_introduce_content = #{designerIntroduceContent}
@@ -193,7 +193,7 @@
                 , designer_tag_arr IN <foreach collection="designerTagArr" item="id" open="(" separator=", " close=")">#{id}</foreach>
             </if>
             <if test="designerWorkStatusCode != null and designerWorkStatusCode.size() > 0">
-                , designer_work_status_code = #{designerWorkStatusCode.name()}
+                , designer_work_status_code = #{designerWorkStatusCode}
             </if>
             <if test="designerOpenDayArr != null and designerOpenDayArr.size() > 0">
                 , designer_open_day_arr IN <foreach collection="designerOpenDayArr" item="id" open="(" separator=", " close=")">#{id}</foreach>
@@ -214,7 +214,7 @@
                 , designer_detail_photo_file_id = #{designerDetailPhotoFileId}
             </if>
             <if test="designerAccountBrandCode != null">
-                , designer_account_brand_code = #{designerAccountBrandCode.name()}
+                , designer_account_brand_code = #{designerAccountBrandCode}
             </if>
         </set>
         <where>
@@ -226,8 +226,8 @@
         /* UserMapper.updateDesignerProfile : 디자이너 프로필 업데이트 (PUT) */
         UPDATE tb_user
         <set>
-            update_at = #{updateAt}
-            , update_id = #{updateId}
+            update_at = NOW()
+            , update_id = #{uid}
             , user_name = #{userName}
             , profile_photo_file_id = #{profilePhotoFileId}
             , designer_introduce_content = #{designerIntroduceContent}
@@ -299,7 +299,7 @@
              ,tu.designer_account_brand_code
         FROM tb_user tu
         WHERE 1=1
-          AND  tu.uid = #{uid};
+          AND  tu.uid = #{uid}
     </select>
 
     <update id="updateLastLoginByUid" parameterType="UserUpdateRequestDto">
@@ -395,7 +395,7 @@
         <where>
             tb.delete_yn = 'N'
             <if test='userJoinTypeCode != null'>
-                AND tb.user_join_type_code = #{userJoinTypeCode.name()}
+                AND tb.user_join_type_code = #{userJoinTypeCode}
             </if>
         </where>
     </sql>
@@ -422,32 +422,32 @@
         /*UserMapper.insertFavoriteDesigner*/
         INSERT INTO tb_user_bookmark  (
             user_bookmark_id,
-            uid,
-            bookmark_target_user_id,
-            user_gender_code,
-            user_agg_code,
-            user_type_code,
-            create_at,
-            create_id
+            , uid
+            , bookmark_target_user_id
+            , user_gender_code
+            , user_agg_code
+            , user_type_code
+            , create_at
+            , create_id
         ) VALUES (
-            nextval('seq_tb_user_bookmark_user_bookmark_id'),
-            #{uid}
-            #{bookmarkTargetUserId}
-            #{userGenderCode.name()}
-            #{userAggCode.name()}
-            #{userTypeCode.name()}
-            #{workAt}
-            #{workId}
-                         )
+            nextval('seq_tb_user_bookmark_user_bookmark_id')
+            , #{uid}
+            , #{bookmarkTargetUserId}
+            , #{userGenderCode}
+            , #{userAggCode}
+            , #{userTypeCode}
+            , NOW()
+            , #{uid}
+        )
     </insert>
 
     <update id="updateFavoriteUser" parameterType="UserFavoriteUpdateRequestDto">
         /*UserMapper.updateFavoriteDesigner*/
         UPDATE tb_user_bookmark
         <set>
-            <if test="userGenderCode != null">user_gender_code = #{userGenderCode.name()},</if>
-            <if test="userAggCode != null">user_agg_code = #{userAggCode.name()},</if>
-            <if test="userTypeCode != null">user_type_code = #{userTypeCode.name()},</if>
+            <if test="userGenderCode != null">user_gender_code = #{userGenderCode},</if>
+            <if test="userAggCode != null">user_agg_code = #{userAggCode},</if>
+            <if test="userTypeCode != null">user_type_code = #{userTypeCode},</if>
             <if test="updateAt">update_at = #{workAt},</if>
             <if test="updateId">update_id = #{workId},</if>
             delete_yn =#{deleteYn},

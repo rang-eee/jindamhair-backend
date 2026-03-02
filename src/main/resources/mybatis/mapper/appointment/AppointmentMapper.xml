@@ -319,7 +319,7 @@
             </if>
             /*지난 시술내역 코드 분기처리필요*/
             <if test="appointmentStatusCode != null">
-                AND ta.appointment_status_code = #{appointmentStatusCode.name()}
+                AND ta.appointment_status_code = #{appointmentStatusCode}
             </if>
         </where>
     </sql>
@@ -539,13 +539,13 @@
             ,#{basicAmount}
             ,#{discountPt}
             ,#{discountAmount}
-            ,#{hairAddTypeCode.name()}
+            ,#{hairAddTypeCode}
             ,#{addAmount}
             ,#{totalAmount}
             ,#{treatmentContent}
             ,#{treatmentRequireTime}
             ,#{treatmentPhotoFileId}
-            ,#{treatmentGenderTypeCode.name()}
+            ,#{treatmentGenderTypeCode}
             ,#{discountYn}
             ,#{addYn}
             ,#{openYn}

@@ -53,17 +53,21 @@
     </appender>
     -->
 
-    <!-- log4jdbc 로거: appender-ref는 '속성'이 아니라 '엘리먼트'입니다 -->
+    <!-- log4jdbc 로거 -->
     <logger name="jdbc" level="OFF" additivity="false">
         <appender-ref ref="FILE"/>
     </logger>
-    <logger name="jdbc.connection" level="ERROR" additivity="false">
+    <logger name="jdbc.connection" level="OFF" additivity="false">
         <appender-ref ref="FILE"/>
     </logger>
-    <logger name="jdbc.sqlonly" level="OFF" additivity="false">
+    <!-- sqlonly: 파라미터가 치환된 완성 SQL (줄바꿈 포맷 유지) -->
+    <logger name="jdbc.sqlonly" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>
+    <!-- sqltiming: 실행 시간 포함 SQL -->
     <logger name="jdbc.sqltiming" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>
     <logger name="jdbc.audit" level="OFF" additivity="false">
@@ -72,7 +76,9 @@
     <logger name="jdbc.resultset" level="OFF" additivity="false">
         <appender-ref ref="FILE"/>
     </logger>
-    <logger name="jdbc.resultsettable" level="OFF" additivity="false">
+    <!-- resultsettable: SELECT 결과를 표 형태로 출력 -->
+    <logger name="jdbc.resultsettable" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>
 

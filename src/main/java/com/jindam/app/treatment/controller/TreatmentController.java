@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,7 +49,7 @@ public class TreatmentController extends MasterController {
 
     @Operation(summary = "디자이너 시술 수정 요청", description = "디자이너 아이디로 수정요청 합니다.(삭제 요청 포함)")
     @PatchMapping("/")
-    public int updateDesignerTreatment(DesignerTreatmentUpdateRequestDto request) {
+    public int updateDesignerTreatment(@RequestBody DesignerTreatmentUpdateRequestDto request) {
         int result;
         result = treatmentService.updateDesignerTreatment(request);
 
