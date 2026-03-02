@@ -30,8 +30,12 @@
             <if test="bannerDisplayStatusCode != null">
                 AND tb.banner_display_status_code = #{bannerDisplayStatusCode}
             </if>
-            <if test="bannerDisplayTargetCode != null">
-                AND tb.banner_display_target_code = #{bannerDisplayTargetCode}
+            <!-- 노출 대상 조건: includeTargetCodes 배열로 IN 절 처리 (예: customer → customer, all 모두 포함) -->
+            <if test="bannerDisplayTargetCode != null and bannerDisplayTargetCode.includeTargetCodes != null">
+                AND tb.banner_display_target_code IN
+                <foreach collection="bannerDisplayTargetCode.includeTargetCodes" item="targetCode" open="(" separator="," close=")">
+                    #{targetCode}
+                </foreach>
             </if>
             <!-- 노출 시간 조건: always이거나, date인 경우 현재 시간이 시작~종료 범위 내 -->
             <if test="bannerDisplayTimeCode != null">
