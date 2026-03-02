@@ -392,7 +392,16 @@ BEGIN
       NULL::text AS zipcode,
       'Y'::bpchar AS representative_yn,
       NULL::text AS shop_regist_type_code,
-      'Y'::bpchar AS use_yn,
+      CASE
+        WHEN b.data->>'storeStatusType' = 'StoreStatusType.active' THEN 'Y'
+        WHEN b.data->>'storeStatusType' = 'StoreStatusType.unused' THEN 'N'
+        WHEN b.data->>'storeStatusType' = 'StoreStatusType.delete' THEN 'N'
+        ELSE 'Y'
+      END::bpchar AS use_yn,
+      CASE
+        WHEN b.data->>'storeStatusType' = 'StoreStatusType.delete' THEN 'Y'
+        ELSE 'N'
+      END::bpchar AS delete_yn,
       b.created_at,
       b.updated_at
     FROM base b
@@ -412,7 +421,16 @@ BEGIN
       uss.data->>'postCode' AS zipcode,
       CASE WHEN fn_safe_boolean(uss.data->>'isRepresentative') THEN 'Y' ELSE 'N' END AS representative_yn,
       uss.data->>'storeAddType' AS shop_regist_type_code,
-      'Y'::bpchar AS use_yn,
+      CASE
+        WHEN uss.data->>'storeStatusType' = 'StoreStatusType.active' THEN 'Y'
+        WHEN uss.data->>'storeStatusType' = 'StoreStatusType.unused' THEN 'N'
+        WHEN uss.data->>'storeStatusType' = 'StoreStatusType.delete' THEN 'N'
+        ELSE 'Y'
+      END::bpchar AS use_yn,
+      CASE
+        WHEN uss.data->>'storeStatusType' = 'StoreStatusType.delete' THEN 'Y'
+        ELSE 'N'
+      END::bpchar AS delete_yn,
       COALESCE(uss.created_at, b.created_at) AS created_at,
       COALESCE(uss.updated_at, b.updated_at) AS updated_at
     FROM base b
@@ -423,6 +441,17 @@ BEGIN
     SELECT * FROM primary_shop
     UNION ALL
     SELECT * FROM extra_shops
+  ),
+  normalized AS (
+    SELECT
+      *,
+      ROW_NUMBER() OVER (
+        PARTITION BY uid, shop_id
+        ORDER BY
+          (representative_yn = 'Y') DESC,
+          created_at DESC NULLS LAST
+      ) AS rn
+    FROM combined
   )
   INSERT INTO jindamhair.tb_designer_shop (
     designer_shop_id,
@@ -448,38 +477,39 @@ BEGIN
   )
   SELECT
     nextval('seq_tb_designer_shop_designer_shop_id')::text AS designer_shop_id,
-    COALESCE(u.uid, combined.uid),
+    COALESCE(u.uid, normalized.uid),
     s.shop_id,
     CASE
       WHEN s.shop_id IS NULL THEN 'add'
       ELSE 'basic'
     END,
     representative_yn,
-    COALESCE(s.shop_name, uss.data->>'title', combined.shop_name),
+    COALESCE(s.shop_name, uss.data->>'title', normalized.shop_name),
     NULL,
-    COALESCE(s.shop_addr, uss.data->>'address', combined.shop_addr),
-    COALESCE(s.shop_addr_detail, uss.data->>'addressDetail', combined.shop_addr_detail),
-    COALESCE(s.shop_contact, uss.data->>'contactNumber', uss.data->>'phoneNum', combined.shop_contact),
-    COALESCE(s.position_lngt, uss.data->>'gpsX', combined.position_lngt),
-    COALESCE(s.position_latt, uss.data->>'gpsY', combined.position_latt),
-    COALESCE(s.zipcode, uss.data->>'postCode', combined.zipcode),
-    combined.use_yn,
-    combined.uid || '_' || combined.shop_id,
-    COALESCE(combined.created_at, now()),
+    COALESCE(s.shop_addr, uss.data->>'address', normalized.shop_addr),
+    COALESCE(s.shop_addr_detail, uss.data->>'addressDetail', normalized.shop_addr_detail),
+    COALESCE(s.shop_contact, uss.data->>'contactNumber', uss.data->>'phoneNum', normalized.shop_contact),
+    COALESCE(s.position_lngt, uss.data->>'gpsX', normalized.position_lngt),
+    COALESCE(s.position_latt, uss.data->>'gpsY', normalized.position_latt),
+    COALESCE(s.zipcode, uss.data->>'postCode', normalized.zipcode),
+    normalized.use_yn,
+    normalized.uid || '_' || normalized.shop_id,
+    COALESCE(normalized.created_at, now()),
     'migration',
-    combined.updated_at,
+    normalized.updated_at,
     'migration',
-    'N'
-  FROM combined
+    normalized.delete_yn
+  FROM normalized
   LEFT JOIN jindamhair.tb_user u
-    ON u.migration_id = combined.uid
+    ON u.migration_id = normalized.uid
   LEFT JOIN jindamhair.tb_shop s
-    ON s.migration_id = combined.shop_id
+    ON s.migration_id = normalized.shop_id
   LEFT JOIN fs_users__stores uss
-    ON uss.parent_doc_id = combined.owner_doc_id
-   AND COALESCE(uss.data->>'id', uss.data->>'storeId', uss.doc_id) = combined.shop_id
-  WHERE COALESCE(combined.uid,'') <> ''
-    AND COALESCE(combined.shop_id,'') <> ''
+    ON uss.parent_doc_id = normalized.owner_doc_id
+   AND COALESCE(uss.data->>'id', uss.data->>'storeId', uss.doc_id) = normalized.shop_id
+  WHERE COALESCE(normalized.uid,'') <> ''
+    AND COALESCE(normalized.shop_id,'') <> ''
+    AND normalized.rn = 1
   ON CONFLICT (designer_shop_id) DO NOTHING;
   PERFORM jindamhair.normalize_blank_to_null('jindamhair', 'tb_designer_shop');
 END;

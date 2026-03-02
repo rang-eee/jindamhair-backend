@@ -5,6 +5,7 @@ import com.jindam.app.chat.model.ChatRoomDetailRequestDto;
 import com.jindam.app.chat.model.ChatRoomMemberResponseDto;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ExampleMapper 인터페이스
@@ -21,6 +22,11 @@ public interface ChatMapper {
     int insertChatMessage(ChatInsertRequestDto request);
 
     /**
+     * 목록 조회 (단순 리스트)
+     */
+    List<ChatRoomMemberResponseDto> selectChatRoomList(ChatRoomDetailRequestDto request);
+
+    /**
      * 목록 페이징 처리 후 조회
      */
     List<ChatRoomMemberResponseDto> selectChatRoomPaging(ChatRoomDetailRequestDto request);
@@ -29,5 +35,9 @@ public interface ChatMapper {
      * 목록 카운트 조회
      */
     int selectChatRoomPagingCount(ChatRoomDetailRequestDto request);
-}
 
+    /**
+     * 채팅방 ID 목록으로 멤버 + 유저 정보 일괄 조회
+     */
+    List<Map<String, Object>> selectChatRoomMembers(List<String> chatroomIds);
+}

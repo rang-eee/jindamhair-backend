@@ -65,7 +65,15 @@ public class MajorMybatisConfig {
         Resource myBatisConfig = resolver.getResource("classpath:mybatis/mybatis-config.xml");
         sessionFactory.setConfigLocation(myBatisConfig);
 
-        return sessionFactory.getObject();
+        SqlSessionFactory factory = sessionFactory.getObject();
+
+        // ✅ 수동 생성 SqlSessionFactory에 TypeHandler 직접 등록
+        // (ConfigurationCustomizer는 Spring Boot 자동 구성용이므로 수동 Bean에는 적용 안 됨)
+        factory.getConfiguration()
+            .getTypeHandlerRegistry()
+            .register(List.class, JdbcType.ARRAY, new ListStringArrayTypeHandler());
+
+        return factory;
     }
 
     @Bean

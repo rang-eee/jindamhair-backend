@@ -10,7 +10,11 @@ import java.util.stream.Collectors;
 
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.type.MappedJdbcTypes;
+import org.apache.ibatis.type.MappedTypes;
 
+@MappedTypes(List.class)
+@MappedJdbcTypes(JdbcType.ARRAY)
 public class ListStringArrayTypeHandler extends BaseTypeHandler<List<String>> {
 
     @Override

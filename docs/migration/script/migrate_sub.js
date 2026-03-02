@@ -15,11 +15,11 @@ const pool = new Pool({ connectionString: process.env.PG_URL });
 // ✅ 서브컬렉션 구조
 // parentCollection -> [subcollectionName...]
 const SUBCOLLECTIONS = {
-	appointments: ["menus", "sign"],
-	chatRooms: ["chatMessages"],
-	offers: ["designers"],
-	reservations: ["menus"],
-	users: ["menus", "notificationCenters", "stores"],
+	// appointments: ["menus", "sign"],
+	// chatRooms: ["chatMessages"],
+	// offers: ["designers"],
+	// reservations: ["menus"],
+	users: ["stores"],
 };
 
 function uniqueList(items) {

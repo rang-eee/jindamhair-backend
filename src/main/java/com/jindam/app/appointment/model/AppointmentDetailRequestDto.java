@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -35,6 +36,9 @@ public class AppointmentDetailRequestDto extends PagingRequestDto {
 
     @Schema(description = "예약 상태 코드", example = "123")
     private AppointmentStatusCode appointmentStatusCode;
+
+    @Schema(description = "제외할 예약 상태 코드 목록")
+    private List<AppointmentStatusCode> excludeAppointmentStatusCodes;
 
     @Schema(description = "예약 시작 유형 코드", example = "123")
     private AppointmentStartTypeCode appointmentStartTypeCode;
@@ -94,7 +98,7 @@ public class AppointmentDetailRequestDto extends PagingRequestDto {
     private String createId;
 
     /**
-     * AppointmentUpdateRequestDto를  AppointmentDetailRequestDto로 변환합니다.
+     * AppointmentUpdateRequestDto를 AppointmentDetailRequestDto로 변환합니다.
      */
     public static AppointmentDetailRequestDto from(AppointmentUpdateRequestDto dto) {
 
@@ -102,49 +106,49 @@ public class AppointmentDetailRequestDto extends PagingRequestDto {
         Objects.requireNonNull(dto.getAppointmentId(), "AppointmentUpdateRequestDto appointmentId는 null일 수 없습니다.");
 
         return AppointmentDetailRequestDto.builder()
-                // 1. 기본 식별자
-                .appointmentId(dto.getAppointmentId())
-                .customerUid(dto.getCustomerUid())
-                .designerUid(dto.getDesignerUid())
-                .shopId(dto.getShopId())
+            // 1. 기본 식별자
+            .appointmentId(dto.getAppointmentId())
+            .customerUid(dto.getCustomerUid())
+            .designerUid(dto.getDesignerUid())
+            .shopId(dto.getShopId())
 
-                // 2. 상태 및 코드 정보
-                .appointmentStatusCode(dto.getAppointmentStatusCode())
-                .appointmentStartTypeCode(dto.getAppointmentStartTypeCode())
-                .paymentMethodCode(dto.getPaymentMethodCode())
+            // 2. 상태 및 코드 정보
+            .appointmentStatusCode(dto.getAppointmentStatusCode())
+            .appointmentStartTypeCode(dto.getAppointmentStartTypeCode())
+            .paymentMethodCode(dto.getPaymentMethodCode())
 
-                // 3. 금액 정보
-                .totalAmount(dto.getTotalAmount())
-                .appointmentAmount(dto.getAppointmentAmount())
+            // 3. 금액 정보
+            .totalAmount(dto.getTotalAmount())
+            .appointmentAmount(dto.getAppointmentAmount())
 
-                // 4. 일시 정보
-                .treatmentStartAt(dto.getTreatmentStartAt())
-                .treatmentEndAt(dto.getTreatmentEndAt())
+            // 4. 일시 정보
+            .treatmentStartAt(dto.getTreatmentStartAt())
+            .treatmentEndAt(dto.getTreatmentEndAt())
 
-                // 5. 내용 정보
-                .appointmentContent(dto.getAppointmentContent())
-                .cancelReasonContent(dto.getCancelReasonContent())
-                .reviewId(dto.getReviewId())
+            // 5. 내용 정보
+            .appointmentContent(dto.getAppointmentContent())
+            .cancelReasonContent(dto.getCancelReasonContent())
+            .reviewId(dto.getReviewId())
 
-                /* * [주의] 아래 필드들은 UpdateRequestDto에 없을 가능성이 높습니다.
-                 * 없는 필드는 삭제하거나 null로 처리하세요.
-                 */
+            /*
+             * * [주의] 아래 필드들은 UpdateRequestDto에 없을 가능성이 높습니다. 없는 필드는 삭제하거나 null로 처리하세요.
+             */
 
-                // 6. 고객/디자이너/샵 상세 정보 (Join 데이터)
-                .customerName(dto.getCustomerName())
-                .customerNickname(dto.getCustomerNickname())
-                .customerContact(dto.getCustomerContact())
-                .designerName(dto.getDesignerName())
-                .designerNickname(dto.getDesignerNickname())
-                .designerContact(dto.getDesignerContact())
-                .shopName(dto.getShopName())
-                .shopAddr(dto.getShopAddr())
+            // 6. 고객/디자이너/샵 상세 정보 (Join 데이터)
+            .customerName(dto.getCustomerName())
+            .customerNickname(dto.getCustomerNickname())
+            .customerContact(dto.getCustomerContact())
+            .designerName(dto.getDesignerName())
+            .designerNickname(dto.getDesignerNickname())
+            .designerContact(dto.getDesignerContact())
+            .shopName(dto.getShopName())
+            .shopAddr(dto.getShopAddr())
 
-                .build();
+            .build();
     }
 
     /**
-     * AppointmentInsertRequestDto   AppointmentDetailRequestDto로 변환합니다.
+     * AppointmentInsertRequestDto AppointmentDetailRequestDto로 변환합니다.
      */
     public static AppointmentDetailRequestDto from(AppointmentInsertRequestDto dto) {
 
@@ -152,49 +156,49 @@ public class AppointmentDetailRequestDto extends PagingRequestDto {
         Objects.requireNonNull(dto.getAppointmentId(), "AppointmentInsertRequestDto appointmentId는 null일 수 없습니다.");
 
         return AppointmentDetailRequestDto.builder()
-                // 1. 기본 식별자
-                .appointmentId(dto.getAppointmentId())
-                .customerUid(dto.getCustomerUid())
-                .designerUid(dto.getDesignerUid())
-                .shopId(dto.getShopId())
+            // 1. 기본 식별자
+            .appointmentId(dto.getAppointmentId())
+            .customerUid(dto.getCustomerUid())
+            .designerUid(dto.getDesignerUid())
+            .shopId(dto.getShopId())
 
-                // 2. 상태 및 코드 정보
-                .appointmentStatusCode(dto.getAppointmentStatusCode())
-                .appointmentStartTypeCode(dto.getAppointmentStartTypeCode())
-                .paymentMethodCode(dto.getPaymentMethodCode())
+            // 2. 상태 및 코드 정보
+            .appointmentStatusCode(dto.getAppointmentStatusCode())
+            .appointmentStartTypeCode(dto.getAppointmentStartTypeCode())
+            .paymentMethodCode(dto.getPaymentMethodCode())
 
-                // 3. 금액 정보
-                .totalAmount(dto.getTotalAmount())
-                .appointmentAmount(dto.getAppointmentAmount())
+            // 3. 금액 정보
+            .totalAmount(dto.getTotalAmount())
+            .appointmentAmount(dto.getAppointmentAmount())
 
-                // 4. 일시 정보
-                .treatmentStartAt(dto.getTreatmentStartAt())
-                .treatmentEndAt(dto.getTreatmentEndAt())
+            // 4. 일시 정보
+            .treatmentStartAt(dto.getTreatmentStartAt())
+            .treatmentEndAt(dto.getTreatmentEndAt())
 
-                // 5. 내용 정보
-                .appointmentContent(dto.getAppointmentContent())
-                .cancelReasonContent(dto.getCancelReasonContent())
-                .reviewId(dto.getReviewId())
+            // 5. 내용 정보
+            .appointmentContent(dto.getAppointmentContent())
+            .cancelReasonContent(dto.getCancelReasonContent())
+            .reviewId(dto.getReviewId())
 
-                /* * [주의] 아래 필드들은 UpdateRequestDto에 없을 가능성이 높습니다.
-                 * 없는 필드는 삭제하거나 null로 처리하세요.
-                 */
+            /*
+             * * [주의] 아래 필드들은 UpdateRequestDto에 없을 가능성이 높습니다. 없는 필드는 삭제하거나 null로 처리하세요.
+             */
 
-                // 6. 고객/디자이너/샵 상세 정보 (Join 데이터)
-                .customerName(dto.getCustomerName())
-                .customerNickname(dto.getCustomerNickname())
-                .customerContact(dto.getCustomerContact())
-                .designerName(dto.getDesignerName())
-                .designerNickname(dto.getDesignerNickname())
-                .designerContact(dto.getDesignerContact())
-                .shopName(dto.getShopName())
-                .shopAddr(dto.getShopAddr())
+            // 6. 고객/디자이너/샵 상세 정보 (Join 데이터)
+            .customerName(dto.getCustomerName())
+            .customerNickname(dto.getCustomerNickname())
+            .customerContact(dto.getCustomerContact())
+            .designerName(dto.getDesignerName())
+            .designerNickname(dto.getDesignerNickname())
+            .designerContact(dto.getDesignerContact())
+            .shopName(dto.getShopName())
+            .shopAddr(dto.getShopAddr())
 
-                .build();
+            .build();
     }
 
     /**
-     * AppointmentDeleteRequestDto  AppointmentDetailRequestDto로 변환합니다.
+     * AppointmentDeleteRequestDto AppointmentDetailRequestDto로 변환합니다.
      */
     public static AppointmentDetailRequestDto from(AppointmentDeleteRequestDto dto) {
 
@@ -202,46 +206,45 @@ public class AppointmentDetailRequestDto extends PagingRequestDto {
         Objects.requireNonNull(dto.getAppointmentId(), "AppointmentDeleteRequestDto appointmentId는 null일 수 없습니다.");
 
         return AppointmentDetailRequestDto.builder()
-                // 1. 기본 식별자
-                .appointmentId(dto.getAppointmentId())
-                .customerUid(dto.getCustomerUid())
-                .designerUid(dto.getDesignerUid())
-                .shopId(dto.getShopId())
+            // 1. 기본 식별자
+            .appointmentId(dto.getAppointmentId())
+            .customerUid(dto.getCustomerUid())
+            .designerUid(dto.getDesignerUid())
+            .shopId(dto.getShopId())
 
-                // 2. 상태 및 코드 정보
-                .appointmentStatusCode(dto.getAppointmentStatusCode())
-                .appointmentStartTypeCode(dto.getAppointmentStartTypeCode())
-                .paymentMethodCode(dto.getPaymentMethodCode())
+            // 2. 상태 및 코드 정보
+            .appointmentStatusCode(dto.getAppointmentStatusCode())
+            .appointmentStartTypeCode(dto.getAppointmentStartTypeCode())
+            .paymentMethodCode(dto.getPaymentMethodCode())
 
-                // 3. 금액 정보
-                .totalAmount(dto.getTotalAmount())
-                .appointmentAmount(dto.getAppointmentAmount())
+            // 3. 금액 정보
+            .totalAmount(dto.getTotalAmount())
+            .appointmentAmount(dto.getAppointmentAmount())
 
-                // 4. 일시 정보
-                .treatmentStartAt(dto.getTreatmentStartAt())
-                .treatmentEndAt(dto.getTreatmentEndAt())
+            // 4. 일시 정보
+            .treatmentStartAt(dto.getTreatmentStartAt())
+            .treatmentEndAt(dto.getTreatmentEndAt())
 
-                // 5. 내용 정보
-                .appointmentContent(dto.getAppointmentContent())
-                .cancelReasonContent(dto.getCancelReasonContent())
-                .reviewId(dto.getReviewId())
+            // 5. 내용 정보
+            .appointmentContent(dto.getAppointmentContent())
+            .cancelReasonContent(dto.getCancelReasonContent())
+            .reviewId(dto.getReviewId())
 
-                /* * [주의] 아래 필드들은 UpdateRequestDto에 없을 가능성이 높습니다.
-                 * 없는 필드는 삭제하거나 null로 처리하세요.
-                 */
+            /*
+             * * [주의] 아래 필드들은 UpdateRequestDto에 없을 가능성이 높습니다. 없는 필드는 삭제하거나 null로 처리하세요.
+             */
 
-                // 6. 고객/디자이너/샵 상세 정보 (Join 데이터)
-                .customerName(dto.getCustomerName())
-                .customerNickname(dto.getCustomerNickname())
-                .customerContact(dto.getCustomerContact())
-                .designerName(dto.getDesignerName())
-                .designerNickname(dto.getDesignerNickname())
-                .designerContact(dto.getDesignerContact())
-                .shopName(dto.getShopName())
-                .shopAddr(dto.getShopAddr())
+            // 6. 고객/디자이너/샵 상세 정보 (Join 데이터)
+            .customerName(dto.getCustomerName())
+            .customerNickname(dto.getCustomerNickname())
+            .customerContact(dto.getCustomerContact())
+            .designerName(dto.getDesignerName())
+            .designerNickname(dto.getDesignerNickname())
+            .designerContact(dto.getDesignerContact())
+            .shopName(dto.getShopName())
+            .shopAddr(dto.getShopAddr())
 
-                .build();
+            .build();
     }
 
 }
-

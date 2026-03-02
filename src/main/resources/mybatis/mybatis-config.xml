@@ -20,4 +20,9 @@
 		<typeAlias alias="map" type="java.util.Map" />
 		<typeAlias alias="ListStringArrayTypeHandler" type="com.jindam.config.database.mybatis.ListStringArrayTypeHandler" />
 	</typeAliases>
+
+	<!-- ✅ PostgreSQL _varchar 배열 ↔ List<String> 자동 매핑 -->
+	<typeHandlers>
+		<typeHandler handler="com.jindam.config.database.mybatis.ListStringArrayTypeHandler" javaType="java.util.List" jdbcType="ARRAY"/>
+	</typeHandlers>
 </configuration>

@@ -14,18 +14,34 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Tag(name = "채팅 관련 요청")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/chat")
+@RequestMapping(path = "/chatRooms")
 @Slf4j
 public class ChatContorller extends MasterController {
 
     private final ChatService chatService;
 
-    @Operation(summary = "채팅방 목록 조회", description = "로그인 유저가 참여중인 채팅방 목록 조회(페이징)")
+    @Operation(summary = "채팅방 목록 조회", description = "로그인 유저가 참여중인 채팅방 목록 조회")
     @GetMapping("")
-    public ApiResultDto<PagingResponseDto<ChatRoomMemberResponseDto>> selectListDesignerPaging(ChatRoomDetailRequestDto request) {
+    public ApiResultDto<List<ChatRoomMemberResponseDto>> selectListChatRoom(ChatRoomDetailRequestDto request) {
+
+        ApiResultDto<List<ChatRoomMemberResponseDto>> apiResultVo = new ApiResultDto<>();
+        List<ChatRoomMemberResponseDto> result;
+
+        result = chatService.selectChatRoomList(request);
+        apiResultVo.setData(result);
+
+        return apiResultVo;
+
+    }
+
+    @Operation(summary = "채팅방 목록 조회(페이징)", description = "로그인 유저가 참여중인 채팅방 목록 조회(페이징)")
+    @GetMapping("/paging")
+    public ApiResultDto<PagingResponseDto<ChatRoomMemberResponseDto>> selectListChatRoomPaging(ChatRoomDetailRequestDto request) {
 
         ApiResultDto<PagingResponseDto<ChatRoomMemberResponseDto>> apiResultVo = new ApiResultDto<>();
         PagingResponseDto<ChatRoomMemberResponseDto> result;

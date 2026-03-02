@@ -3,6 +3,8 @@ package com.jindam.app.user.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.jindam.base.code.DesignerApprStatusCode;
+import com.jindam.base.code.DesignerWorkStatusCode;
 import com.jindam.base.code.UserJoinTypeCode;
 import com.jindam.base.dto.PagingRequestDto;
 
@@ -38,6 +40,26 @@ public class UserDetailRequestDto extends PagingRequestDto {
 
     @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime createAt;
+
+    // ============ 디자이너 목록 검색/거리 필터용 필드 ============
+
+    @Schema(description = "검색어 (닉네임)", example = "빙그레")
+    private String searchText;
+
+    @Schema(description = "사용자 위도 (거리 계산용)", example = "37.5665")
+    private Double userLat;
+
+    @Schema(description = "사용자 경도 (거리 계산용)", example = "126.9780")
+    private Double userLng;
+
+    @Schema(description = "최대 거리 (km)", example = "30")
+    private Double maxDistanceKm;
+
+    @Schema(description = "디자이너 승인 상태 코드", example = "authComplete")
+    private DesignerApprStatusCode designerApprStatusCode;
+
+    @Schema(description = "디자이너 근무 상태 코드", example = "work")
+    private DesignerWorkStatusCode designerWorkStatusCode;
 
     /**
      * UserInsertRequestDto를 UserDetailRequestDto로 변환합니다.

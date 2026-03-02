@@ -1,16 +1,24 @@
 package com.jindam.app.user.model;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.jindam.app.shop.model.DesingerShopDetailResponseDto;
-import com.jindam.base.code.*;
+import com.jindam.base.code.DesignerAccountBrandCode;
+import com.jindam.base.code.DesignerApprStatusCode;
+import com.jindam.base.code.DesignerWorkStatusCode;
+import com.jindam.base.code.UserAggCode;
+import com.jindam.base.code.UserGenderCode;
+import com.jindam.base.code.UserJoinTypeCode;
+import com.jindam.base.code.UserStatusCode;
+import com.jindam.base.code.UserTypeCode;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -122,6 +130,9 @@ public class UserDetailResponseDto {
     @Schema(description = "프로필 사진 파일 ID")
     private String profilePhotoFileId;
 
+    @Schema(description = "프로필 사진 파일 경로 (tb_file JOIN)")
+    private String profilePhotoFilePath;
+
     @Schema(description = "디자이너 승인 상태 코드")
     private DesignerApprStatusCode designerApprStatusCode;
 
@@ -153,7 +164,7 @@ public class UserDetailResponseDto {
     private String designerDetailPhotoFileId;
 
     @Schema(description = "디자이너 계좌 브랜드 코드")
-    private DesignerApprStatusCode designerAccountBrandCode;
+    private DesignerAccountBrandCode designerAccountBrandCode;
 
     @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime createAt;
@@ -179,10 +190,19 @@ public class UserDetailResponseDto {
     @Schema(description = "즐겨찾기 사용자ID")
     private String favoriteUid;
 
+    @Schema(description = "대표 매장명 (tb_designer_shop JOIN)")
+    private String repShopName;
+
+    @Schema(description = "대표 매장 주소 (tb_designer_shop JOIN)")
+    private String repShopAddr;
+
     @Schema(description = "디자이너 대표 매장")
     private DesingerShopDetailResponseDto shopDetail;
 
-    // 추가 예정 {ReviewTypeCode.code : count,  ReviewTypeCode.code : count, ...}
-    // @Schema(description = "후기") 
+    @Schema(description = "계산된 거리 (km) - 사용자 위치 기반")
+    private Double calcDistanceKm;
+
+    // 추가 예정 {ReviewTypeCode.code : count, ReviewTypeCode.code : count, ...}
+    // @Schema(description = "후기")
     // private ReviewResponseDto reviewList;
 }

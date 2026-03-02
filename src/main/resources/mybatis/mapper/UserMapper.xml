@@ -358,6 +358,13 @@
             ,tb.designer_applink_url                        --디자이너 앱링크 URL
             ,tb.designer_detail_photo_file_id                       --디자이너 세부 사진 파일 ID
             ,tb.designer_account_brand_code                     --디자이너 계좌 브랜드 코드
+            ,(SELECT tf.file_path FROM tb_file tf
+              WHERE tf.file_id = tb.profile_photo_file_id
+                AND tf.delete_yn = 'N'
+              ORDER BY tf.create_at DESC
+              LIMIT 1) AS profile_photo_file_path       --프로필 사진 파일 경로 (tb_file, 최신 1건)
+            ,rep_shop.shop_name AS rep_shop_name                     --대표 매장명 (tb_designer_shop)
+            ,rep_shop.shop_addr AS rep_shop_addr                     --대표 매장 주소 (tb_designer_shop)
             ,tb.create_at                       --생성 일시
             ,tb.create_id                       --생성 ID
             ,tb.update_at                       --수정 일시
@@ -365,21 +372,51 @@
             ,tb.delete_yn                       --삭제 여부
             ,tb.delete_at                       --삭제 일시
             ,tb.delete_id                       --삭제 ID
+            <!-- 사용자 위치 기반 거리 계산 (Haversine, km) -->
+            ,CASE
+                WHEN #{userLat} IS NOT NULL AND #{userLng} IS NOT NULL
+                     AND tb.position_latt IS NOT NULL AND tb.position_latt != ''
+                     AND tb.position_lngt IS NOT NULL AND tb.position_lngt != ''
+                THEN 6371 * acos(
+                    LEAST(1.0,
+                        cos(radians(CAST(#{userLat} AS DOUBLE PRECISION))) *
+                        cos(radians(CAST(tb.position_latt AS DOUBLE PRECISION))) *
+                        cos(radians(CAST(tb.position_lngt AS DOUBLE PRECISION)) - radians(CAST(#{userLng} AS DOUBLE PRECISION))) +
+                        sin(radians(CAST(#{userLat} AS DOUBLE PRECISION))) *
+                        sin(radians(CAST(tb.position_latt AS DOUBLE PRECISION)))
+                    )
+                )
+                ELSE NULL
+            END AS calc_distance_km
         FROM tb_user tb
+        LEFT JOIN tb_designer_shop rep_shop
+            ON rep_shop.uid = tb.uid
+            AND rep_shop.representative_yn = 'Y'
+            AND rep_shop.delete_yn = 'N'
+            AND rep_shop.use_yn = 'Y'
 
         <!--공통 조회 조건 -->
         <include refid="selectListDesignerPagingFrag"/>
 
         <!-- 정렬 조건 -->
-        <trim prefix="ORDER BY" prefixOverrides=",">
-            <foreach collection="sorts" item="sort" separator=",">
-                <choose>
-                    <when test="sort.name == 'createAt'">create_at <if test="sort.dir == 'desc'">DESC NULLS LAST</if></when>
-                </choose>
-            </foreach>
-        </trim>
+        <choose>
+            <when test="userLat != null and userLng != null">
+                ORDER BY calc_distance_km ASC NULLS LAST
+            </when>
+            <otherwise>
+                <trim prefix="ORDER BY" prefixOverrides=",">
+                    <foreach collection="sorts" item="sort" separator=",">
+                        <choose>
+                            <when test="sort.name == 'createAt'">create_at <if test="sort.dir == 'desc'">DESC NULLS LAST</if></when>
+                        </choose>
+                    </foreach>
+                </trim>
+            </otherwise>
+        </choose>
         <!-- 페이징 처리 -->
-        LIMIT #{limit} OFFSET #{offset}
+        <if test="searchAll == null or searchAll == false">
+            LIMIT #{limit} OFFSET #{offset}
+        </if>
     </select>
 
     <!--조회조건에 따른 디자이너 목록 전체 카운트 조회 -->
@@ -395,8 +432,33 @@
     <sql id="selectListDesignerPagingFrag">
         <where>
             tb.delete_yn = 'N'
+            AND tb.user_type_code = 'designer'
             <if test='userJoinTypeCode != null'>
                 AND tb.user_join_type_code = #{userJoinTypeCode}
+            </if>
+            <if test='designerApprStatusCode != null'>
+                AND tb.designer_appr_status_code = #{designerApprStatusCode}
+            </if>
+            <if test='designerWorkStatusCode != null'>
+                AND tb.designer_work_status_code = #{designerWorkStatusCode}
+            </if>
+            <!-- 닉네임 검색 -->
+            <if test="searchText != null and searchText != ''">
+                AND tb.user_nickname ILIKE CONCAT('%', #{searchText}, '%')
+            </if>
+            <!-- 거리 필터 (Haversine, km) -->
+            <if test="userLat != null and userLng != null and maxDistanceKm != null">
+                AND tb.position_latt IS NOT NULL AND tb.position_latt != ''
+                AND tb.position_lngt IS NOT NULL AND tb.position_lngt != ''
+                AND 6371 * acos(
+                    LEAST(1.0,
+                        cos(radians(CAST(#{userLat} AS DOUBLE PRECISION))) *
+                        cos(radians(CAST(tb.position_latt AS DOUBLE PRECISION))) *
+                        cos(radians(CAST(tb.position_lngt AS DOUBLE PRECISION)) - radians(CAST(#{userLng} AS DOUBLE PRECISION))) +
+                        sin(radians(CAST(#{userLat} AS DOUBLE PRECISION))) *
+                        sin(radians(CAST(tb.position_latt AS DOUBLE PRECISION)))
+                    )
+                ) <![CDATA[<=]]> #{maxDistanceKm}
             </if>
         </where>
     </sql>

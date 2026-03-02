@@ -104,7 +104,7 @@ public class AppointmentDetailResponseDto {
 
     @Schema(description = "삭제 ID", example = "123")
     private String deleteId;
-    /*고객---------------------------------------------------------------------------*/
+    /* 고객--------------------------------------------------------------------------- */
 
     @Schema(description = "사용자 이메일", example = "")
     private String customerUserEmail;
@@ -199,6 +199,9 @@ public class AppointmentDetailResponseDto {
     @Schema(description = "프로필 사진 파일 ID", example = "")
     private String customerProfilePhotoFileId;
 
+    @Schema(description = "프로필 사진 파일 경로 (tb_file JOIN)", example = "")
+    private String customerProfilePhotoFilePath;
+
     @Schema(description = "디자이너 승인 상태 코드", example = "")
     private DesignerApprStatusCode customerDesignerApprStatusCode;
 
@@ -232,7 +235,7 @@ public class AppointmentDetailResponseDto {
     @Schema(description = "디자이너 계좌 브랜드 코드", example = "")
     private DesignerAccountBrandCode customerDesignerAccountBrandCode;
 
-    /*디자이너-------------------------------------------------------------*/
+    /* 디자이너------------------------------------------------------------- */
 
     @Schema(description = "사용자 이메일", example = "")
     private String designerUserEmail;
@@ -326,6 +329,9 @@ public class AppointmentDetailResponseDto {
 
     @Schema(description = "프로필 사진 파일 ID", example = "")
     private String designerProfilePhotoFileId;
+
+    @Schema(description = "프로필 사진 파일 경로 (tb_file JOIN)", example = "")
+    private String designerProfilePhotoFilePath;
 
     @Schema(description = "디자이너 승인 상태 코드", example = "")
     private DesignerApprStatusCode designerDesignerApprStatusCode;

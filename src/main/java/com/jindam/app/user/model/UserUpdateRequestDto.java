@@ -146,7 +146,7 @@ public class UserUpdateRequestDto {
     private String designerDetailPhotoFileId;
 
     @Schema(description = "디자이너 계좌 브랜드 코드")
-    private DesignerApprStatusCode designerAccountBrandCode;
+    private DesignerAccountBrandCode designerAccountBrandCode;
 
     @Schema(description = "생성 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime createAt;
