@@ -3,7 +3,7 @@
 <mapper namespace="com.jindam.app.setting.mapper.SettingMapper">
 
     <select id="selectConfiguration" resultType="SettingResponseDto">
-        /* SettingMapper.selectConfiguration : tb_configuration 조회*/
+        /* SettingMapper.selectConfiguration : 설정 조회*/
         SELECT
          aos_last_ver
         ,aos_permission_minimum_build_number

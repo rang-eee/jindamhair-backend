@@ -6,10 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
+import com.jindam.base.code.handler.CodeEnumConverterFactory;
 import com.jindam.base.message.Message;
 
 /**
@@ -76,5 +78,16 @@ public class LocaleConfig implements WebMvcConfigurer {
     Message messageResolver() {
         Message.setMessageSourceAccessor(this.getMessageSourceAccessor());
         return new Message();
+    }
+
+    /**
+     * CodeEnum front 코드 문자열 → Java Enum 자동 변환 등록
+     *
+     * 프론트엔드가 "BannerType.layer" 같은 front 코드를 쿼리 파라미터로 전송하면,
+     * Spring이 자동으로 BannerTypeCode.layer (Java Enum)로 변환합니다.
+     */
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverterFactory(new CodeEnumConverterFactory());
     }
 }

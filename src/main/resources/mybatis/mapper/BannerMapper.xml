@@ -3,6 +3,7 @@
 <mapper namespace="com.jindam.app.banner.mapper.BannerMapper">
 
     <select id="selectListBanner" parameterType="BannerDetailRequestDto" resultType="BannerDetailResponseDto">
+        /* BannerMapper.selectListBanner : 배너 목록 조회 */
         SELECT
              tb.banner_id
             ,tb.banner_title

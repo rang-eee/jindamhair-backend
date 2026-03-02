@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.jindam.base.code.handler.CodeEnum;
+import com.jindam.base.code.handler.CodeEnumDeserializer;
 import com.jindam.base.code.handler.CodeEnumSerializer;
 
 @Configuration
@@ -15,6 +16,7 @@ public class JacksonConfig {
     public Module codeEnumModule() {
         SimpleModule module = new SimpleModule();
         module.addSerializer(CodeEnum.class, new CodeEnumSerializer());
+        module.addDeserializer(CodeEnum.class, new CodeEnumDeserializer());
         return module;
     }
 }

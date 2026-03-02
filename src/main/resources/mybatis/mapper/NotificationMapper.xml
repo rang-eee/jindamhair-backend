@@ -3,6 +3,7 @@
 <mapper namespace="com.jindam.app.notification.mapper.NotificationMapper">
 
     <select id="selectNotificationCenterDetailByUid" parameterType="NotificationCenterDetailRequestDto" resultType="NotificationCenterDetailResponseDto">
+        /* NotificationMapper.selectNotificationCenterDetailByUid : 알림 센터 상세 조회 */
         SELECT
             tnc.notification_center_id,
             tnc.notification_topic,
@@ -24,6 +25,7 @@
     </select>
 
     <insert id="insertNotification" parameterType="NotificationInsertRequestDto">
+        /* NotificationMapper.insertNotification : 알림 등록 */
         INSERT INTO tb_notification (
              notification_id
             ,receiver_uid
@@ -46,6 +48,7 @@
     </insert>
 
     <insert id="insertNotificationCenter" parameterType="NotificationInsertCenterRequestDto">
+        /* NotificationMapper.insertNotificationCenter : 알림 센터 등록 */
         INSERT INTO tb_notification_center (
              notification_center_id
            ,notification_topic
@@ -78,6 +81,7 @@
     </insert>
 
     <insert id="insertNotificationPush" parameterType="NotificationInsertPushRequestDto">
+        /* NotificationMapper.insertNotificationPush : 사용자 푸시 등록 */
         INSERT INTO tb_user_push (
             user_push_id
             ,sender_uid
@@ -108,6 +112,7 @@
     </insert>
 
     <delete id="deleteNotificationPush" parameterType="NotificationDeletePushRequestDto">
+        /* NotificationMapper.deleteNotificationPush : 사용자 푸시 삭제 (delete_yn 'Y'로 업데이트) */
         UPDATE tb_user_push
             <set>
                 delete_yn = 'Y'

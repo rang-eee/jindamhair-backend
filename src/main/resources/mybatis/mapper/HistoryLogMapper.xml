@@ -3,6 +3,7 @@
 <mapper namespace="com.jindam.app.common.mapper.HistoryLogMapper">
 
     <insert id="insertErrorLog" parameterType="HistoryLogRequestDto">
+        /* HistoryLogMapper.insertErrorLog : 에러 로그 적재 */
         INSERT INTO tb_log_error (
             idx
             , request_info
