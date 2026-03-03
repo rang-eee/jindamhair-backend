@@ -13,7 +13,7 @@ public enum BannerDisplayTargetCode implements CodeEnum {
     // 배너 노출 대상 코드 : BDTG
 
     all("전체", "DisplayTargetUserType.all", List.of("all")), //
-customer("고객", "DisplayTargetUserType.customer", List.of("all", "customer")), //
+    customer("고객", "DisplayTargetUserType.customer", List.of("all", "customer")), //
     designer("디자이너", "DisplayTargetUserType.designer", List.of("all", "designer")), //
     ;
 

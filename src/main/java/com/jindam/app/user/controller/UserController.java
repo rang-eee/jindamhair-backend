@@ -120,7 +120,8 @@ public class UserController extends MasterController {
 
     @Operation(summary = "유저 즐겨찾기 변경 요청", description = "유저 즐겨찾기 추가 및 취소 합니다.")
     @PatchMapping("/favorite")
-    public void updateFavoriteUser(@RequestBody UserFavoriteUpdateRequestDto request) {
+    public ApiResultDto<Object> updateFavoriteUser(@RequestBody UserFavoriteUpdateRequestDto request) {
         userService.updateFavoriteUser(request);
+        return new ApiResultDto<>();
     }
 }

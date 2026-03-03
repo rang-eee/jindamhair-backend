@@ -63,8 +63,13 @@ public class AppointmentService extends PagingService {
 
     public PagingResponseDto<AppointmentDetailResponseDto> selectAppointmentByCustIdPaging(AppointmentDetailRequestDto request) {
         // 제외 상태가 지정되지 않은 경우 기본값: 시술완료, 예약취소 제외
-        if (request.getExcludeAppointmentStatusCodes() == null) {
-            request.setExcludeAppointmentStatusCodes(List.of(AppointmentStatusCode.finished, AppointmentStatusCode.canceled));
+        if (request.getIncludeAppointmentStatusCodes() == null) {
+            request.setIncludeAppointmentStatusCodes(//
+                    List.of(//
+                            AppointmentStatusCode.requested, //
+                            AppointmentStatusCode.getting, //
+                            AppointmentStatusCode.completed)//
+            );
         }
 
         PagingResponseDto<AppointmentDetailResponseDto> pagingResult = findData(appointmentMapper, "selectAppointmentByCustIdPaging", request);

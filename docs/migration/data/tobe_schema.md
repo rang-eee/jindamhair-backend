@@ -787,6 +787,7 @@
 | Column | Type | Null | Default | PK | Comment |
 |---|---|---:|---|---:|---|
 | `designer_review_id` | `text` | NOT NULL |  | ✅ | 디자이너 후기 ID |
+| `uid` | `text` | NULL |  |  | 사용자ID |
 | `review_type_code` | `varchar(200)` | NULL |  |  | 후기 유형 코드. RVTP |
 | `review_count` | `numeric` | NULL |  |  | 후기 수 |
 | `create_at` | `timestamp` | NOT NULL | `now()` |  | 생성 일시 |

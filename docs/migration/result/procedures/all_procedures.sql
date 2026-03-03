@@ -3929,6 +3929,7 @@ BEGIN
 
   INSERT INTO jindamhair.tb_designer_review (
     designer_review_id,
+    uid,
     review_type_code,
     review_count,
     migration_id,
@@ -3940,6 +3941,7 @@ BEGIN
   )
   SELECT
     nextval('seq_tb_designer_review_designer_review_id')::text AS designer_review_id,
+    uid,
     CASE
       WHEN TRIM(COALESCE(review_type_code,'')) IN ('ReviewType.friendlyService', 'friendlyService', '친절한 서비스', 'RVTP001') THEN 'friendlyService'
       WHEN TRIM(COALESCE(review_type_code,'')) IN ('ReviewType.professionalSkill', 'professionalSkill', '전문적인 시술 실력', 'RVTP002') THEN 'professionalSkill'

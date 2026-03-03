@@ -37,8 +37,8 @@ public class AppointmentDetailRequestDto extends PagingRequestDto {
     @Schema(description = "예약 상태 코드", example = "123")
     private AppointmentStatusCode appointmentStatusCode;
 
-    @Schema(description = "제외할 예약 상태 코드 목록")
-    private List<AppointmentStatusCode> excludeAppointmentStatusCodes;
+    @Schema(description = "조회할 예약 상태 코드 목록")
+    private List<AppointmentStatusCode> includeAppointmentStatusCodes;
 
     @Schema(description = "예약 시작 유형 코드", example = "123")
     private AppointmentStartTypeCode appointmentStartTypeCode;

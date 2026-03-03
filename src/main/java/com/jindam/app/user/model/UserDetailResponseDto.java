@@ -2,6 +2,7 @@ package com.jindam.app.user.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import com.jindam.app.shop.model.DesingerShopDetailResponseDto;
 import com.jindam.base.code.DesignerAccountBrandCode;
@@ -190,11 +191,26 @@ public class UserDetailResponseDto {
     @Schema(description = "즐겨찾기 사용자ID")
     private String favoriteUid;
 
+    @Schema(description = "대표 매장 ID (tb_designer_shop JOIN)")
+    private String repShopId;
+
     @Schema(description = "대표 매장명 (tb_designer_shop JOIN)")
     private String repShopName;
 
     @Schema(description = "대표 매장 주소 (tb_designer_shop JOIN)")
     private String repShopAddr;
+
+    @Schema(description = "대표 매장 주소 상세 (tb_designer_shop JOIN)")
+    private String repShopAddrDetail;
+
+    @Schema(description = "대표 매장 연락처 (tb_designer_shop JOIN)")
+    private String repShopContact;
+
+    @Schema(description = "대표 매장 위도 (tb_designer_shop JOIN)")
+    private String repShopLatt;
+
+    @Schema(description = "대표 매장 경도 (tb_designer_shop JOIN)")
+    private String repShopLngt;
 
     @Schema(description = "디자이너 대표 매장")
     private DesingerShopDetailResponseDto shopDetail;
@@ -202,7 +218,6 @@ public class UserDetailResponseDto {
     @Schema(description = "계산된 거리 (km) - 사용자 위치 기반")
     private Double calcDistanceKm;
 
-    // 추가 예정 {ReviewTypeCode.code : count, ReviewTypeCode.code : count, ...}
-    // @Schema(description = "후기")
-    // private ReviewResponseDto reviewList;
+    @Schema(description = "후기 카운트 {ReviewType.front : count, ...}")
+    private Map<String, Object> reviewCount;
 }

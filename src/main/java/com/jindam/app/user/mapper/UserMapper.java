@@ -3,6 +3,7 @@ package com.jindam.app.user.mapper;
 import com.jindam.app.user.model.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ExampleMapper 인터페이스
@@ -31,7 +32,7 @@ public interface UserMapper {
     /* 디자이너 프로필 업데이트 (PUT) */
     int updateDesignerProfile(UserUpdateRequestDto request);
 
-    /* 유저 딜리트 (사용여부 N 으로 업데이트)*/
+    /* 유저 딜리트 (사용여부 N 으로 업데이트) */
     int deleteUser(UserDeleteRequestDto request);
 
     /**
@@ -70,5 +71,10 @@ public interface UserMapper {
      * 목록 카운트 조회
      */
     int selectUserFavoriteByUidPagingCount(UserFavoriteDetailRequestDto request);
+
+    /**
+     * 디자이너 후기 카운트 조회 (tb_designer_review)
+     */
+    List<Map<String, Object>> selectDesignerReviewCounts(String uid);
 
 }

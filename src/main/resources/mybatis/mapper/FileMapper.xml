@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jindam.app.file.mapper.FileMapper">
+
+    <select id="selectListFileByFileId" parameterType="map" resultType="FileDetailResponseDto">
+        /* FileMapper.selectListFileByFileId : 파일 ID로 파일 목록 조회 */
+        SELECT
+             tf.file_id
+            ,tf.sort_order
+            ,tf.file_type_code
+            ,tf.org_file_name
+            ,tf.convert_file_name
+            ,tf.file_path
+            ,tf.file_size
+            ,tf.create_at
+            ,tf.create_id
+        FROM tb_file tf
+        <where>
+            AND tf.file_id = #{fileId}
+            AND tf.delete_yn = 'N'
+        </where>
+        ORDER BY tf.sort_order ASC, tf.create_at ASC
+    </select>
+
+</mapper>

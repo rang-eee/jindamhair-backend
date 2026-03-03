@@ -328,9 +328,9 @@
             <if test="appointmentStatusCode != null">
                 AND ta.appointment_status_code = #{appointmentStatusCode}
             </if>
-            <if test="excludeAppointmentStatusCodes != null and excludeAppointmentStatusCodes.size() > 0">
-                AND ta.appointment_status_code NOT IN
-                <foreach collection="excludeAppointmentStatusCodes" item="code" open="(" separator="," close=")">
+            <if test="includeAppointmentStatusCodes != null and includeAppointmentStatusCodes.size() > 0">
+                AND ta.appointment_status_code IN
+                <foreach collection="includeAppointmentStatusCodes" item="code" open="(" separator="," close=")">
                     #{code}
                 </foreach>
             </if>

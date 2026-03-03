@@ -1,36 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jindam.app.chat.mapper.ChatMapper">
-    <insert id="selectChatRoomByUserId" parameterType="ChatInsertRequestDto">
+    <select id="selectChatRoomByUserId" parameterType="ChatInsertRequestDto" resultType="ChatRoomMemberResponseDto">
         /* Chatmapper.selectChatRoomByUserId : 채팅방 조회 (채팅방 존재 여부 확인) */
         SELECT
-            chatroom_member_id
-            chatroom_id
-            uid
-            chatroom_name
+            me.chatroom_member_id,
+            me.chatroom_id,
+            me.uid,
+            me.chatroom_name
         FROM
-            (SELECT
-                 *
+            (SELECT *
              FROM tb_chatroom_member
              WHERE uid = #{writeUid} AND delete_yn = 'N' AND delete_at IS null AND delete_id IS NULL) me
                 JOIN (SELECT * FROM tb_chatroom_member
                       WHERE uid = #{receiverId} AND delete_yn = 'N' AND delete_at IS null AND delete_id IS NULL) trg
                 ON me.chatroom_id = trg.chatroom_id
+        LIMIT 1
+    </select>
+
+    <insert id="insertChatRoom" parameterType="ChatRoomCreateRequestDto">
+        /*Chatmapper.insertChatRoom*/
+        <selectKey keyProperty="chatroomId" resultType="string" order="BEFORE">
+            SELECT nextval('seq_tb_chatroom')::text
+        </selectKey>
+        INSERT INTO tb_chatroom (
+            chatroom_id,
+            create_at,
+            create_id,
+            update_at,
+            update_id
+        ) VALUES (
+            #{chatroomId},
+            COALESCE(#{createAt}, now()),
+            #{createUid},
+            COALESCE(#{updateAt}, now()),
+            #{createUid}
+        )
     </insert>
 
-    <insert id="insertChatRoom" parameterType="ChatInsertRequestDto">
-        /*Chatmapper.insertChatRoom*/
-        INSERT INTO tb_chatroom (
-            chatroom_id
-            create_at
+    <insert id="insertChatRoomMember" parameterType="ChatRoomCreateRequestDto">
+        /* Chatmapper.insertChatRoomMember : 채팅방 멤버 등록 */
+        INSERT INTO tb_chatroom_member (
+            chatroom_id,
+            uid,
+            chatroom_name,
+            last_read_at,
+            create_at,
+            create_id
+        ) VALUES
+        <foreach collection="memberIds" item="uid" separator=",">
+            (
+                #{chatroomId},
+                #{uid},
+                #{title},
+                now(),
+                now(),
+                #{createUid}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="insertChatMessage" parameterType="ChatInsertRequestDto">
+        /* Chatmapper.insertChatMessage : 채팅 메시지 등록 (구버전) */
+        INSERT INTO tb_chatroom_message (
+            chat_message_id,
+            chatroom_id,
+            write_uid,
+            chat_message_type_code,
+            chat_message_content_type_code,
+            chat_message_content,
+            delete_member_uid_arr,
+            appointment_id,
+            create_at,
             create_id
         ) VALUES (
-             nextval('seq_tb_chatroom'),
-             now(),
-             #{writeUid}
-           )
-
+            #{chatMessageId},
+            #{chatroomId},
+            #{writeUid},
+            #{chatMessageTypeCode},
+            #{chatMessageContentTypeCode},
+            #{chatMessageContent},
+            #{deleteMemberUidArr},
+            #{appointmentId},
+            COALESCE(#{workAt}, now()),
+            #{workId}
+        )
     </insert>
+
+    <select id="selectChatRoomById" parameterType="string" resultType="ChatRoomMemberResponseDto">
+        /* Chatmapper.selectChatRoomById : 채팅방 단건 조회 */
+        SELECT
+            tb.chatroom_member_id   AS chatroom_member_id,
+            tb.chatroom_id          AS chatroom_id,
+            tb.uid                  AS uid,
+            tb.chatroom_name        AS chatroom_name,
+            tb.last_read_at         AS last_read_at,
+            tb.create_at            AS create_at,
+            COALESCE(lm.last_message_at, cr.create_at)  AS update_at,
+            lm.last_message         AS last_message,
+            lm.last_message_at      AS last_message_at,
+            lm.last_message_author  AS last_message_author_id,
+            COALESCE(uc.unread_count, 0) AS unread_count
+        FROM tb_chatroom_member tb
+        JOIN tb_chatroom cr ON cr.chatroom_id = tb.chatroom_id AND cr.delete_yn = 'N'
+        LEFT JOIN LATERAL (
+            SELECT
+                cm.chat_message_content   AS last_message,
+                cm.create_at              AS last_message_at,
+                cm.write_uid              AS last_message_author
+            FROM tb_chatroom_message cm
+            WHERE cm.chatroom_id = tb.chatroom_id
+              AND cm.delete_yn = 'N'
+            ORDER BY cm.create_at DESC
+            LIMIT 1
+        ) lm ON true
+        LEFT JOIN LATERAL (
+            SELECT COUNT(*) AS unread_count
+            FROM tb_chatroom_message cm2
+            WHERE cm2.chatroom_id = tb.chatroom_id
+              AND cm2.delete_yn = 'N'
+              AND cm2.create_at > COALESCE(tb.last_read_at, tb.create_at)
+              AND cm2.write_uid != tb.uid
+        ) uc ON true
+        WHERE tb.delete_yn = 'N'
+          AND tb.chatroom_id = #{chatroomId}
+        LIMIT 1
+    </select>
 
     <select id="selectChatRoomList" parameterType="ChatRoomDetailRequestDto" resultType="ChatRoomMemberResponseDto">
         /* Chatmapper.selectChatRoomList : 로그인 유저가 속한 채팅방 목록 + 관련 정보 조회 */
@@ -145,6 +240,62 @@
         </foreach>
         ORDER BY m.chatroom_id, m.create_at
     </select>
+
+    <insert id="insertChatMessageV2" parameterType="ChatMessageCreateRequestDto">
+        /* Chatmapper.insertChatMessageV2 : 채팅 메시지 등록 */
+        INSERT INTO tb_chatroom_message (
+            chat_message_id,
+            chatroom_id,
+            write_uid,
+            chat_message_type_code,
+            chat_message_content_type_code,
+            chat_message_content,
+            delete_member_uid_arr,
+            appointment_id,
+            create_at,
+            create_id
+        ) VALUES (
+            #{id},
+            #{chatroomId},
+            #{authorId},
+            #{messageType},
+            #{messageTextType},
+            #{message},
+            #{deleteMemberUidArr},
+            #{appointmentId},
+            COALESCE(#{createAt}, now()),
+            #{authorId}
+        )
+    </insert>
+
+    <select id="selectChatMessageList" resultType="ChatMessageResponseDto">
+        /* Chatmapper.selectChatMessageList : 채팅 메시지 목록 */
+        SELECT
+            cm.chat_message_id         AS id,
+            cm.chat_message_type_code  AS messageType,
+            cm.chat_message_content_type_code AS messageTextType,
+            cm.write_uid               AS authorId,
+            cm.chat_message_content    AS message,
+            cm.create_at               AS createAt,
+            NULL                        AS deleteMemberIds,
+            cm.appointment_id          AS appointmentId
+        FROM tb_chatroom_message cm
+        WHERE cm.chatroom_id = #{chatroomId}
+          AND cm.delete_yn = 'N'
+          <if test="since != null">
+              AND cm.create_at &gt; #{since}
+          </if>
+        ORDER BY cm.create_at DESC
+    </select>
+
+    <update id="updateChatRoomMemberLastRead" parameterType="ChatRoomUpdateRequestDto">
+        /* Chatmapper.updateChatRoomMemberLastRead : 채팅방 멤버 읽음 시간 업데이트 */
+        UPDATE tb_chatroom_member
+        SET last_read_at = COALESCE(#{lastReadAt}, now())
+        WHERE chatroom_id = #{chatroomId}
+          AND uid = #{uid}
+          AND delete_yn = 'N'
+    </update>
 
 
 </mapper>

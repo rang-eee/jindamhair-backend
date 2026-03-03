@@ -1,7 +1,9 @@
 package com.jindam.app.user.service;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +55,26 @@ public class UserService extends PagingService {
             .findFirst()
             .orElse(null); // 없으면 null
         result.setShopDetail(repShop);
+
+        // 디자이너 후기 카운트 조회
+        if (result.getUid() != null) {
+            List<Map<String, Object>> reviewRows = userMapper.selectDesignerReviewCounts(result.getUid());
+            if (reviewRows != null && !reviewRows.isEmpty()) {
+                Map<String, Object> reviewCountMap = new LinkedHashMap<>();
+                for (Map<String, Object> row : reviewRows) {
+                    String typeCode = (String) row.get("reviewTypeCode");
+                    Object count = row.get("reviewCount");
+                    if (typeCode != null && count != null) {
+                        // Flutter front 형식으로 변환: "friendlyService" -> "ReviewType.friendlyService"
+                        String frontKey = "ReviewType." + typeCode;
+                        reviewCountMap.put(frontKey, ((Number) count).intValue());
+                    }
+                }
+                if (!reviewCountMap.isEmpty()) {
+                    result.setReviewCount(reviewCountMap);
+                }
+            }
+        }
 
         return result;
     }
@@ -173,15 +195,13 @@ public class UserService extends PagingService {
 
         UserFavoriteDetailResponseDto checkResult;
         checkResult = userMapper.selectUserFavoriteCheck(checkDto);
-        if (checkResult != null) {
+        if (checkResult == null) {
             // 없으면 인서트
-            int insertResult;
-            insertResult = userMapper.insertFavoriteUser(request);
-            if (insertResult >= 0) {
+            int insertResult = userMapper.insertFavoriteUser(request);
+            if (insertResult <= 0) {
                 throw new UserException(UserException.Reason.INVALID_ID);
             }
             result = 1;
-
         } else {
             result = userMapper.updateFavoriteUser(request);
 
