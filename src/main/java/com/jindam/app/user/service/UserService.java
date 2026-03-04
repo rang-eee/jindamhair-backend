@@ -44,6 +44,10 @@ public class UserService extends PagingService {
     public UserDetailResponseDto selectOneUser(UserDetailRequestDto request) {
         UserDetailResponseDto result = userMapper.selectOneUserByUid(request);
 
+        if (result == null) {
+            throw new UserException(Reason.INVALID_ID);
+        }
+
         // 매장 조회
         DesignerShopInsertRequestDto req = DesignerShopInsertRequestDto.builder()
             .uid(result.getUid())

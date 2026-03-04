@@ -13,6 +13,8 @@
             ,tu.user_nickname
             ,tu.user_status_code
             ,tu.user_type_code
+            ,tu.user_gender_code
+            ,tu.user_agg_code
             ,tu.user_brdt
             ,tu.user_join_type_code
             ,tu.push_token
@@ -126,6 +128,12 @@
         <if test="userTypeCode != null">
             , user_type_code = #{userTypeCode}
         </if>
+        <if test="userGenderCode != null">
+            , user_gender_code = #{userGenderCode}
+        </if>
+        <if test="userAggCode != null">
+            , user_agg_code = #{userAggCode}
+        </if>
         <if test="userBrdt != null">
             , user_brdt = #{userBrdt}
         </if>
@@ -139,7 +147,7 @@
             , last_login_at = #{lastLoginAt}
         </if>
         <if test="interceptionUserIdArr != null and interceptionUserIdArr.size() > 0">
-            , interception_user_id_arr IN <foreach collection="interceptionUserIdArr" item="id" open="(" separator=", " close=")">#{id}</foreach>
+            , interception_user_id_arr = ARRAY[<foreach collection="interceptionUserIdArr" item="id" separator=", ">#{id}</foreach>]::varchar[]
         </if>
         <if test="prvcplcAgreeYn != null">
             , prvcplc_agree_yn = #{prvcplcAgreeYn}
@@ -199,19 +207,19 @@
             , designer_introduce_content = #{designerIntroduceContent}
         </if>
         <if test="designerTagArr != null and designerTagArr.size() > 0">
-            , designer_tag_arr IN <foreach collection="designerTagArr" item="id" open="(" separator=", " close=")">#{id}</foreach>
+            , designer_tag_arr = ARRAY[<foreach collection="designerTagArr" item="id" separator=", ">#{id}</foreach>]::varchar[]
         </if>
         <if test="designerWorkStatusCode != null and designerWorkStatusCode.size() > 0">
             , designer_work_status_code = #{designerWorkStatusCode}
         </if>
         <if test="designerOpenDayArr != null and designerOpenDayArr.size() > 0">
-            , designer_open_day_arr IN <foreach collection="designerOpenDayArr" item="id" open="(" separator=", " close=")">#{id}</foreach>
+            , designer_open_day_arr = ARRAY[<foreach collection="designerOpenDayArr" item="id" separator=", ">#{id}</foreach>]::varchar[]
         </if>
         <if test="designerOpenTimeArr != null and designerOpenTimeArr.size() > 0">
-            , designer_open_time_arr IN <foreach collection="designerOpenTimeArr" item="id" open="(" separator=", " close=")">#{id}</foreach>
+            , designer_open_time_arr = ARRAY[<foreach collection="designerOpenTimeArr" item="id" separator=", ">#{id}</foreach>]::varchar[]
         </if>
         <if test="designerCloseTimeArr != null and designerCloseTimeArr.size() > 0">
-            , designer_close_time_arr IN <foreach collection="designerCloseTimeArr" item="id" open="(" separator=", " close=")">#{id}</foreach>
+            , designer_close_time_arr = ARRAY[<foreach collection="designerCloseTimeArr" item="id" separator=", ">#{id}</foreach>]::varchar[]
         </if>
         <if test="designerAppointmentAutomaticConfirmYn != null">
             , designer_appointment_automatic_confirm_yn = #{designerAppointmentAutomaticConfirmYn}
@@ -273,6 +281,8 @@
             ,tu.user_nickname
             ,tu.user_status_code
             ,tu.user_type_code
+            ,tu.user_gender_code
+            ,tu.user_agg_code
             ,tu.user_brdt
             ,tu.user_join_type_code
             ,tu.push_token
@@ -334,6 +344,8 @@
             ,tb.user_name                       --사용자 명
             ,tb.user_nickname                       --사용자 닉네임
             ,tb.user_status_code                        --사용자 상태 코드
+            ,tb.user_gender_code                       --사용자 성별 코드
+            ,tb.user_agg_code                          --사용자 연령대 코드
             ,tb.user_brdt                       --사용자 생년월일
             ,tb.user_join_type_code                     --사용자 가입 유형 코드
             ,tb.push_token                      --푸시 토큰
@@ -387,9 +399,9 @@
             ,tb.delete_at                       --삭제 일시
             ,tb.delete_id                       --삭제 ID
             <!-- 사용자 위치 기반 거리 계산 (Haversine, km) -->
+            <if test="userLat != null and userLng != null">
             ,CASE
-                WHEN #{userLat} IS NOT NULL AND #{userLng} IS NOT NULL
-                     AND tb.position_latt IS NOT NULL AND tb.position_latt != ''
+                WHEN tb.position_latt IS NOT NULL AND tb.position_latt != ''
                      AND tb.position_lngt IS NOT NULL AND tb.position_lngt != ''
                 THEN 6371 * acos(
                     LEAST(1.0,
@@ -402,6 +414,10 @@
                 )
                 ELSE NULL
             END AS calc_distance_km
+            </if>
+            <if test="userLat == null or userLng == null">
+            ,NULL AS calc_distance_km
+            </if>
         FROM tb_user tb
         LEFT JOIN tb_designer_shop rep_shop
             ON rep_shop.uid = tb.uid
