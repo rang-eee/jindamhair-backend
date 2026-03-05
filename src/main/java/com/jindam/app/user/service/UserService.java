@@ -223,4 +223,20 @@ public class UserService extends PagingService {
 
         return pagingResult;
     }
+
+    /**
+     * 디자이너 스케줄 조회 (월별, 일별)
+     */
+
+    public List<MonthlyScheduleResponseDto> selectMonthlySchedule(ScheduleRequestDto request) {
+        List<MonthlyScheduleResponseDto> calenderList;
+        calenderList = userMapper.selectMonthlySchedule(request);
+        return calenderList;
+    }
+
+    public List<DailyScheduleResponseDto> selectDailySchedule(ScheduleRequestDto request) {
+        List<DailyScheduleResponseDto> dailyScheduleList;
+        dailyScheduleList = userMapper.selectDailySchedule(request);
+        return dailyScheduleList;
+    }
 }

@@ -77,4 +77,10 @@ public interface UserMapper {
      */
     List<Map<String, Object>> selectDesignerReviewCounts(String uid);
 
+    /**
+     * 디자이너 스케줄 조회
+     */
+    List<MonthlyScheduleResponseDto> selectMonthlySchedule(ScheduleRequestDto request);
+
+    List<DailyScheduleResponseDto> selectDailySchedule(ScheduleRequestDto request);
 }

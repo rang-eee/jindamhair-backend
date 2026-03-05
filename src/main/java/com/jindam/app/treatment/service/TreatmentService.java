@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -36,6 +37,8 @@ public class TreatmentService extends PagingService {
                             .designerTreatmentId(b.getDesignerTreatmentId())
                             .hairAddTypeCode(b.getHairAddTypeCode())
                             .addAmount(b.getAddAmount())
+                            .workAt(LocalDateTime.now())
+                            .workId(b.getWorkId())
                             .build();
                     result = treatmentMapper.insertDesignerTreatmentAddList(insertDto);
                 }
@@ -48,6 +51,8 @@ public class TreatmentService extends PagingService {
                         .designerTreatmentId(b.getDesignerTreatmentId())
                         .hairAddTypeCode(b.getHairAddTypeCode())
                         .addAmount(b.getAddAmount())
+                        .workAt(LocalDateTime.now())
+                        .workId(b.getWorkId())
                         .build();
 
                 result = treatmentMapper.updateDesignerTreatmentAddList(updateDto);

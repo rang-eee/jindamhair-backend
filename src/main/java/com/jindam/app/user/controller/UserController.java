@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "사용자 관련 요청")
 @RequiredArgsConstructor
 @RestController
@@ -123,5 +125,21 @@ public class UserController extends MasterController {
     public ApiResultDto<Object> updateFavoriteUser(@RequestBody UserFavoriteUpdateRequestDto request) {
         userService.updateFavoriteUser(request);
         return new ApiResultDto<>();
+    }
+
+    @Operation(summary = "디자이너 월별 일정 목록조회", description = "년월,UID를 입력하면 한달 일정을 조회합니다.")
+    @GetMapping("/mothlySchedule")
+    public List<MonthlyScheduleResponseDto> selectMonthlySchedule(ScheduleRequestDto request) {
+        List<MonthlyScheduleResponseDto> result;
+        result = userService.selectMonthlySchedule(request);
+        return result;
+    }
+
+    @Operation(summary = "디자이너 일별 일정 목록조회", description = "년월일,UID를 입력 일별 일정을 조회합니다.")
+    @GetMapping("/dailySchedule")
+    public List<DailyScheduleResponseDto> selectDailySchedule(ScheduleRequestDto request) {
+        List<DailyScheduleResponseDto> result;
+        result = userService.selectDailySchedule(request);
+        return result;
     }
 }
