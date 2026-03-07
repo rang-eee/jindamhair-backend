@@ -734,7 +734,12 @@
             designer_appointment_automatic_confirm_yn = NULL,
             designer_applink_url = NULL,
             designer_detail_photo_file_id = NULL,
+            designer_license_photo_file_id = NULL,
             designer_account_brand_code = NULL,
+            position_addr = NULL,
+            position_latt = NULL,
+            position_lngt = NULL,
+            position_distance = NULL,
             update_at = NOW(),
             update_id = #{uid}
         </set>
