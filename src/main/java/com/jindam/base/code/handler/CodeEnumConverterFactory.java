@@ -13,6 +13,7 @@ import org.springframework.core.convert.converter.ConverterFactory;
  * <h3>변환 우선순위</h3>
  * <ol>
  * <li>{@link CodeEnum#getFront()} 매칭 (예: {@code "BannerType.layer"} → {@code BannerTypeCode.layer})</li>
+ * <li>{@link CodeEnum#getText()} 매칭 (예: {@code "승인"} → {@code DesignerApprStatusCode.authComplete})</li>
  * <li>{@link CodeEnum#getCode()} 매칭 (예: {@code "layer"} → {@code BannerTypeCode.layer})</li>
  * <li>{@link Enum#name()} fallback (예: {@code "layer"} → {@code BannerTypeCode.layer})</li>
  * </ol>
@@ -41,7 +42,7 @@ public class CodeEnumConverterFactory implements ConverterFactory<String, Enum> 
 
         String trimmed = source.trim();
 
-        // CodeEnum 구현체인 경우 front / code 매칭 우선
+        // CodeEnum 구현체인 경우 front / text / code 매칭 우선
         if (CodeEnum.class.isAssignableFrom(targetType)) {
             T[] constants = targetType.getEnumConstants();
 
@@ -53,7 +54,15 @@ public class CodeEnumConverterFactory implements ConverterFactory<String, Enum> 
                 }
             }
 
-            // 2) code 값 매칭 (front에서 '.' 뒤 부분, 예: "layer")
+            // 2) text 값 매칭 (예: "승인", "정상근무")
+            for (T constant : constants) {
+                CodeEnum ce = (CodeEnum) constant;
+                if (trimmed.equals(ce.getText())) {
+                    return constant;
+                }
+            }
+
+            // 3) code 값 매칭 (front에서 '.' 뒤 부분, 예: "layer")
             for (T constant : constants) {
                 CodeEnum ce = (CodeEnum) constant;
                 if (trimmed.equals(ce.getCode())) {

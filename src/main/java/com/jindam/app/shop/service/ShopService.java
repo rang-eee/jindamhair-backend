@@ -109,4 +109,16 @@ public class ShopService extends PagingService {
 
         return rtn;
     }
+
+    /**
+     * uid 기반으로 디자이너 매장 일괄 삭제 (delete_yn = 'Y') shopRegistTypeCode가 전달되면 해당 유형만 삭제
+     */
+    public List<DesingerShopDetailResponseDto> deleteShopsByUid(String uid, String shopRegistTypeCode) {
+        shopMapper.deleteShopsByUid(uid, shopRegistTypeCode);
+
+        DesignerShopInsertRequestDto req = DesignerShopInsertRequestDto.builder()
+            .uid(uid)
+            .build();
+        return shopMapper.selectListShopById(req);
+    }
 }

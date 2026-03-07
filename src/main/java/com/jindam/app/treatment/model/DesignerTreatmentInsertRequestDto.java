@@ -67,6 +67,9 @@ public class DesignerTreatmentInsertRequestDto {
     @Schema(description = "오픈 여부", example = "123")
     private String openYn;
 
+    @Schema(description = "정렬 순서", example = "1")
+    private String sortOrder;
+
     @Schema(description = "시술 코드 1", example = "123")
     private String treatmentCode1;
 
@@ -84,6 +87,9 @@ public class DesignerTreatmentInsertRequestDto {
 
     @Schema(description = "시술 명 3", example = "123")
     private String treatmentName3;
+
+    @Schema(description = "생성 ID", example = "user123")
+    private String createId;
 
     @Schema(description = "시술 추가 리스트")
     private List<DesignerTreatmentAddDetailResponseDto> treatmentAddList;

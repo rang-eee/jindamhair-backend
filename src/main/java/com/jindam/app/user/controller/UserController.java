@@ -1,17 +1,36 @@
 package com.jindam.app.user.controller;
 
-import com.jindam.app.user.model.*;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.jindam.app.user.model.DailyScheduleResponseDto;
+import com.jindam.app.user.model.MonthlyScheduleResponseDto;
+import com.jindam.app.user.model.ScheduleRequestDto;
+import com.jindam.app.user.model.UserDeleteRequestDto;
+import com.jindam.app.user.model.UserDetailRequestDto;
+import com.jindam.app.user.model.UserDetailResponseDto;
+import com.jindam.app.user.model.UserFavoriteDetailRequestDto;
+import com.jindam.app.user.model.UserFavoriteDetailResponseDto;
+import com.jindam.app.user.model.UserFavoriteUpdateRequestDto;
+import com.jindam.app.user.model.UserInsertRequestDto;
+import com.jindam.app.user.model.UserUpdateRequestDto;
 import com.jindam.app.user.service.UserService;
 import com.jindam.base.base.MasterController;
 import com.jindam.base.dto.ApiResultDto;
 import com.jindam.base.dto.PagingResponseDto;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "사용자 관련 요청")
 @RequiredArgsConstructor
@@ -72,14 +91,13 @@ public class UserController extends MasterController {
         return apiResultVo;
     }
 
-    @Operation(summary = "사용자 정보 삭제 처리", description = "사용자 상세정보를 삭제 처리합니다.")
+    @Operation(summary = "회원 탈퇴 처리", description = "회원 탈퇴: 유저 + 예약 + 알림 + 매장 일괄 삭제 처리")
     @DeleteMapping("")
-    public ApiResultDto<UserDetailResponseDto> deleteUserByUid(UserDeleteRequestDto request) {
-        ApiResultDto<UserDetailResponseDto> apiResultVo = new ApiResultDto<>();
-        UserDetailResponseDto result;
+    public ApiResultDto<Void> deleteUserByUid(UserDeleteRequestDto request) {
+        ApiResultDto<Void> apiResultVo = new ApiResultDto<>();
 
-        result = userService.deleteUser(request);
-        apiResultVo.setData(result);
+        userService.deleteUser(request);
+        // data는 null — 삭제 성공 시 resultCode 200만 반환
 
         return apiResultVo;
     }

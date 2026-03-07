@@ -16,32 +16,53 @@ public class NotificationService extends PagingService {
 
     private final NotificationMapper notificationMapper;
 
-    //알림 테이블인서트
+    // 알림 테이블인서트
+    @Transactional
     public int insertNotification(NotificationInsertRequestDto request) {
         int result = notificationMapper.insertNotification(request);
         return result;
     }
 
-    //알림센터 조회
+    // 알림센터 조회
     public NotificationCenterDetailResponseDto selectNotificationCenterByUid(NotificationCenterDetailRequestDto request) {
         NotificationCenterDetailResponseDto result;
         result = notificationMapper.selectNotificationCenterDetailByUid(request);
         return result;
     }
 
-    //알림센터 인서트
+    // 알림센터 목록 조회
+    public java.util.List<NotificationCenterDetailResponseDto> selectNotificationCenterListByUid(NotificationCenterDetailRequestDto request) {
+        return notificationMapper.selectNotificationCenterListByUid(request);
+    }
+
+    // 알림센터 읽음 처리
+    @Transactional
+    public int updateNotificationCenter(NotificationCenterDetailRequestDto request) {
+        return notificationMapper.updateNotificationCenter(request);
+    }
+
+    // 알림센터 삭제 처리
+    @Transactional
+    public int deleteNotificationCenter(NotificationCenterDetailRequestDto request) {
+        return notificationMapper.deleteNotificationCenter(request);
+    }
+
+    // 알림센터 인서트
+    @Transactional
     public int insertNotificationCenter(NotificationInsertCenterRequestDto request) {
         int result = notificationMapper.insertNotificationCenter(request);
         return result;
     }
 
-    //사용자 푸쉬 인서트
+    // 사용자 푸쉬 인서트
+    @Transactional
     public int insertNotificationPush(NotificationInsertPushRequestDto request) {
         int result = notificationMapper.insertNotificationPush(request);
         return result;
     }
 
-    //사용자 푸쉬 삭제처리
+    // 사용자 푸쉬 삭제처리
+    @Transactional
     public int deleteNotificationPush(NotificationDeletePushRequestDto request) {
         int result = notificationMapper.deleteNotificationPush(request);
         return result;

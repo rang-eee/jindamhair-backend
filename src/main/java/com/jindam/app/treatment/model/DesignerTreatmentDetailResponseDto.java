@@ -67,6 +67,9 @@ public class DesignerTreatmentDetailResponseDto {
     @Schema(description = "오픈 여부", example = "123")
     private String openYn;
 
+    @Schema(description = "정렬 순서", example = "1")
+    private String sortOrder;
+
     @Schema(description = "시술 코드 1", example = "123")
     private String treatmentCode1;
 

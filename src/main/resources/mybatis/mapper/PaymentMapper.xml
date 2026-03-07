@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jindam.app.payment.mapper.PaymentMapper">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- 공통 SELECT 조각                                        -->
+    <!-- Flutter PaymentModelKey 에 맞추어 alias 부여             -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <sql id="getSelectPayment">
+        /* PaymentMapper.getSelectPayment */
+        SELECT
+             tp.payment_id          AS id
+            ,tp.order_id            AS order_id
+            ,tp.payment_amount      AS amount
+            ,tp.payment_key         AS payment_key
+            ,tp.payment_type_val    AS payment_type
+            ,tp.create_at           AS create_at
+            ,tp.update_at           AS update_at
+        FROM tb_payment tp
+    </sql>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- 결제 단건 조회                                           -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <select id="selectPaymentById" parameterType="PaymentDetailRequestDto" resultType="PaymentDetailResponseDto">
+        <include refid="getSelectPayment" />
+        <where>
+            AND tp.delete_yn = 'N'
+            <if test="paymentId != null">
+                AND tp.payment_id = #{paymentId}
+            </if>
+            <if test="paymentId == null and paymentKey != null">
+                AND tp.payment_key = #{paymentKey}
+            </if>
+            <if test="paymentId == null and paymentKey == null and orderId != null">
+                AND tp.order_id = #{orderId}
+            </if>
+        </where>
+        ORDER BY tp.create_at DESC
+        LIMIT 1
+    </select>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- 결제 목록 조회 (페이징) 조건 조각                         -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <sql id="selectPaymentsFrag">
+        <where>
+            AND tp.delete_yn = 'N'
+            <if test="orderId != null and orderId != ''">
+                AND tp.order_id = #{orderId}
+            </if>
+            <if test="paymentKey != null and paymentKey != ''">
+                AND tp.payment_key = #{paymentKey}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectPaymentsPaging" parameterType="PaymentDetailRequestDto" resultType="PaymentDetailResponseDto">
+        <include refid="getSelectPayment" />
+        <include refid="selectPaymentsFrag" />
+        ORDER BY tp.create_at DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="selectPaymentsPagingCount" parameterType="PaymentDetailRequestDto" resultType="int">
+        SELECT COUNT(*)
+        FROM tb_payment tp
+        <include refid="selectPaymentsFrag" />
+    </select>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- 결제 생성                                               -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <insert id="insertPayment" parameterType="PaymentInsertRequestDto">
+        /* PaymentMapper.insertPayment : 결제 생성 */
+        INSERT INTO tb_payment (
+             payment_id
+            ,order_id
+            ,payment_amount
+            ,payment_key
+            ,payment_type_val
+            ,create_at
+            ,create_id
+        ) VALUES (
+             nextval('seq_tb_payment_payment_id')::text
+            ,#{orderId}
+            ,#{amount}
+            ,#{paymentKey}
+            ,#{paymentType}
+            ,NOW()
+            ,#{createId}
+        )
+    </insert>
+
+</mapper>

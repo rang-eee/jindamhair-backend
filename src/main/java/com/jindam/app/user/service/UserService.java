@@ -8,12 +8,12 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jindam.app.shop.mapper.ShopMapper;
-import com.jindam.app.shop.model.DesignerShopInsertRequestDto;
-import com.jindam.app.shop.model.DesingerShopDetailResponseDto;
 import com.jindam.app.user.exception.UserException;
 import com.jindam.app.user.exception.UserException.Reason;
 import com.jindam.app.user.mapper.UserMapper;
+import com.jindam.app.user.model.DailyScheduleResponseDto;
+import com.jindam.app.user.model.MonthlyScheduleResponseDto;
+import com.jindam.app.user.model.ScheduleRequestDto;
 import com.jindam.app.user.model.UserDeleteRequestDto;
 import com.jindam.app.user.model.UserDetailRequestDto;
 import com.jindam.app.user.model.UserDetailResponseDto;
@@ -35,30 +35,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserService extends PagingService {
     private final UserMapper userMapper;
-    private final ShopMapper shopMapper;
 
     /**
      *
      * @return 사용자 정보
      */
     public UserDetailResponseDto selectOneUser(UserDetailRequestDto request) {
+        // shopDetail은 MyBatis resultMap (userDetailWithShopMap) 에서
+        // rep_shop LEFT JOIN으로 한번에 조회·매핑됨
         UserDetailResponseDto result = userMapper.selectOneUserByUid(request);
 
         if (result == null) {
-            throw new UserException(Reason.INVALID_ID);
+            return null;
         }
-
-        // 매장 조회
-        DesignerShopInsertRequestDto req = DesignerShopInsertRequestDto.builder()
-            .uid(result.getUid())
-            .build();
-        List<DesingerShopDetailResponseDto> shopList = shopMapper.selectListShopById(req);
-
-        DesingerShopDetailResponseDto repShop = shopList.stream()
-            .filter(s -> "Y".equals(s.getRepresentativeYn()))
-            .findFirst()
-            .orElse(null); // 없으면 null
-        result.setShopDetail(repShop);
 
         // 디자이너 후기 카운트 조회
         if (result.getUid() != null) {
@@ -95,26 +84,32 @@ public class UserService extends PagingService {
         int result;
         UserDetailRequestDto detailRequestDto = UserDetailRequestDto.from(request);
 
+        // 1. 활성(delete_yn='N') 유저 UID 중복 체크
         UserDetailResponseDto dupByUid = userMapper.selectOneUserByUid(detailRequestDto);
-
-        if (dupByUid != null) { // 아이디 중복일경우
+        if (dupByUid != null) {
             throw new UserException(Reason.DUPLICATE_ID);
         }
 
-        UserDetailResponseDto dupByEmailJoinTypeCode = userMapper.selectOneUserByEmailAndUserJoinTypeCode(detailRequestDto);
+        // 2. 탈퇴(delete_yn='Y') 유저 재가입 체크 (동일 UID)
+        UserDetailResponseDto deletedUser = userMapper.selectDeletedUserByUid(detailRequestDto);
+        if (deletedUser != null) {
+            // 재활성화: 데이터 초기화 + delete_yn='N'
+            userMapper.reactivateUser(request);
+            return userMapper.selectOneUserByUid(detailRequestDto);
+        }
 
-        if (dupByEmailJoinTypeCode != null) { // 이메일 가입유형 코드
+        // 3. 활성(delete_yn='N') 유저 이메일+가입유형 중복 체크
+        UserDetailResponseDto dupByEmail = userMapper.selectOneUserByEmailAndUserJoinTypeCode(detailRequestDto);
+        if (dupByEmail != null) {
             throw new UserException(Reason.DUPLICATE_ID);
         }
 
+        // 4. 순수 신규 가입
         result = userMapper.insertUser(request);
         UserDetailResponseDto userDto = new UserDetailResponseDto();
         if (result > 0) {
             userDto = userMapper.selectOneUserByUid(detailRequestDto);
         }
-
-        // to-do 추전 디자이너 이메일이 있을경우 통계테이블 카운트 증가시키기 requset
-        // 통계 dto 만들어서 업데이트 요청 던지기
 
         return userDto;
     }
@@ -147,15 +142,24 @@ public class UserService extends PagingService {
 
     }
 
-    public UserDetailResponseDto deleteUser(UserDeleteRequestDto request) {
+    /**
+     * 회원 탈퇴 — 하나의 트랜잭션에서 유저 + 연관 데이터 일괄 soft-delete
+     */
+    public void deleteUser(UserDeleteRequestDto request) {
         int result = userMapper.deleteUser(request);
 
-        if (result == 0) { // 유저 삭제 처리 실패
+        if (result == 0) {
             throw new UserException(UserException.Reason.INVALID_ID);
         }
-        UserDetailRequestDto detailRequestDto = UserDetailRequestDto.from(request);
-        UserDetailResponseDto success = userMapper.selectOneUserByUid(detailRequestDto);
-        return success;
+
+        String uid = request.getUid();
+
+        // 예약 일괄 삭제
+        userMapper.deleteAppointmentsByUid(uid);
+        // 알림 일괄 삭제
+        userMapper.deleteNotificationCentersByUid(uid);
+        // 매장 일괄 삭제
+        userMapper.deleteShopsByUid(uid);
     }
 
     /**

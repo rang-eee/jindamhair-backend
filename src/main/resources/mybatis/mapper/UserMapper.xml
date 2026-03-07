@@ -47,24 +47,55 @@
             ,tu.designer_appointment_automatic_confirm_yn
             ,tu.designer_applink_url
             ,tu.designer_detail_photo_file_id
+            ,tu.designer_license_photo_file_id
             ,tu.designer_account_brand_code
             ,(SELECT tf.file_path FROM tb_file tf
               WHERE tf.file_id = tu.profile_photo_file_id
                 AND tf.delete_yn = 'N'
               ORDER BY tf.create_at DESC
               LIMIT 1) AS profile_photo_file_path
-            ,(SELECT ARRAY_AGG(tub.bookmark_target_user_id)
+            ,(SELECT ARRAY_AGG(DISTINCT tub.bookmark_target_user_id)
               FROM tb_user_bookmark tub
               WHERE tub.uid = tu.uid
                 AND tub.delete_yn = 'N') AS bookmarkUserIdArr
+            <!-- 대표 매장 정보 (rep_shop_ prefix → association shopDetail 매핑) -->
+            ,rep_shop.designer_shop_id   AS rep_shop_designer_shop_id
+            ,rep_shop.uid                AS rep_shop_uid
+            ,rep_shop.shop_id            AS rep_shop_shop_id
+            ,rep_shop.shop_regist_type_code AS rep_shop_shop_regist_type_code
+            ,rep_shop.representative_yn  AS rep_shop_representative_yn
+            ,rep_shop.shop_name          AS rep_shop_shop_name
+            ,rep_shop.shop_description   AS rep_shop_shop_description
+            ,rep_shop.shop_addr          AS rep_shop_shop_addr
+            ,rep_shop.shop_addr_detail   AS rep_shop_shop_addr_detail
+            ,rep_shop.shop_contact       AS rep_shop_shop_contact
+            ,rep_shop.position_lngt      AS rep_shop_position_lngt
+            ,rep_shop.position_latt      AS rep_shop_position_latt
+            ,rep_shop.zipcode            AS rep_shop_zipcode
+            ,rep_shop.use_yn             AS rep_shop_use_yn
+            ,rep_shop.create_at          AS rep_shop_create_at
+            ,rep_shop.create_id          AS rep_shop_create_id
         FROM tb_user tu
+        LEFT JOIN tb_designer_shop rep_shop
+            ON rep_shop.uid = tu.uid
+            AND rep_shop.representative_yn = 'Y'
+            AND COALESCE(rep_shop.delete_yn, 'N') = 'N'
+            AND rep_shop.use_yn = 'Y'
     </sql>
 
-    <select id="selectOneUserByUid" resultType="UserDetailResponseDto">
+    <!-- shopDetail 중첩 매핑용 resultMap -->
+    <resultMap id="userDetailWithShopMap" type="UserDetailResponseDto" autoMapping="true">
+        <id property="uid" column="uid"/>
+        <association property="shopDetail" columnPrefix="rep_shop_"
+                     javaType="DesingerShopDetailResponseDto" autoMapping="true"/>
+    </resultMap>
+
+    <select id="selectOneUserByUid" resultMap="userDetailWithShopMap">
         /* UserMapper.selectOneUserByUid : 사용자 조회 */
         <include refid="getSelectUser" />
         <where>
             AND tu.uid = #{uid}
+            AND tu.delete_yn = 'N'
         </where>
     </select>
 
@@ -74,6 +105,7 @@
         <where>
             AND tu.user_email = #{userEmail}
             AND tu.user_join_type_code = #{userJoinTypeCode}
+            AND tu.delete_yn = 'N'
         </where>
     </select>
 
@@ -90,6 +122,8 @@
             , user_brdt
             , user_join_type_code
             , push_token
+            , designer_appr_status_code
+            , designer_license_photo_file_id
         ) VALUES (
             #{uid}
             , #{userEmail}
@@ -97,10 +131,12 @@
             , #{userName}
             , #{userNickname}
             , #{userStatusCode}
-            , #{userTypeCoUde}
+            , #{userTypeCode}
             , #{userBrdt}
-            , NOW()
+            , #{userJoinTypeCode}
             , #{pushToken}
+            , #{designerApprStatusCode}
+            , #{designerLicensePhotoFileId}
         )
     </insert>
 
@@ -185,6 +221,12 @@
         <if test="chatNotificationReceptionAt != null">
             , chat_notification_reception_at = #{chatNotificationReceptionAt}
         </if>
+        <if test="appointmentNotificationReceptionYn != null">
+            , appointment_notification_reception_yn = #{appointmentNotificationReceptionYn}
+        </if>
+        <if test="appointmentNotificationReceptionAt != null">
+            , appointment_notification_reception_at = #{appointmentNotificationReceptionAt}
+        </if>
         <if test="positionAddr != null">
             , position_addr = #{positionAddr}
         </if>
@@ -230,6 +272,9 @@
             <if test="designerDetailPhotoFileId != null">
                 , designer_detail_photo_file_id = #{designerDetailPhotoFileId}
             </if>
+            <if test="designerLicensePhotoFileId != null">
+                , designer_license_photo_file_id = #{designerLicensePhotoFileId}
+            </if>
             <if test="designerAccountBrandCode != null">
                 , designer_account_brand_code = #{designerAccountBrandCode}
             </if>
@@ -264,11 +309,49 @@
         /* UserMapper.deleteUser : 사용자 삭제 (delete_yn 'Y'로 업데이트) */
         UPDATE  tb_user
         <set>
-            delete_yn = 'Y'
-            delete_at =  NOW()
-            delete_id = #{uid}
+            delete_yn = 'Y',
+            delete_at = NOW(),
+            delete_id = #{uid},
+            user_status_code = 'withdrawn'
         </set>
         WHERE uid = #{uid}
+    </update>
+
+    <!-- ===== 회원 탈퇴 일괄 삭제 쿼리 ===== -->
+
+    <update id="deleteAppointmentsByUid">
+        /* UserMapper.deleteAppointmentsByUid : 회원 탈퇴 시 예약 일괄 삭제 */
+        UPDATE tb_appointment
+        <set>
+            delete_yn = 'Y',
+            delete_at = NOW(),
+            delete_id = #{uid}
+        </set>
+        WHERE (designer_uid = #{uid} OR customer_uid = #{uid})
+          AND delete_yn = 'N'
+    </update>
+
+    <update id="deleteNotificationCentersByUid">
+        /* UserMapper.deleteNotificationCentersByUid : 회원 탈퇴 시 알림 일괄 삭제 */
+        UPDATE tb_notification_center
+        <set>
+            delete_yn = 'Y',
+            delete_at = NOW(),
+            delete_id = #{uid}
+        </set>
+        WHERE receiver_uid = #{uid}
+          AND delete_yn = 'N'
+    </update>
+
+    <update id="deleteShopsByUid">
+        /* UserMapper.deleteShopsByUid : 회원 탈퇴 시 매장 일괄 삭제 */
+        UPDATE tb_designer_shop
+        <set>
+            delete_yn = 'Y',
+            delete_at = NOW()
+        </set>
+        WHERE uid = #{uid}
+          AND delete_yn = 'N'
     </update>
 
     <select id="loginUserByUid" parameterType="UserDetailRequestDto" resultType="UserDetailResponseDto">
@@ -300,6 +383,8 @@
             ,tu.offer_notification_reception_at
             ,tu.chat_notification_reception_yn
             ,tu.chat_notification_reception_at
+            ,tu.appointment_notification_reception_yn
+            ,tu.appointment_notification_reception_at
             ,tu.position_addr
             ,tu.position_latt
             ,tu.position_lngt
@@ -315,10 +400,12 @@
             ,tu.designer_appointment_automatic_confirm_yn
             ,tu.designer_applink_url
             ,tu.designer_detail_photo_file_id
+            ,tu.designer_license_photo_file_id
             ,tu.designer_account_brand_code
         FROM tb_user tu
         <where>
             AND tu.uid = #{uid}
+            AND tu.delete_yn = 'N'
         </where>
     </select>
 
@@ -363,6 +450,8 @@
             ,tb.offer_notification_reception_at                     --제안 알림 수신 일시
             ,tb.chat_notification_reception_yn                      --채팅 알림 수신 여부
             ,tb.chat_notification_reception_at                      --채팅 알림 수신 일시
+            ,tb.appointment_notification_reception_yn                --예약 알림 수신 여부
+            ,tb.appointment_notification_reception_at                --예약 알림 수신 일시
             ,tb.position_addr                       --위치 주소
             ,tb.position_latt                       --위치 위도
             ,tb.position_lngt                       --위치 경도
@@ -378,6 +467,7 @@
             ,tb.designer_appointment_automatic_confirm_yn                       --디자이너 예약 자동 확정 여부
             ,tb.designer_applink_url                        --디자이너 앱링크 URL
             ,tb.designer_detail_photo_file_id                       --디자이너 세부 사진 파일 ID
+            ,tb.designer_license_photo_file_id                      --디자이너 면허증 사진 파일 ID
             ,tb.designer_account_brand_code                     --디자이너 계좌 브랜드 코드
             ,(SELECT tf.file_path FROM tb_file tf
               WHERE tf.file_id = tb.profile_photo_file_id
@@ -422,7 +512,7 @@
         LEFT JOIN tb_designer_shop rep_shop
             ON rep_shop.uid = tb.uid
             AND rep_shop.representative_yn = 'Y'
-            AND rep_shop.delete_yn = 'N'
+            AND COALESCE(rep_shop.delete_yn, 'N') = 'N'
             AND rep_shop.use_yn = 'Y'
 
         <!--공통 조회 조건 -->
@@ -463,6 +553,9 @@
         <where>
             tb.delete_yn = 'N'
             AND tb.user_type_code = 'designer'
+            <if test='userEmail != null and userEmail != ""'>
+                AND tb.user_email = #{userEmail}
+            </if>
             <if test='userJoinTypeCode != null'>
                 AND tb.user_join_type_code = #{userJoinTypeCode}
             </if>
@@ -601,6 +694,53 @@
             </if>
         </where>
     </sql>
+
+    <!-- 탈퇴한 사용자 조회 — UID 기반 (재가입 확인용) -->
+    <select id="selectDeletedUserByUid" parameterType="UserDetailRequestDto" resultType="UserDetailResponseDto">
+        /* UserMapper.selectDeletedUserByUid : 탈퇴한 사용자 조회 (UID) */
+        <include refid="getSelectUser" />
+        <where>
+            AND tu.uid = #{uid}
+            AND tu.delete_yn = 'Y'
+        </where>
+    </select>
+
+    <!-- 탈퇴한 사용자 재활성화 — UID 기반 (데이터 초기화 + delete_yn='N') -->
+    <update id="reactivateUser" parameterType="UserInsertRequestDto">
+        /* UserMapper.reactivateUser : 탈퇴한 사용자 재활성화 (UID 기반) */
+        UPDATE tb_user
+        <set>
+            delete_yn = 'N',
+            delete_at = NULL,
+            delete_id = NULL,
+            user_status_code = #{userStatusCode},
+            user_type_code = NULL,
+            user_contact = #{userContact},
+            user_name = #{userName},
+            user_nickname = #{userNickname},
+            user_brdt = #{userBrdt},
+            push_token = #{pushToken},
+            user_gender_code = NULL,
+            user_agg_code = NULL,
+            interception_user_id_arr = NULL,
+            profile_photo_file_id = NULL,
+            designer_appr_status_code = NULL,
+            designer_introduce_content = NULL,
+            designer_tag_arr = NULL,
+            designer_work_status_code = NULL,
+            designer_open_day_arr = NULL,
+            designer_open_time_arr = NULL,
+            designer_close_time_arr = NULL,
+            designer_appointment_automatic_confirm_yn = NULL,
+            designer_applink_url = NULL,
+            designer_detail_photo_file_id = NULL,
+            designer_account_brand_code = NULL,
+            update_at = NOW(),
+            update_id = #{uid}
+        </set>
+        WHERE uid = #{uid}
+          AND delete_yn = 'Y'
+    </update>
 
     <!-- 디자이너 후기 카운트 조회 (tb_designer_review) -->
     <select id="selectDesignerReviewCounts" parameterType="String" resultType="java.util.LinkedHashMap">

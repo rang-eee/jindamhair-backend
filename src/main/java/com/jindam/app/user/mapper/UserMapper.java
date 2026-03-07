@@ -23,8 +23,14 @@ public interface UserMapper {
      */
     UserDetailResponseDto selectOneUserByEmailAndUserJoinTypeCode(UserDetailRequestDto request);
 
+    /** 탈퇴한 사용자 조회 — UID 기반 (재가입 확인용) */
+    UserDetailResponseDto selectDeletedUserByUid(UserDetailRequestDto request);
+
     /* 유저 생성 */
     int insertUser(UserInsertRequestDto request);
+
+    /* 탈퇴한 유저 재활성화 — UID 기반 (데이터 초기화) */
+    int reactivateUser(UserInsertRequestDto request);
 
     /* 유저 업데이트 */
     int updateUser(UserUpdateRequestDto request);
@@ -34,6 +40,13 @@ public interface UserMapper {
 
     /* 유저 딜리트 (사용여부 N 으로 업데이트) */
     int deleteUser(UserDeleteRequestDto request);
+
+    /* 회원 탈퇴 일괄 삭제 */
+    int deleteAppointmentsByUid(@org.apache.ibatis.annotations.Param("uid") String uid);
+
+    int deleteNotificationCentersByUid(@org.apache.ibatis.annotations.Param("uid") String uid);
+
+    int deleteShopsByUid(@org.apache.ibatis.annotations.Param("uid") String uid);
 
     /**
      * 사용자 로그인 처리

@@ -37,6 +37,11 @@ public interface ShopMapper {
     int deleteListShop(DesingerShopDeleteRequestDto request);
 
     /**
+     * uid 기반 일괄 삭제 (delete_yn = 'Y')
+     */
+    int deleteShopsByUid(@org.apache.ibatis.annotations.Param("uid") String uid, @org.apache.ibatis.annotations.Param("shopRegistTypeCode") String shopRegistTypeCode);
+
+    /**
      * uid로 디자이너 헤어샵 테이블 조회
      *
      * @param request 등록 요청 객체

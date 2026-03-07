@@ -53,6 +53,10 @@ public class AppointmentService extends PagingService {
         // 예약테이블 조회
         result = appointmentMapper.selectAppointmentById(request);
 
+        if (result == null) {
+            return null;
+        }
+
         // 예약시술테이블 조회
         List<AppointmentTreatmentDetailResponseDto> tList = appointmentMapper.selectAppointmentTreatmentByUid(request);
 
@@ -104,7 +108,7 @@ public class AppointmentService extends PagingService {
         int resultInsertAppTreat = 0;
 
         for (AppointmentTreatmentInsertRequestDto input : aList) {
-
+            input.setAppointmentId(request.getAppointmentId());
             resultInsertAppTreat = appointmentMapper.insertAppointmentTreatment(input);
 
             if (resultInsertAppTreat == 0) {// 예약시술테이블 인서트 실패
@@ -609,5 +613,33 @@ public class AppointmentService extends PagingService {
         if (signInsertResult == 0) {
             throw new NotificationException(NotificationException.Reason.INVALID_ID);
         }
+    }
+
+    // =========================
+    // 예약 시술 메뉴 (Menus)
+    // =========================
+
+    /**
+     * 예약 시술 메뉴 목록 조회
+     *
+     * @param request 예약 ID
+     * @return 해당 예약의 시술 메뉴 목록
+     */
+    public List<AppointmentTreatmentDetailResponseDto> selectAppointmentTreatmentList(AppointmentDetailRequestDto request) {
+        return appointmentMapper.selectAppointmentMenusByAppointmentId(request);
+    }
+
+    /**
+     * 예약 시술 메뉴 단건 생성
+     *
+     * @param request 시술 메뉴 정보
+     * @return 영향을 받은 행 수
+     */
+    public int insertAppointmentTreatment(AppointmentTreatmentInsertRequestDto request) {
+        int result = appointmentMapper.insertAppointmentTreatment(request);
+        if (result == 0) {
+            throw new AppointmentException(AppointmentException.Reason.INVALID_ID);
+        }
+        return result;
     }
 }

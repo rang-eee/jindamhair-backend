@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jindam.app.statistics.mapper.StatisticsMapper">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- 공통 SELECT 조각                                        -->
+    <!-- Flutter StatisticsModelKey 에 맞추어 alias 부여          -->
+    <!-- tb_recommand → statistics 매핑                          -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <sql id="getSelectStatistics">
+        /* StatisticsMapper.getSelectStatistics */
+        SELECT
+             tr.recommand_id             AS id
+            ,tr.uid                      AS designer_uid
+            ,tr.recommand_count          AS designer_recommend_count
+            ,tr.recommand_join_uid_arr   AS join_user_uids
+            ,tr.create_at                AS create_at
+            ,tr.update_at                AS update_at
+        FROM tb_recommand tr
+    </sql>
+
+    <!-- resultMap : _varchar 배열 → List<String> 변환 -->
+    <resultMap id="statisticsResultMap" type="StatisticsDetailResponseDto">
+        <id property="id" column="id"/>
+        <result property="designerUid" column="designer_uid"/>
+        <result property="designerRecommendCount" column="designer_recommend_count"/>
+        <result property="joinUserUids" column="join_user_uids"
+                javaType="java.util.List" jdbcType="ARRAY"
+                typeHandler="com.jindam.config.database.mybatis.ListStringArrayTypeHandler"/>
+        <result property="createAt" column="create_at"/>
+        <result property="updateAt" column="update_at"/>
+    </resultMap>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- 통계 단건 조회 (ID)                                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <select id="selectStatisticsById" parameterType="String" resultMap="statisticsResultMap">
+        <include refid="getSelectStatistics" />
+        WHERE tr.recommand_id = #{id}
+          AND tr.delete_yn = 'N'
+    </select>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- 통계 목록 조회                                           -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <select id="selectListStatistics" parameterType="StatisticsDetailRequestDto" resultMap="statisticsResultMap">
+        <include refid="getSelectStatistics" />
+        <where>
+            AND tr.delete_yn = 'N'
+            <if test="id != null and id != ''">
+                AND tr.recommand_id = #{id}
+            </if>
+            <if test="designerUid != null and designerUid != ''">
+                AND tr.uid = #{designerUid}
+            </if>
+        </where>
+        ORDER BY tr.create_at DESC
+    </select>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- 통계 생성                                               -->
+    <!-- selectKey 로 PK 생성 → request.id 에 세팅               -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <insert id="insertStatistics" parameterType="StatisticsInsertRequestDto">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            SELECT nextval('seq_tb_recommand_recommand_id')::text
+        </selectKey>
+        /* StatisticsMapper.insertStatistics : 통계 생성 */
+        INSERT INTO tb_recommand (
+             recommand_id
+            ,uid
+            ,recommand_count
+            ,recommand_join_uid_arr
+            ,create_at
+            ,create_id
+            ,delete_yn
+        ) VALUES (
+             #{id}
+            ,#{designerUid}
+            ,#{designerRecommendCount}
+            <if test="joinUserUids != null and joinUserUids.size() > 0">
+            ,ARRAY[<foreach collection="joinUserUids" item="uid" separator=",">#{uid}</foreach>]::varchar[]
+            </if>
+            <if test="joinUserUids == null or joinUserUids.size() == 0">
+            ,NULL
+            </if>
+            ,NOW()
+            ,#{designerUid}
+            ,'N'
+        )
+    </insert>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- 통계 수정                                               -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <update id="updateStatistics" parameterType="StatisticsUpdateRequestDto">
+        /* StatisticsMapper.updateStatistics : 통계 수정 */
+        UPDATE tb_recommand
+        SET
+             recommand_count = #{designerRecommendCount}
+            <if test="joinUserUids != null and joinUserUids.size() > 0">
+            ,recommand_join_uid_arr = ARRAY[<foreach collection="joinUserUids" item="uid" separator=",">#{uid}</foreach>]::varchar[]
+            </if>
+            <if test="joinUserUids == null or joinUserUids.size() == 0">
+            ,recommand_join_uid_arr = NULL
+            </if>
+            ,update_at = NOW()
+            ,update_id = #{designerUid}
+        WHERE recommand_id = #{id}
+          AND delete_yn = 'N'
+    </update>
+
+</mapper>

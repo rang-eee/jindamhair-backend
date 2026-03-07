@@ -21,8 +21,60 @@
         FROM tb_notification_center tnc
         <where>
             AND tnc.receiver_uid = #{receiverUid}
+            AND tnc.delete_yn = 'N'
         </where>
     </select>
+
+    <select id="selectNotificationCenterListByUid" parameterType="NotificationCenterDetailRequestDto" resultType="NotificationCenterDetailResponseDto">
+        /* NotificationMapper.selectNotificationCenterListByUid : 알림 센터 목록 조회 */
+        SELECT
+            tnc.notification_center_id,
+            tnc.notification_topic,
+            tnc.event_click,
+            tnc.notification_type_code,
+            tnc.notification_title,
+            tnc.notification_content,
+            tnc.receiver_uid,
+            tnc.appointment_id,
+            tnc.appointment_at,
+            tnc.designer_name,
+            tnc.user_name,
+            tnc.create_at,
+            tnc.create_id
+        FROM tb_notification_center tnc
+        <where>
+            AND tnc.receiver_uid = #{receiverUid}
+            AND tnc.delete_yn = 'N'
+        </where>
+        ORDER BY tnc.create_at DESC
+    </select>
+
+    <update id="updateNotificationCenter" parameterType="NotificationCenterDetailRequestDto">
+        /* NotificationMapper.updateNotificationCenter : 알림 센터 읽음 처리 */
+        UPDATE tb_notification_center
+        <set>
+            update_at = NOW(),
+            update_id = #{receiverUid}
+        </set>
+        <where>
+            AND notification_center_id = #{notificationCenterId}
+            AND delete_yn = 'N'
+        </where>
+    </update>
+
+    <update id="deleteNotificationCenter" parameterType="NotificationCenterDetailRequestDto">
+        /* NotificationMapper.deleteNotificationCenter : 알림 센터 삭제 처리 */
+        UPDATE tb_notification_center
+        <set>
+            delete_yn = 'Y',
+            delete_at = NOW(),
+            delete_id = #{receiverUid}
+        </set>
+        <where>
+            AND notification_center_id = #{notificationCenterId}
+            AND delete_yn = 'N'
+        </where>
+    </update>
 
     <insert id="insertNotification" parameterType="NotificationInsertRequestDto">
         /* NotificationMapper.insertNotification : 알림 등록 */
@@ -43,7 +95,7 @@
                   #{notificationTopic},
                   #{eventClick},
                   NOW(),
-                  #{createId}
+                  #{workId}
                          )
     </insert>
 
@@ -75,8 +127,8 @@
             #{appointmentAt},
             #{designerName},
             #{userName},
-            #{createAt},
-            #{createId},
+            #{workAt},
+            #{workId}
                          )
     </insert>
 
@@ -119,7 +171,7 @@
             </set>
         <where>
             sender_uid = #{senderUid}
-            receiver_uid =#{receiverUid}
+            AND receiver_uid = #{receiverUid}
         </where>
     </delete>
 

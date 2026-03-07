@@ -20,6 +20,7 @@
         FROM tb_shop ts
         <where>
             AND ts.use_yn = 'Y'
+            AND ts.delete_yn = 'N'
         </where>
     </select>
 
@@ -61,13 +62,13 @@
             ON (
                 tds.shop_id = ts.shop_id
                 AND ts.delete_yn = 'N'
-                AND ts.delete_at IS NOT NULL
-                AND ts.delete_id IS NOT NULL
+                AND ts.delete_at IS NULL
+                AND ts.delete_id IS NULL
                 AND ts.use_yn = 'Y'
             )
         WHERE tds.delete_yn = 'N'
-            AND tds.delete_at IS NOT NULL
-            AND tds.delete_id IS NOT NULL
+            AND tds.delete_at IS NULL
+            AND tds.delete_id IS NULL
             AND tds.use_yn = 'Y'
             AND tds.uid = #{uid}
     </select>
@@ -89,11 +90,12 @@
              ,position_latt
              ,zipcode
              ,use_yn
+             ,delete_yn
              ,create_at
              ,create_id
             )
             VALUES (
-                    nextval("seq_tb_designer_shop_designer_shop_id")
+                    nextval('seq_tb_designer_shop_designer_shop_id')
                    ,#{uid}
                    ,#{shopId}
                    ,#{shopRegistTypeCode}
@@ -107,6 +109,7 @@
                    ,#{positionLatt}
                    ,#{zipcode}
                    ,#{useYn}
+                   ,'N'
                    ,NOW()
                    ,#{createId}
                    )
@@ -164,8 +167,8 @@
                 <if test="createId != null">
                     ,create_id = #{createId}
                 </if>
-                ,update_at
-                ,update_id
+                ,update_at = NOW()
+                ,update_id = #{updateId}
             </set>
         <where>
             AND uid = #{uid}
@@ -174,17 +177,33 @@
         </where>
     </update>
 
-    <update id="deleteListshop" parameterType="DesingerShopDeleteRequestDto">
+    <update id="deleteListShop" parameterType="DesingerShopDeleteRequestDto">
         /* ShopMapper.deleteListShop : 매장 삭제 (delete_yn 'Y'로 업데이트) */
         UPDATE tb_designer_shop
         <set>
-            delete_yn = #{deleteYn}
-            delete_at = NOW()
+            delete_yn = #{deleteYn},
+            delete_at = NOW(),
             delete_id = #{deleteId}
         </set>
         <where>
             AND uid = #{uid}
             AND designer_shop_id = #{designerShopId}
+        </where>
+    </update>
+
+    <update id="deleteShopsByUid">
+        /* ShopMapper.deleteShopsByUid : uid 기반 매장 일괄 삭제 (delete_yn 'Y'로 업데이트) */
+        UPDATE tb_designer_shop
+        <set>
+            delete_yn = 'Y',
+            delete_at = NOW()
+        </set>
+        <where>
+            AND uid = #{uid}
+            AND delete_yn = 'N'
+            <if test="shopRegistTypeCode != null and shopRegistTypeCode != ''">
+                AND shop_regist_type_code = #{shopRegistTypeCode}
+            </if>
         </where>
     </update>
 

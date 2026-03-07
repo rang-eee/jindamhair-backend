@@ -50,11 +50,10 @@ public class NotificationCenterDetailResponseDto {
     @Schema(description = "사용자 명", example = "123")
     private String userName;
 
-    @Schema(description = "작업일시", example = "123")
-    private LocalDateTime workAt;
+    @Schema(description = "생성 일시", example = "123")
+    private LocalDateTime createAt;
 
-    @Schema(description = "작업자 Id", example = "123")
-    private String workId;
+    @Schema(description = "생성자 Id", example = "123")
+    private String createId;
 
 }
-

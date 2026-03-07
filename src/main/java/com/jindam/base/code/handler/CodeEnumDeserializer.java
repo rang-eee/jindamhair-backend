@@ -19,6 +19,7 @@ import java.io.IOException;
  * <h3>변환 우선순위</h3>
  * <ol>
  * <li>{@link CodeEnum#getFront()} 매칭 (예: {@code "BannerType.layer"})</li>
+ * <li>{@link CodeEnum#getText()} 매칭 (예: {@code "면허증 확인 중"})</li>
  * <li>{@link CodeEnum#getCode()} 매칭 (예: {@code "layer"})</li>
  * <li>{@link Enum#name()} fallback (예: {@code "layer"})</li>
  * </ol>
@@ -67,14 +68,21 @@ public class CodeEnumDeserializer extends JsonDeserializer<CodeEnum> implements 
             }
         }
 
-        // 2) code 값 매칭 (예: "layer")
+        // 2) text 값 매칭 (예: "면허증 확인 중")
+        for (CodeEnum constant : constants) {
+            if (trimmed.equals(constant.getText())) {
+                return constant;
+            }
+        }
+
+        // 3) code 값 매칭 (예: "layer")
         for (CodeEnum constant : constants) {
             if (trimmed.equals(constant.getCode())) {
                 return constant;
             }
         }
 
-        // 3) enum name fallback
+        // 4) enum name fallback
         try {
             return (CodeEnum) Enum.valueOf((Class) enumType, trimmed);
         } catch (IllegalArgumentException e) {

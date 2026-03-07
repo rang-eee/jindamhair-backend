@@ -20,6 +20,9 @@ public class AppointmentTreatmentInsertRequestDto {
     @Schema(description = "예약 시술 ID", example = "123")
     private String appointmentTreatmentId;
 
+    @Schema(description = "예약 ID", example = "123")
+    private String appointmentId;
+
     @Schema(description = "디자이너 시술 ID", example = "123")
     private String designerTreatmentId;
 

@@ -19,4 +19,10 @@ public interface NotificationMapper {
     int deleteNotificationPush(NotificationDeletePushRequestDto request);
 
     NotificationCenterDetailResponseDto selectNotificationCenterDetailByUid(NotificationCenterDetailRequestDto request);
+
+    java.util.List<NotificationCenterDetailResponseDto> selectNotificationCenterListByUid(NotificationCenterDetailRequestDto request);
+
+    int updateNotificationCenter(NotificationCenterDetailRequestDto request);
+
+    int deleteNotificationCenter(NotificationCenterDetailRequestDto request);
 }

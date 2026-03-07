@@ -100,6 +100,12 @@ public class UserInsertRequestDto {
     @Schema(description = "채팅 알림 수신 일시", example = "2024-11-11T17:04:56.082147")
     private LocalDateTime chatNotificationReceptionAt;
 
+    @Schema(description = "예약 알림 수신 여부", example = "Y")
+    private String appointmentNotificationReceptionYn;
+
+    @Schema(description = "예약 알림 수신 일시", example = "2024-11-11T17:04:56.082147")
+    private LocalDateTime appointmentNotificationReceptionAt;
+
     @Schema(description = "위치 주소")
     private String positionAddr;
 
@@ -144,6 +150,9 @@ public class UserInsertRequestDto {
 
     @Schema(description = "디자이너 세부 사진 파일 ID")
     private String designerDetailPhotoFileId;
+
+    @Schema(description = "디자이너 면허증 사진 파일 ID")
+    private String designerLicensePhotoFileId;
 
     @Schema(description = "디자이너 계좌 브랜드 코드")
     private DesignerAccountBrandCode designerAccountBrandCode;

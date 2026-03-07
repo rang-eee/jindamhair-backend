@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "예약 관련 요청")
 @RequiredArgsConstructor
 @RestController
@@ -94,6 +96,28 @@ public class AppointmentController extends MasterController {
     @PutMapping("/sign")
     public void insertAppointmentSign(@RequestBody AppointmentSignInsertRequestDto request) {
         appointmentService.insertAppointmentSign(request);
+    }
+
+    // =========================
+    // Menus (예약 시술 메뉴)
+    // =========================
+
+    @Operation(summary = "예약 시술 메뉴 목록 조회", description = "예약 ID로 해당 예약의 시술 메뉴 목록을 조회합니다.")
+    @GetMapping("/menus")
+    public ApiResultDto<List<AppointmentTreatmentDetailResponseDto>> selectAppointmentMenus(AppointmentDetailRequestDto request) {
+        ApiResultDto<List<AppointmentTreatmentDetailResponseDto>> apiResultVo = new ApiResultDto<>();
+        List<AppointmentTreatmentDetailResponseDto> result = appointmentService.selectAppointmentTreatmentList(request);
+        apiResultVo.setData(result);
+        return apiResultVo;
+    }
+
+    @Operation(summary = "예약 시술 메뉴 생성", description = "예약에 시술 메뉴를 추가합니다.")
+    @PostMapping("/menus")
+    public ApiResultDto<Object> insertAppointmentMenu(@RequestBody AppointmentTreatmentInsertRequestDto request) {
+        ApiResultDto<Object> apiResultVo = new ApiResultDto<>();
+        int result = appointmentService.insertAppointmentTreatment(request);
+        apiResultVo.setData(result);
+        return apiResultVo;
     }
 
 }

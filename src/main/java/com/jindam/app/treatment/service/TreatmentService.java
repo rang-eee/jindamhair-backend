@@ -31,31 +31,31 @@ public class TreatmentService extends PagingService {
         if (addYn.equals("Y")) {
             List<DesignerTreatmentAddDetailResponseDto> aList = request.getTreatmentAddList();
 
-            if (aList == null || aList.isEmpty()) {
+            if (aList != null && !aList.isEmpty()) {
                 for (DesignerTreatmentAddDetailResponseDto b : aList) {
-                    DesignerTreatmentAddInsertRequestDto insertDto = DesignerTreatmentAddInsertRequestDto.builder()
+                    if (b.getDesignerTreatmentAddId() == null) {
+                        // 신규 추가
+                        DesignerTreatmentAddInsertRequestDto insertDto = DesignerTreatmentAddInsertRequestDto.builder()
                             .designerTreatmentId(b.getDesignerTreatmentId())
                             .hairAddTypeCode(b.getHairAddTypeCode())
                             .addAmount(b.getAddAmount())
                             .workAt(LocalDateTime.now())
                             .workId(b.getWorkId())
                             .build();
-                    result = treatmentMapper.insertDesignerTreatmentAddList(insertDto);
+                        result = treatmentMapper.insertDesignerTreatmentAddList(insertDto);
+                    } else {
+                        // 기존 수정
+                        DesignerTreatmentAddUpdateRequestDto updateDto = DesignerTreatmentAddUpdateRequestDto.builder()
+                            .designerTreatmentAddId(b.getDesignerTreatmentAddId())
+                            .designerTreatmentId(b.getDesignerTreatmentId())
+                            .hairAddTypeCode(b.getHairAddTypeCode())
+                            .addAmount(b.getAddAmount())
+                            .workAt(LocalDateTime.now())
+                            .workId(b.getWorkId())
+                            .build();
+                        result = treatmentMapper.updateDesignerTreatmentAddList(updateDto);
+                    }
                 }
-
-            }
-
-            for (DesignerTreatmentAddDetailResponseDto b : aList) {
-                DesignerTreatmentAddUpdateRequestDto updateDto = DesignerTreatmentAddUpdateRequestDto.builder()
-                        .designerTreatmentAddId(b.getDesignerTreatmentAddId())
-                        .designerTreatmentId(b.getDesignerTreatmentId())
-                        .hairAddTypeCode(b.getHairAddTypeCode())
-                        .addAmount(b.getAddAmount())
-                        .workAt(LocalDateTime.now())
-                        .workId(b.getWorkId())
-                        .build();
-
-                result = treatmentMapper.updateDesignerTreatmentAddList(updateDto);
             }
         } else if (addYn.equals("N")) {// N이면 삭제
             result = treatmentMapper.deleteDesignerTreatmentAddList(request);

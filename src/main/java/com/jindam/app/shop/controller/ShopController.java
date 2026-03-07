@@ -58,7 +58,7 @@ public class ShopController extends MasterController {
     public ApiResultDto<List<DesingerShopDetailResponseDto>> insertListShop(@RequestBody List<DesignerShopInsertRequestDto> request) {
 
         ApiResultDto<List<DesingerShopDetailResponseDto>> apiResultVo = new ApiResultDto<>(); // API 응답 객체
-        List<DesingerShopDetailResponseDto> result; //인서트 결과값
+        List<DesingerShopDetailResponseDto> result; // 인서트 결과값
 
         result = shopService.insertListShop(request);
 
@@ -96,14 +96,23 @@ public class ShopController extends MasterController {
 
     @Operation(//
             summary = "디자이너 헤어샵 삭제", //
-            description = "uid의 해당하는 디자이너 헤어샵 삭제 요청")
+            description = "uid의 해당하는 디자이너 헤어샵 삭제 요청. query param(uid) 또는 request body(List) 방식 모두 지원")
     @DeleteMapping("")
-    public ApiResultDto<List<DesingerShopDetailResponseDto>> deleteListShop(@RequestBody List<DesingerShopDeleteRequestDto> request) {
+    public ApiResultDto<List<DesingerShopDetailResponseDto>> deleteListShop(@RequestParam(name = "uid", required = false) String uid, @RequestParam(name = "shopRegistTypeCode", required = false) String shopRegistTypeCode, @RequestBody(required = false) List<DesingerShopDeleteRequestDto> request) {
 
         ApiResultDto<List<DesingerShopDetailResponseDto>> apiResultVo = new ApiResultDto<>(); // API 응답 객체
         List<DesingerShopDetailResponseDto> result;
-        // 기존 항목 존재 여부 확인 및 삭제
-        result = shopService.deleteListShop(request);
+
+        if (uid != null && (request == null || request.isEmpty())) {
+            // query param 기반 일괄 삭제 (Flutter 클라이언트 호환)
+            result = shopService.deleteShopsByUid(uid, shopRegistTypeCode);
+        } else if (request != null && !request.isEmpty()) {
+            // body 기반 개별 삭제 (기존 방식)
+            result = shopService.deleteListShop(request);
+        } else {
+            apiResultVo.setResultMessage("삭제 조건이 없습니다.");
+            return apiResultVo;
+        }
 
         if (ObjectUtils.isEmpty(result)) {
             apiResultVo.setData(null);
